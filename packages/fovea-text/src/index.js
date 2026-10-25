@@ -1,3 +1,5 @@
+export { TextViewer } from './TextViewer.jsx';
+
 /** Describes which files this viewer can open. */
 export const meta = {
   id: 'text',

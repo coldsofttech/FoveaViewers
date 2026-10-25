@@ -102,7 +102,7 @@
     "name": "@coldsofttech/fovea-text",
     "path": "packages/fovea-text/dist/index.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "3 kB",
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
   },
   {

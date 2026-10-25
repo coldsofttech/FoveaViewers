@@ -6,7 +6,10 @@
     "emitDeclarationOnly": true,
     "noEmit": false,
     "rootDir": "src",
-    "outDir": "dist"
+    "outDir": "dist",
+    "paths": {
+      "@coldsofttech/fovea-*": ["./src/viewer-module.d.ts"]
+    }
   },
   "include": ["src"],
   "exclude": ["src/**/*.test.jsx", "src/**/*.test.js"]

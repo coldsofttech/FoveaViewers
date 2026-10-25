@@ -1,0 +1,59 @@
+/* Colours come from --fovea-* custom properties (see the `theme` prop), else the page's own. */
+.root {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 13px;
+  background: var(--fovea-background, Canvas);
+  color: var(--fovea-foreground, CanvasText);
+}
+
+.content {
+  position: relative;
+  min-width: 100%;
+}
+
+.line {
+  position: absolute;
+  min-width: 100%;
+  width: max-content;
+}
+
+.current {
+  background: var(--fovea-current-line, color-mix(in srgb, currentColor 8%, transparent));
+}
+
+.gutter {
+  position: sticky;
+  left: 0;
+  display: inline-block;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0 12px 0 8px;
+  text-align: right;
+  user-select: none;
+  color: var(--fovea-muted, GrayText);
+  background: var(--fovea-gutter-background, Canvas);
+  border-right: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
+}
+
+.text {
+  padding-left: 12px;
+  white-space: pre;
+}
+
+.hit {
+  color: inherit;
+  background: var(--fovea-hit-background, rgba(255, 196, 0, 0.45));
+  outline: 1px solid var(--fovea-hit-outline, rgba(214, 140, 0, 0.8));
+  border-radius: 2px;
+}
+
+.message {
+  position: sticky;
+  left: 0;
+  margin: 0;
+  padding: 8px 12px;
+}

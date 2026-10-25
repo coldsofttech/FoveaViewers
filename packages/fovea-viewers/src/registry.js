@@ -115,6 +115,14 @@ export const registry = [
 ];
 
 /**
+ * The name a viewer package exports its component under, for example `MarkdownViewer`.
+ *
+ * @param {string} id Viewer id.
+ * @returns {string}
+ */
+export const componentName = (id) => `${id[0].toUpperCase()}${id.slice(1)}Viewer`;
+
+/**
  * Lowercases a MIME type and drops parameters such as `; charset=utf-8`.
  *
  * @param {string} mime

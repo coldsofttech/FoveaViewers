@@ -8,6 +8,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@coldsofttech/fovea-text": "*",
     "@coldsofttech/fovea-viewers": "*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"

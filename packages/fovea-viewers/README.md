@@ -2,7 +2,7 @@
 
 Finds the right Fovea viewer for a file and loads it when needed. Part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers).
 
-> Work in progress. The viewer components are not implemented yet.
+> Work in progress. Only the text viewer is available so far.
 
 ## Install
 
@@ -10,13 +10,24 @@ Finds the right Fovea viewer for a file and loads it when needed. Part of [Fovea
 npm install @coldsofttech/fovea-viewers
 ```
 
-Then install the viewers you want, for example `@coldsofttech/fovea-markdown`. React and `react-dom` 18 or 19 must be installed in your app.
+Then install the viewers you want, for example `@coldsofttech/fovea-text`. React and `react-dom` 18 or 19 must be installed in your app.
 
-## What it does
+## Use
 
-- Picks a viewer from a file, MIME type, file name or URL.
-- Loads a viewer on demand, with a clear message when it isn't installed.
-- Provides the shared code the viewers use to read files, available from `@coldsofttech/fovea-viewers/core`.
+```jsx
+import { Viewer } from '@coldsofttech/fovea-viewers';
+import '@coldsofttech/fovea-text/style.css';
+
+<Viewer source={file} theme="dark" />;
+```
+
+`Viewer` works out which viewer fits `source` from its file name, URL or MIME type, loads that viewer, and passes it the rest of the props (`fetcher`, `theme`, `label`, `onReady`, `onError`). If the file's type can't be told, for example for an `ArrayBuffer`, pass `type="text"`. If the viewer isn't installed, the error says which package to install and goes to `onError`.
+
+## Also available
+
+- `resolve(fileOrMimeOrName)` returns the viewer id for a file, MIME type, file name or URL, or `null`.
+- `load(id)` loads a viewer package on demand.
+- `@coldsofttech/fovea-viewers/core` provides the shared code the viewers use to read files and apply themes.
 
 ## License
 
