@@ -29,12 +29,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/coldsofttech/react-public-repo-template.git",
+    "url": "git+https://github.com/coldsofttech/react-FoveaViewers.git",
     "directory": "packages/example-react-package"
   },
-  "homepage": "https://github.com/coldsofttech/react-public-repo-template#readme",
+  "homepage": "https://github.com/coldsofttech/react-FoveaViewers#readme",
   "bugs": {
-    "url": "https://github.com/coldsofttech/react-public-repo-template/issues"
+    "url": "https://github.com/coldsofttech/react-FoveaViewers/issues"
   },
   "scripts": {
     "build": "vite build && npm run build:types",
