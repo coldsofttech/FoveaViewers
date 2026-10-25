@@ -1,0 +1,56 @@
+name: Release
+
+# Publishes to npm when a GitHub release is published, using trusted publishing (no stored tokens).
+# Tag the release as <package name>@<version>, for example @scope/example-react-package@1.0.0.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Check tag matches package version
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          package="${TAG%@*}"
+          version="${TAG##*@}"
+          actual="$(npm pkg get version --workspace "$package" | node -p "Object.values(JSON.parse(require('fs').readFileSync(0, 'utf8')))[0]")"
+          [ "$version" = "$actual" ] || { echo "Tag $TAG does not match version $actual"; exit 1; }
+          echo "PACKAGE=$package" >> "$GITHUB_ENV"
+      - run: npm run build
+      - run: npm run check:packages
+      - run: npm pack --workspace "$PACKAGE" --pack-destination dist
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: npm
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24' # npm 11.5.1+ is required for trusted publishing
+          registry-url: https://registry.npmjs.org
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+      - run: npm publish dist/*.tgz --provenance --access public

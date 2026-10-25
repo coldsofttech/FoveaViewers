@@ -1,0 +1,10 @@
+[defaults]
+profiles = ["node"]
+risk = "safe"
+
+[clean]
+# Exclusions always win over cleanup rules. Keep installed dependencies between commits.
+exclude = ["node_modules/"]
+
+[hook]
+quiet = true

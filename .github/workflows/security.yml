@@ -1,0 +1,52 @@
+name: Security
+
+# Static analysis. Findings are uploaded as SARIF, so they show up in the repository's Security
+# tab (Code scanning) next to CodeQL, and the job fails when it finds a problem.
+# This job is not part of the required `ci` check, so a new rule does not block unrelated pull
+# requests. The weekly run catches issues flagged by rules published after a merge.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Semgrep is a Python tool, so run it from its official image to keep Python out of the repo.
+    container: semgrep/semgrep
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v7
+      # Actions are pinned to version tags on purpose (Dependabot keeps them current), so the
+      # rule that asks for commit SHAs is excluded.
+      - name: Run Semgrep
+        run: >
+          semgrep scan
+          --config p/javascript
+          --config p/owasp-top-ten
+          --config p/github-actions
+          --exclude '*.test.js'
+          --exclude-rule yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag
+          --error
+          --sarif --output semgrep.sarif
+          .
+      - name: Upload results
+        if: always() && hashFiles('semgrep.sarif') != '' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep

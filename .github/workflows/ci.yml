@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - uses: pre-commit/action@v3.0.1
+        env:
+          SKIP: vitest # covered by the test job across all Node versions
+
+  test:
+    name: test (${{ matrix.os }}, node ${{ matrix.node-version }}, react ${{ matrix.react-version }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node-version: ['22', '24', '26']
+        react-version: ['19']
+        include:
+          - os: windows-latest
+            node-version: '24'
+            react-version: '19'
+          - os: macos-latest
+            node-version: '24'
+            react-version: '19'
+          - os: ubuntu-latest
+            node-version: '24'
+            react-version: '18'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - name: Use React ${{ matrix.react-version }}
+        if: matrix.react-version != '19'
+        run: npm install --no-save react@${{ matrix.react-version }} react-dom@${{ matrix.react-version }}
+      - run: npm run test:coverage
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run check:packages
+      - name: Build demo against the built packages
+        run: npm run build --workspace examples/demo
+      - name: Bundle size
+        run: npm run size
+
+  # Single required status check for the branch ruleset.
+  ci:
+    if: always()
+    needs: [lint, test, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check results
+        run: |
+          echo "lint:  ${{ needs.lint.result }}"
+          echo "test:  ${{ needs.test.result }}"
+          echo "build: ${{ needs.build.result }}"
+          [ "${{ needs.lint.result }}" = success ] &&
+          [ "${{ needs.test.result }}" = success ] &&
+          [ "${{ needs.build.result }}" = success ]

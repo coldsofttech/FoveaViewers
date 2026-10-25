@@ -1,0 +1,9 @@
+[
+  {
+    "name": "@scope/example-react-package",
+    "path": "packages/example-react-package/dist/index.js",
+    "import": "*",
+    "limit": "2 kB",
+    "ignore": ["react", "react-dom"]
+  }
+]
