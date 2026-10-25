@@ -1,8 +1,7 @@
 # Documentation
 
-Technical documentation for this project lives in this folder. The top-level [README](../README.md) is for users.
+Technical documentation for Fovea Viewers. The top-level [README](../README.md) is for users.
 
-- [Architecture](architecture.md): how checks, workflows and releases fit together.
-- [Security](security.md): security layers, scanners and safe browser coding.
-- [Development](development.md): Node setup, scripts, workspaces, CI and the release flow.
-- [Repository setup](repo-setup.md): protections, ruleset and manual steps for new repos.
+- [Development](development.md): repository layout, scripts, conventions, CI and the release flow.
+- [Security](security.md): how untrusted files are handled and which scanners run.
+- [Repository setup](repo-setup.md): GitHub settings, the `main` ruleset and npm publishing.

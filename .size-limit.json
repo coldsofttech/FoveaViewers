@@ -1,1 +1,115 @@
-[]
+[
+  {
+    "name": "@coldsofttech/fovea-viewers",
+    "path": "packages/fovea-viewers/dist/index.js",
+    "import": "*",
+    "limit": "2 kB",
+    "ignore": [
+      "react",
+      "react-dom",
+      "@coldsofttech/fovea-code",
+      "@coldsofttech/fovea-email",
+      "@coldsofttech/fovea-excel",
+      "@coldsofttech/fovea-feed",
+      "@coldsofttech/fovea-html",
+      "@coldsofttech/fovea-image",
+      "@coldsofttech/fovea-markdown",
+      "@coldsofttech/fovea-pdf",
+      "@coldsofttech/fovea-powerpoint",
+      "@coldsofttech/fovea-table",
+      "@coldsofttech/fovea-text",
+      "@coldsofttech/fovea-word"
+    ]
+  },
+  {
+    "name": "@coldsofttech/fovea-viewers/core",
+    "path": "packages/fovea-viewers/dist/core/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom"]
+  },
+  {
+    "name": "@coldsofttech/fovea-code",
+    "path": "packages/fovea-code/dist/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-email",
+    "path": "packages/fovea-email/dist/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-excel",
+    "path": "packages/fovea-excel/dist/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-feed",
+    "path": "packages/fovea-feed/dist/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-html",
+    "path": "packages/fovea-html/dist/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-image",
+    "path": "packages/fovea-image/dist/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-markdown",
+    "path": "packages/fovea-markdown/dist/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-pdf",
+    "path": "packages/fovea-pdf/dist/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-powerpoint",
+    "path": "packages/fovea-powerpoint/dist/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-table",
+    "path": "packages/fovea-table/dist/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-text",
+    "path": "packages/fovea-text/dist/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-word",
+    "path": "packages/fovea-word/dist/index.js",
+    "import": "*",
+    "limit": "1 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  }
+]

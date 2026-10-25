@@ -40,6 +40,7 @@ jobs:
           --config p/owasp-top-ten
           --config p/github-actions
           --exclude '*.test.js'
+          --exclude '*.test.jsx'
           --exclude-rule yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag
           --error
           --sarif --output semgrep.sarif

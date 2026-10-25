@@ -2,7 +2,7 @@
 
 ## Our pledge
 
-We pledge to make participation in this community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, appearance, race, religion, or sexual identity and orientation.
+We pledge to make participation in Fovea Viewers a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, appearance, race, religion, or sexual identity and orientation.
 
 ## Expected behavior
 
@@ -17,11 +17,15 @@ We pledge to make participation in this community a harassment-free experience f
 - Publishing others' private information without permission
 - Other conduct that would reasonably be considered inappropriate in a professional setting
 
+## Scope
+
+This code applies to issues, pull requests, discussions and any other space where people take part in this project.
+
 ## Enforcement
 
 Maintainers may remove, edit or reject contributions that violate this code, and may temporarily or permanently ban contributors for behavior they deem inappropriate.
 
-Report violations to the maintainers at `<ADD CONTACT METHOD>`. All reports are reviewed and handled confidentially.
+Report violations privately to the maintainer, [@coldsofttech](https://github.com/coldsofttech), by opening a report from the [Security tab](https://github.com/coldsofttech/FoveaViewers/security/advisories/new) and saying that it is a conduct report. All reports are reviewed and handled confidentially.
 
 ## Attribution
 

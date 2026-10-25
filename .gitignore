@@ -31,3 +31,6 @@ dist/
 coverage/
 
 .temp/
+
+CLAUDE.md
+.claude/

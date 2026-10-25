@@ -2,6 +2,29 @@ name: Feature request
 description: Suggest an idea or improvement
 labels: [enhancement]
 body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      description: Which package is this about?
+      options:
+        - fovea-viewers (detection and loading)
+        - fovea-code
+        - fovea-email
+        - fovea-excel
+        - fovea-feed
+        - fovea-html
+        - fovea-image
+        - fovea-markdown
+        - fovea-pdf
+        - fovea-powerpoint
+        - fovea-table
+        - fovea-text
+        - fovea-word
+        - A new viewer for another file type
+        - Not sure
+    validations:
+      required: true
   - type: textarea
     id: problem
     attributes:
