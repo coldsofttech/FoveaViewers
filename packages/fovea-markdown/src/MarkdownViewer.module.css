@@ -1,0 +1,147 @@
+/* Colours come from --fovea-* custom properties (see the `theme` prop), else the page's own. */
+.root {
+  box-sizing: border-box;
+  height: 100%;
+  overflow: auto;
+  background: var(--fovea-background, Canvas);
+  color: var(--fovea-foreground, CanvasText);
+}
+
+.message {
+  margin: 0;
+  padding: 16px 20px;
+}
+
+/* The Markdown is made into HTML at run time, so its elements are styled from here. */
+.content {
+  padding: 8px 20px 40px;
+  font-size: 14px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+  margin: 1.1em 0 0.4em;
+  line-height: 1.25;
+}
+
+.content h1 {
+  font-size: 1.9em;
+  border-bottom: 1px solid var(--fovea-border, #e0e0e0);
+}
+
+.content h2 {
+  font-size: 1.5em;
+  border-bottom: 1px solid var(--fovea-border, #e0e0e0);
+}
+
+.content h3 {
+  font-size: 1.25em;
+}
+
+.content p,
+.content ul,
+.content ol,
+.content blockquote,
+.content pre,
+.content table {
+  margin: 0 0 0.8em;
+}
+
+.content ul,
+.content ol {
+  padding-left: 1.6em;
+}
+
+.content blockquote {
+  padding: 0 1em;
+  border-left: 3px solid var(--fovea-border, #d1d1d1);
+  color: var(--fovea-muted, #616161);
+}
+
+.content code {
+  padding: 0.1em 0.3em;
+  font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--fovea-code-background, #f5f5f5);
+  border-radius: 3px;
+}
+
+.content pre {
+  padding: 10px 12px;
+  overflow-x: auto;
+  background: var(--fovea-code-background, #f5f5f5);
+  border-radius: 4px;
+}
+
+.content pre code {
+  padding: 0;
+  background: none;
+}
+
+.content table {
+  border-collapse: collapse;
+}
+
+.content th,
+.content td {
+  padding: 4px 10px;
+  border: 1px solid var(--fovea-border, #e0e0e0);
+}
+
+.content th {
+  background: var(--fovea-code-background, #f5f5f5);
+}
+
+.content hr {
+  margin: 1.2em 0;
+  border: 0;
+  border-top: 1px solid var(--fovea-border, #e0e0e0);
+}
+
+.content a[href] {
+  color: var(--fovea-link, LinkText);
+  text-decoration: underline;
+}
+
+.content img {
+  max-width: 100%;
+}
+
+.content [data-image] {
+  color: var(--fovea-muted, GrayText);
+  font-style: italic;
+}
+
+.content mark {
+  color: inherit;
+  background: var(--fovea-hit-background, rgba(255, 196, 0, 0.5));
+  outline: 1px solid var(--fovea-hit-outline, rgba(214, 140, 0, 0.8));
+  border-radius: 2px;
+}
+
+/* Task lists and footnotes come with their own class names. */
+.content :global(.contains-task-list) {
+  padding-left: 0.4em;
+  list-style: none;
+}
+
+.content :global(.task-list-item-checkbox) {
+  margin-right: 0.4em;
+}
+
+.content :global(.footnotes) {
+  font-size: 0.9em;
+  color: var(--fovea-muted, GrayText);
+}
+
+.content :global(.footnotes-sep) {
+  margin: 1.2em 0 0.6em;
+  border: 0;
+  border-top: 1px solid var(--fovea-border, #e0e0e0);
+}

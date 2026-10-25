@@ -1,7 +1,7 @@
 {
   "name": "@coldsofttech/fovea-markdown",
   "version": "0.1.0",
-  "description": "Markdown viewer for React.",
+  "description": "Markdown viewer for React: safe by default, fast on large files, can scroll to and mark a match.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
@@ -14,7 +14,8 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    }
+    },
+    "./style.css": "./dist/style.css"
   },
   "files": [
     "dist"
@@ -38,11 +39,21 @@
   "scripts": {
     "build": "vite build && npm run build:types",
     "build:types": "tsc -p tsconfig.build.json",
-    "check:packages": "publint && attw --pack . --profile esm-only && node ../../scripts/check-no-react.js && node ../../scripts/check-pack.js"
+    "check:packages": "publint && attw --pack . --profile esm-only --exclude-entrypoints ./style.css && node ../../scripts/check-no-react.js && node ../../scripts/check-pack.js"
   },
   "peerDependencies": {
     "@coldsofttech/fovea-viewers": "^0.1.0",
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"
+  },
+  "dependencies": {
+    "dompurify": "^3.4.17",
+    "markdown-it": "^15.0.3",
+    "markdown-it-footnote": "^4.0.0",
+    "markdown-it-task-lists": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.2.0",
+    "@types/markdown-it-footnote": "^3.0.4"
   }
 }

@@ -7,5 +7,6 @@
 
 export { readSource } from './source.js';
 export { useSource } from './useSource.js';
+export { useText } from './useText.js';
 export { useLatest } from './useLatest.js';
 export { themeVars, lightTheme, darkTheme } from './theme.js';

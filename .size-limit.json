@@ -74,7 +74,7 @@
     "name": "@coldsofttech/fovea-markdown",
     "path": "packages/fovea-markdown/dist/index.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "55 kB",
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
   },
   {

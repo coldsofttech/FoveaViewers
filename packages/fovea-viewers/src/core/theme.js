@@ -20,6 +20,8 @@ export const lightTheme = {
   'current-line': '#f5f5f5',
   'hit-background': 'rgba(255, 196, 0, 0.45)',
   'hit-outline': 'rgba(214, 140, 0, 0.8)',
+  link: '#0f6cbd',
+  'code-background': '#f5f5f5',
 };
 
 /** @type {ThemeTokens} */
@@ -32,6 +34,8 @@ export const darkTheme = {
   'current-line': '#2a2d2e',
   'hit-background': 'rgba(234, 92, 0, 0.33)',
   'hit-outline': 'rgba(255, 255, 255, 0.25)',
+  link: '#3794ff',
+  'code-background': '#2d2d2d',
 };
 
 /**

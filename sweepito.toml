@@ -3,6 +3,8 @@ profiles = ["node"]
 risk = "safe"
 
 [clean]
+# Also remove build output and coverage reports, which are not in the safe set by default.
+enable = ["node.dist", "node.coverage"]
 # Exclusions always win over cleanup rules. Keep installed dependencies between commits.
 exclude = ["node_modules/"]
 

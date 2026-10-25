@@ -65,4 +65,6 @@ When a package's public API changes, add a short `[Unreleased]` entry to `CHANGE
 
 ## Cleanup
 
-`sweepito.toml` uses the `node` profile at `safe` risk. `dist/` and `coverage/` are `configurable` in Sweepito, so they are kept unless enabled explicitly.
+`sweepito.toml` uses the `node` profile at `safe` risk and also enables `node.dist` and `node.coverage`, so build output and coverage reports are removed after each commit. `node_modules/` is kept. Rebuild with `npm run build` before using the demo or the package checks.
+
+Sweepito runs from a post-commit hook. Install it with the pre-commit framework (`pre-commit install --hook-type pre-commit --hook-type post-commit`), or without it by running `sweepito hook install`. Use `sweepito scan` to see what would be removed.

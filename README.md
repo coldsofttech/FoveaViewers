@@ -2,24 +2,24 @@
 
 File viewers for React apps. Install only the viewers you need, or let the shared package pick the right one for any file.
 
-> Work in progress. The [text viewer](packages/fovea-text/README.md) is available; the others are being added one at a time.
+> Work in progress. The [text](packages/fovea-text/README.md) and [Markdown](packages/fovea-markdown/README.md) viewers are available; the others are being added one at a time.
 
 ## Viewers
 
-| Package                                                     | Opens                    |
-| ----------------------------------------------------------- | ------------------------ |
-| `@coldsofttech/fovea-code`                                  | Source code              |
-| `@coldsofttech/fovea-email`                                 | Email messages           |
-| `@coldsofttech/fovea-excel`                                 | Excel workbooks          |
-| `@coldsofttech/fovea-feed`                                  | RSS and Atom feeds       |
-| `@coldsofttech/fovea-html`                                  | HTML pages               |
-| `@coldsofttech/fovea-image`                                 | Images                   |
-| `@coldsofttech/fovea-markdown`                              | Markdown                 |
-| `@coldsofttech/fovea-pdf`                                   | PDF files                |
-| `@coldsofttech/fovea-powerpoint`                            | PowerPoint presentations |
-| `@coldsofttech/fovea-table`                                 | CSV and TSV tables       |
-| [`@coldsofttech/fovea-text`](packages/fovea-text/README.md) | Plain text (available)   |
-| `@coldsofttech/fovea-word`                                  | Word documents           |
+| Package                                                             | Opens                    |
+| ------------------------------------------------------------------- | ------------------------ |
+| `@coldsofttech/fovea-code`                                          | Source code              |
+| `@coldsofttech/fovea-email`                                         | Email messages           |
+| `@coldsofttech/fovea-excel`                                         | Excel workbooks          |
+| `@coldsofttech/fovea-feed`                                          | RSS and Atom feeds       |
+| `@coldsofttech/fovea-html`                                          | HTML pages               |
+| `@coldsofttech/fovea-image`                                         | Images                   |
+| [`@coldsofttech/fovea-markdown`](packages/fovea-markdown/README.md) | Markdown (available)     |
+| `@coldsofttech/fovea-pdf`                                           | PDF files                |
+| `@coldsofttech/fovea-powerpoint`                                    | PowerPoint presentations |
+| `@coldsofttech/fovea-table`                                         | CSV and TSV tables       |
+| [`@coldsofttech/fovea-text`](packages/fovea-text/README.md)         | Plain text (available)   |
+| `@coldsofttech/fovea-word`                                          | Word documents           |
 
 `@coldsofttech/fovea-viewers` works out which viewer fits a file and loads it only when needed, so a viewer's libraries are only downloaded by the people who open that kind of file.
 
