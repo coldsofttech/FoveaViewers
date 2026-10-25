@@ -92,13 +92,27 @@ Pass an object to `theme`. Each key becomes a CSS variable named `--fovea-<key>`
 
 ### Open any file with `Viewer`
 
-`Viewer` from `@coldsofttech/fovea-viewers` picks the viewer from the file's name, URL or type, so `.txt` and `.log` files open here automatically.
+`Viewer` from `@coldsofttech/fovea-viewers` picks the viewer from the file's name, URL or type, so `.txt` files open here automatically. A `.log` file can be shown here too, as plain text, but `Viewer` opens it in `@coldsofttech/fovea-code`, which colours it. To keep it plain, ask for this viewer with `type="text"`.
 
 ```jsx
 import { Viewer } from '@coldsofttech/fovea-viewers';
 
 <Viewer source={file} theme="dark" />;
 ```
+
+### Show lines you already have
+
+`LineViewer` is what `TextViewer` shows once it has read a file. Give it the lines yourself, and optionally a `tokens` function that colours a line in pieces. Each piece is `[kind, text]`, drawn in the colour of the CSS variable `--fovea-token-<kind>` (set them with `theme`). The code viewer is built this way.
+
+```jsx
+import { LineViewer } from '@coldsofttech/fovea-text';
+
+const tokens = (text) => (text.startsWith('#') ? [['comment', text]] : null);
+
+<LineViewer lines={lines} tokens={tokens} theme={{ 'token-comment': '#6a9955' }} />;
+```
+
+Pass a stable `tokens` function, for example one from `useCallback`, because the visible lines are drawn again when it changes. `LineViewer` also takes `status`, `error`, `label`, `target`, `lineHeight`, `onReady` and `onError`, with the same meaning as above.
 
 ## Good to know
 
@@ -107,7 +121,7 @@ import { Viewer } from '@coldsofttech/fovea-viewers';
 - **No wrapping:** lines keep their length and a long line scrolls sideways. Tabs and spaces are shown as they are.
 - **Memory:** the whole file is read into memory once, so the largest file you can open depends on the browser.
 - **Copying:** only the lines that are drawn can be selected and copied, so selecting all copies the lines near the view rather than the whole file. Line numbers are never copied.
-- **No highlighting:** this viewer shows plain text. Syntax highlighting for source code will come with `@coldsofttech/fovea-code`.
+- **No highlighting:** this viewer shows plain text. For source code and coloured logs, use `@coldsofttech/fovea-code`.
 - **Binary files:** they are not detected and show as unreadable text.
 
 ## Accessibility

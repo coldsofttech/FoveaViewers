@@ -5,7 +5,16 @@ import '@coldsofttech/fovea-markdown/style.css';
 import '@coldsofttech/fovea-text/style.css';
 
 // The sample files live in public/samples and are loaded by URL.
-const SAMPLES = ['sample.md', 'sample.txt', 'sample.log'];
+const SAMPLES = [
+  'sample.md',
+  'sample.txt',
+  'sample.log',
+  'sample.js',
+  'sample.py',
+  'sample.cpp',
+  'sample.json',
+  'sample.yaml',
+];
 const urlOf = (name) => `${import.meta.env.BASE_URL}samples/${name}`;
 
 function Demo() {

@@ -32,7 +32,7 @@
     "name": "@coldsofttech/fovea-code",
     "path": "packages/fovea-code/dist/index.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "15 kB",
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
   },
   {

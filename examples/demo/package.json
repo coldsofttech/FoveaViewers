@@ -8,6 +8,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@coldsofttech/fovea-code": "*",
     "@coldsofttech/fovea-markdown": "*",
     "@coldsofttech/fovea-text": "*",
     "@coldsofttech/fovea-viewers": "*",

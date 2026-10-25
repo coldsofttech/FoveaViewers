@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace examples/demo",
-    "build": "npm run build -w @coldsofttech/fovea-viewers && npm run build --workspaces --if-present",
+    "build": "npm run build -w @coldsofttech/fovea-viewers && npm run build -w @coldsofttech/fovea-text && npm run build --workspaces --if-present",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

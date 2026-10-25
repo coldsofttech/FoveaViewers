@@ -19,6 +19,11 @@ describe('resolve', () => {
     expect(resolve('text/html; charset=utf-8')).toBe('html');
   });
 
+  it('opens a log in the code viewer, which colours it, unless the text viewer is asked for', () => {
+    expect(resolve('server.log')).toBe('code');
+    expect(resolve('notes.txt')).toBe('text');
+  });
+
   it('returns null for unknown files', () => {
     expect(resolve('archive.zip')).toBeNull();
     expect(resolve('https://example.com/folder.d/file')).toBeNull();

@@ -1,0 +1,18 @@
+# A small configuration file to try the code viewer on.
+name: fovea-viewers-sample
+version: 0.1.0
+enabled: true
+replicas: 3
+
+server:
+  host: localhost
+  ports:
+    - 8080
+    - 8443
+  tags: [viewer, code]
+
+description: |
+  A block of text
+  that keeps its line breaks.
+
+empty: null

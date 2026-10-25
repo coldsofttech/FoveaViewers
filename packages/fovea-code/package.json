@@ -1,7 +1,7 @@
 {
   "name": "@coldsofttech/fovea-code",
   "version": "0.1.0",
-  "description": "Syntax-highlighted source code viewer for React.",
+  "description": "Source code viewer for React with line numbers, VS Code colours and a layout for minified files.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
@@ -41,6 +41,7 @@
     "check:packages": "publint && attw --pack . --profile esm-only && node ../../scripts/check-no-react.js && node ../../scripts/check-pack.js"
   },
   "peerDependencies": {
+    "@coldsofttech/fovea-text": "^0.1.0",
     "@coldsofttech/fovea-viewers": "^0.1.0",
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"

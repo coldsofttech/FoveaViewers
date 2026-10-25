@@ -1,0 +1,17 @@
+{
+  "name": "fovea-viewers-sample",
+  "version": "0.1.0",
+  "private": true,
+  "tags": ["viewer", "code", "react"],
+  "settings": {
+    "theme": "dark",
+    "lineHeight": 20,
+    "ratio": 1.5e-2,
+    "wrap": false,
+    "owner": null
+  },
+  "items": [
+    { "id": 1, "title": "First" },
+    { "id": 2, "title": "Second" }
+  ]
+}

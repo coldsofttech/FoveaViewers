@@ -6,7 +6,15 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 
 export default [
-  { ignores: ['**/node_modules/**', '**/dist/**', '**/coverage/**', '.temp/**'] },
+  {
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/coverage/**',
+      '.temp/**',
+      'examples/demo/public/**',
+    ],
+  },
   js.configs.recommended,
   // Flags DOM XSS sinks such as innerHTML and insertAdjacentHTML, and common unsafe patterns.
   noUnsanitized.configs.recommended,
