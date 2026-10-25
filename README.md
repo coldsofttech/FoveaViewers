@@ -1,4 +1,4 @@
-# react-public-repo-template
+# react-FoveaViewers
 
 A ready-to-use starting point for public React component and hook libraries (React 18 and 19). It comes with community files, issue and pull request templates, automated dependency updates, security checks, testing, and publishing to npm already in place.
 

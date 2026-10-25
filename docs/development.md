@@ -32,7 +32,7 @@ All scripts run from the repository root.
 
 ## Keeping up with the JS template
 
-This repo is created from `js-public-repo-template` and receives no automatic updates. When a fix lands there:
+This repo is created from `js-FoveaViewers` and receives no automatic updates. When a fix lands there:
 
 1. Compare the changed files with this repo and apply the fix by hand.
 2. Re-check the files this template extends: `eslint.config.js`, `vitest.config.js`, `jsconfig.json`, `.github/workflows/ci.yml`, the example package and `examples/demo`.
