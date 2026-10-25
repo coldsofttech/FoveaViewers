@@ -45,7 +45,7 @@ This repo is created from `js-FoveaViewers` and receives no automatic updates. W
 ## Release
 
 1. Set the new `version` in the package's `package.json` and merge it.
-2. Publish a GitHub release tagged `<package name>@<version>`, for example `@scope/example-react-package@1.0.0`.
+2. Publish a GitHub release tagged `<package name>@<version>`, for example `@coldsofttech/fovea-viewers@1.0.0`.
 3. `release.yml` checks the tag against the package version, builds, and publishes to npm with provenance through the `npm` environment. See [repo-setup.md](repo-setup.md) for the one-time npm setup.
 
 ## Cleanup

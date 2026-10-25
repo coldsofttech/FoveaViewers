@@ -1,13 +1,12 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { ExampleComponent } from '@scope/example-react-package';
-import '@scope/example-react-package/style.css';
+import { resolve } from '@coldsofttech/fovea-viewers';
 
 const root = document.getElementById('root');
 if (root) {
   createRoot(root).render(
     <StrictMode>
-      <ExampleComponent name="World" />
+      <p>Fovea Viewers demo. Resolves report.pdf to: {resolve('report.pdf')}</p>
     </StrictMode>,
   );
 }

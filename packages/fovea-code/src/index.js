@@ -1,0 +1,26 @@
+/** Describes which files this viewer can open. */
+export const meta = {
+  id: 'code',
+  mimeTypes: ['application/json', 'text/javascript', 'text/x-python', 'application/x-sh'],
+  extensions: [
+    'json',
+    'js',
+    'jsx',
+    'ts',
+    'tsx',
+    'py',
+    'java',
+    'c',
+    'cpp',
+    'cs',
+    'go',
+    'rs',
+    'rb',
+    'php',
+    'sh',
+    'css',
+    'sql',
+    'yaml',
+    'yml',
+  ],
+};

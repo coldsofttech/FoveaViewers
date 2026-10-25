@@ -29,3 +29,5 @@ desktop.ini
 node_modules/
 dist/
 coverage/
+
+.temp/

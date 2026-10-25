@@ -1,0 +1,48 @@
+{
+  "name": "@coldsofttech/fovea-excel",
+  "version": "0.1.0",
+  "description": "Excel workbook viewer for React.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coldsofttech/FoveaViewers.git",
+    "directory": "packages/fovea-excel"
+  },
+  "homepage": "https://github.com/coldsofttech/FoveaViewers#readme",
+  "bugs": {
+    "url": "https://github.com/coldsofttech/FoveaViewers/issues"
+  },
+  "scripts": {
+    "build": "vite build && npm run build:types",
+    "build:types": "tsc -p tsconfig.build.json",
+    "check:packages": "publint && attw --pack . --profile esm-only && node ../../scripts/check-no-react.js && node ../../scripts/check-pack.js"
+  },
+  "peerDependencies": {
+    "@coldsofttech/fovea-viewers": "^0.1.0",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  }
+}

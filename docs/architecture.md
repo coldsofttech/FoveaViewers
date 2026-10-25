@@ -49,7 +49,6 @@ Each package owns its version in its `package.json`, builds on its own with Vite
 | `audit.yml`             | Weekly, manual, and pull requests that change `package-lock.json` | Runs `npm audit` on production dependencies to catch newly published vulnerabilities.                                        |
 | `security.yml`          | Pull request, push to `main`, weekly, manual                      | Runs Semgrep and uploads SARIF to the Security tab. Not part of the required `ci` check.                                     |
 | `release.yml`           | GitHub release published                                          | Checks the tag matches the package version, builds, then publishes that package to npm.                                      |
-| `init.yml`              | Manual                                                            | One-time placeholder replacement in a repo created from the template. Skipped in the template itself.                        |
 
 CodeQL runs through GitHub's default setup rather than a workflow file.
 
@@ -67,7 +66,7 @@ Repository admins can bypass through a pull request so a solo maintainer is not 
 ## Release flow
 
 1. Bump `version` in the package's `package.json` in a pull request.
-2. After merge, publish a GitHub release tagged `<package name>@<version>`, for example `@scope/example-react-package@1.0.0`.
+2. After merge, publish a GitHub release tagged `<package name>@<version>`, for example `@coldsofttech/fovea-viewers@1.0.0`.
 3. `release.yml` builds and packs that package in one job, then a second job in the `npm` environment publishes it using OpenID Connect. No token is stored, and only the publish job gets the `id-token` permission.
 
 ## Template lifecycle

@@ -1,36 +1,27 @@
-# react-FoveaViewers
+# Fovea Viewers
 
-A ready-to-use starting point for public React component and hook libraries (React 18 and 19). It comes with community files, issue and pull request templates, automated dependency updates, security checks, testing, and publishing to npm already in place.
+File viewers for React apps. Install only the viewers you need, or let the shared package pick the right one for any file.
 
-## What you get
+> Work in progress. The packages are set up, and the viewers are being added one at a time.
 
-- One or more npm packages in a single repository, each built and tested on its own
-- An example React package (component, hook, styles, tests) and a small demo app to copy from
-- Checks that React is never bundled, plus bundle-size limits
-- Automatic checks on every pull request across Node 22, 24 and 26
-- Publishing to npm when you create a GitHub release, with no stored tokens
-- Contribution, conduct, support and security-reporting guidelines
-- Issue forms and a pull request template
-- Automated dependency updates, dependency review and weekly vulnerability checks
-- Secret scanning before every commit
+## Viewers
 
-## Getting started
+| Package                          | Opens                    |
+| -------------------------------- | ------------------------ |
+| `@coldsofttech/fovea-code`       | Source code              |
+| `@coldsofttech/fovea-email`      | Email messages           |
+| `@coldsofttech/fovea-excel`      | Excel workbooks          |
+| `@coldsofttech/fovea-feed`       | RSS and Atom feeds       |
+| `@coldsofttech/fovea-html`       | HTML pages               |
+| `@coldsofttech/fovea-image`      | Images                   |
+| `@coldsofttech/fovea-markdown`   | Markdown                 |
+| `@coldsofttech/fovea-pdf`        | PDF files                |
+| `@coldsofttech/fovea-powerpoint` | PowerPoint presentations |
+| `@coldsofttech/fovea-table`      | CSV and TSV tables       |
+| `@coldsofttech/fovea-text`       | Plain text               |
+| `@coldsofttech/fovea-word`       | Word documents           |
 
-1. Click **Use this template** on GitHub and create your new repository.
-2. Run the **Init** workflow from the Actions tab and merge the pull request it opens. This fills in your owner and repository name. Then delete `.github/workflows/init.yml`.
-3. Rename `packages/example-react-package`, set your npm scope (replace `@scope`) and fill in the details in its `package.json`. Replace the example component, and update `.size-limit.json` and the demo imports.
-4. Add your contact details in `CODE_OF_CONDUCT.md` and replace this description with your own.
-5. Apply the repository protections and set up npm publishing by following the [setup guide](docs/repo-setup.md).
-6. Install the checks that run on each commit: `npm ci && pip install pre-commit && pre-commit install --hook-type pre-commit --hook-type post-commit`.
-
-## Using a package
-
-```jsx
-import { ExampleComponent } from '@scope/example-react-package';
-import '@scope/example-react-package/style.css';
-
-<ExampleComponent name="World" />;
-```
+`@coldsofttech/fovea-viewers` works out which viewer fits a file and loads it only when needed, so a viewer's libraries are only downloaded by the people who open that kind of file.
 
 React and `react-dom` 18 or 19 must be installed in your app.
 

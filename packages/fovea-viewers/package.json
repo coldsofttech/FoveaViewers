@@ -1,0 +1,101 @@
+{
+  "name": "@coldsofttech/fovea-viewers",
+  "version": "0.1.0",
+  "description": "Open any file in React: shared viewer helpers, file-type detection and lazy loading for the Fovea viewers.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coldsofttech/FoveaViewers.git",
+    "directory": "packages/fovea-viewers"
+  },
+  "homepage": "https://github.com/coldsofttech/FoveaViewers#readme",
+  "bugs": {
+    "url": "https://github.com/coldsofttech/FoveaViewers/issues"
+  },
+  "scripts": {
+    "build": "vite build && npm run build:types",
+    "build:types": "tsc -p tsconfig.build.json",
+    "check:packages": "publint && attw --pack . --profile esm-only && node ../../scripts/check-no-react.js && node ../../scripts/check-pack.js"
+  },
+  "peerDependencies": {
+    "@coldsofttech/fovea-code": "^0.1.0",
+    "@coldsofttech/fovea-email": "^0.1.0",
+    "@coldsofttech/fovea-excel": "^0.1.0",
+    "@coldsofttech/fovea-feed": "^0.1.0",
+    "@coldsofttech/fovea-html": "^0.1.0",
+    "@coldsofttech/fovea-image": "^0.1.0",
+    "@coldsofttech/fovea-markdown": "^0.1.0",
+    "@coldsofttech/fovea-pdf": "^0.1.0",
+    "@coldsofttech/fovea-powerpoint": "^0.1.0",
+    "@coldsofttech/fovea-table": "^0.1.0",
+    "@coldsofttech/fovea-text": "^0.1.0",
+    "@coldsofttech/fovea-word": "^0.1.0",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  },
+  "peerDependenciesMeta": {
+    "@coldsofttech/fovea-code": {
+      "optional": true
+    },
+    "@coldsofttech/fovea-email": {
+      "optional": true
+    },
+    "@coldsofttech/fovea-excel": {
+      "optional": true
+    },
+    "@coldsofttech/fovea-feed": {
+      "optional": true
+    },
+    "@coldsofttech/fovea-html": {
+      "optional": true
+    },
+    "@coldsofttech/fovea-image": {
+      "optional": true
+    },
+    "@coldsofttech/fovea-markdown": {
+      "optional": true
+    },
+    "@coldsofttech/fovea-pdf": {
+      "optional": true
+    },
+    "@coldsofttech/fovea-powerpoint": {
+      "optional": true
+    },
+    "@coldsofttech/fovea-table": {
+      "optional": true
+    },
+    "@coldsofttech/fovea-text": {
+      "optional": true
+    },
+    "@coldsofttech/fovea-word": {
+      "optional": true
+    }
+  }
+}
