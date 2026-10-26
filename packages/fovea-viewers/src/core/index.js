@@ -11,4 +11,4 @@ export { useText } from './useText.js';
 export { useLatest } from './useLatest.js';
 export { themeVars, lightTheme, darkTheme } from './theme.js';
 export { clearMarks, markIn } from './mark.js';
-export { bestMatch, isIgnored, squash } from './match.js';
+export { bestMatch, isIgnored, scoreMatch, squash } from './match.js';

@@ -1,0 +1,147 @@
+/* Colours come from --fovea-* custom properties (see the `theme` prop), else the page's own. */
+.root {
+  box-sizing: border-box;
+  height: 100%;
+  overflow: auto;
+  padding: 12px;
+  font-size: 14px;
+  background: var(--fovea-gutter-background, Canvas);
+  color: var(--fovea-foreground, CanvasText);
+}
+
+.message {
+  margin: 0;
+  padding: 8px 4px;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
+}
+
+.logo {
+  max-width: 96px;
+  max-height: 96px;
+  object-fit: contain;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.description,
+.text {
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.facts,
+.categories,
+.attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fact,
+.category {
+  padding: 1px 8px;
+  font-size: 12px;
+  border-radius: 10px;
+  background: var(--fovea-code-background, color-mix(in srgb, currentColor 10%, transparent));
+}
+
+.entries {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
+  border-radius: 6px;
+  background: var(--fovea-background, Canvas);
+}
+
+.entry[aria-current='true'] {
+  border-color: var(--fovea-link, LinkText);
+  outline: 1px solid var(--fovea-link, LinkText);
+}
+
+.entryTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 12px;
+  color: var(--fovea-muted, GrayText);
+}
+
+.picture {
+  max-width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  align-self: flex-start;
+}
+
+.rich {
+  overflow-wrap: anywhere;
+}
+
+.rich img {
+  max-width: 100%;
+  height: auto;
+}
+
+.rich pre {
+  overflow-x: auto;
+}
+
+.attachments {
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+}
+
+.more {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--fovea-muted, GrayText);
+}
+
+.root a[href] {
+  color: var(--fovea-link, LinkText);
+}
+
+.root mark {
+  color: inherit;
+  background: var(--fovea-hit-background, rgba(255, 196, 0, 0.45));
+  outline: 1px solid var(--fovea-hit-outline, rgba(214, 140, 0, 0.8));
+  border-radius: 2px;
+}

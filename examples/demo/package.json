@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@coldsofttech/fovea-code": "*",
+    "@coldsofttech/fovea-feed": "*",
     "@coldsofttech/fovea-html": "*",
     "@coldsofttech/fovea-markdown": "*",
     "@coldsofttech/fovea-text": "*",

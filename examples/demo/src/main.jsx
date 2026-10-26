@@ -1,6 +1,7 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Viewer } from '@coldsofttech/fovea-viewers';
+import '@coldsofttech/fovea-feed/style.css';
 import '@coldsofttech/fovea-html/style.css';
 import '@coldsofttech/fovea-markdown/style.css';
 import '@coldsofttech/fovea-text/style.css';
@@ -16,6 +17,8 @@ const SAMPLES = [
   'sample.json',
   'sample.yaml',
   'sample.html',
+  'sample.rss',
+  'sample.atom',
 ];
 const urlOf = (name) => `${import.meta.env.BASE_URL}samples/${name}`;
 
@@ -26,6 +29,7 @@ function Demo() {
   const [pictures, setPictures] = useState(true);
   const [scripts, setScripts] = useState(false);
   const [links, setLinks] = useState('none');
+  const [rich, setRich] = useState(false);
   const source = upload ?? urlOf(sample);
 
   return (
@@ -75,6 +79,14 @@ function Demo() {
           Run scripts (HTML)
         </label>{' '}
         <label>
+          <input
+            type="checkbox"
+            checked={rich}
+            onChange={(event) => setRich(event.target.checked)}
+          />{' '}
+          Rich text (feeds)
+        </label>{' '}
+        <label>
           Links (HTML){' '}
           <select value={links} onChange={(event) => setLinks(event.target.value)}>
             <option value="none">Do nothing</option>
@@ -90,6 +102,8 @@ function Demo() {
         allowStyles={pictures}
         allowScripts={scripts}
         links={links}
+        richText={rich}
+        pageSize={5}
         label="File preview"
       />
     </main>

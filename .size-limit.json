@@ -53,7 +53,7 @@
     "name": "@coldsofttech/fovea-feed",
     "path": "packages/fovea-feed/dist/index.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "17 kB",
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
   },
   {

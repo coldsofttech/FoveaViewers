@@ -10,6 +10,7 @@ Viewers open files chosen by someone other than the app's developer, so every fi
 - Viewers never run scripts from a file. Embedded scripts, event handlers and active content are removed or not rendered.
 - A viewer makes network requests only for the `source` URL it is given, through the host's `fetcher` when one is provided. Remote resources inside a file (images, stylesheets, fonts) are not loaded unless the host allows it. The HTML viewer works the same way: pictures, styles and fonts need `allowImages` and `allowStyles`.
 - An HTML page is cleaned, given a Content-Security-Policy that blocks everything it could load, and shown in a frame where forms and popups never work. Scripts, links, pictures and styles are each opt-in. With scripts on, the page runs in a frame of its own that cannot reach the host page, which also means the viewer cannot mark words in it.
+- A feed's entries are shown as plain text. `richText` shows their HTML cleaned with DOMPurify, and pictures need `allowImages`. Feed text is read with the browser's XML parser, which does not load external files.
 - Viewer styles are scoped, so a file cannot restyle the host page.
 - Errors go to `onError`. A malformed file must not crash the host app.
 - Prefer `textContent` or DOM APIs over `innerHTML`. If HTML is unavoidable, sanitize it first with DOMPurify and keep the `no-unsanitized` lint rule enabled.
