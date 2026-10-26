@@ -31,3 +31,20 @@ describe('markIn', () => {
     expect(root.querySelector('mark')).toBeNull();
   });
 });
+
+describe('markIn options', () => {
+  it('does not look in the elements `skip` names', () => {
+    const root = block('<p>needle in view</p><script>needle in code</script>');
+    markIn(root, { matched: 'needle' }, { skip: 'script' });
+    expect(root.querySelector('p mark')).not.toBeNull();
+    expect(root.querySelector('script mark')).toBeNull();
+    const hidden = block('<style>needle</style><p>nothing</p>');
+    expect(markIn(hidden, { matched: 'needle' }, { skip: 'style' })).toBeNull();
+  });
+
+  it('gives the marks the inline style asked for', () => {
+    const root = block('<p>find me</p>');
+    const mark = markIn(root, { matched: 'find' }, { style: 'color: red;' });
+    expect(mark?.style.color).toBe('red');
+  });
+});

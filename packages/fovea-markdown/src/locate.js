@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection -- every index here is a number counted from the length of the array it reads. */
-import { bestMatch, isIgnored, squash } from './match.js';
+import { bestMatch, isIgnored, squash } from '@coldsofttech/fovea-viewers/core';
 
 /**
  * Finds words in the source of a Markdown file. A search runs on the words without the markup, so

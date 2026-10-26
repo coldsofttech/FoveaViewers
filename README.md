@@ -2,7 +2,7 @@
 
 File viewers for React apps. Install only the viewers you need, or let the shared package pick the right one for any file.
 
-> Work in progress. The [text](packages/fovea-text/README.md), [Markdown](packages/fovea-markdown/README.md) and [code](packages/fovea-code/README.md) viewers are available; the others are being added one at a time.
+> Work in progress. The [text](packages/fovea-text/README.md), [Markdown](packages/fovea-markdown/README.md), [code](packages/fovea-code/README.md) and [HTML](packages/fovea-html/README.md) viewers are available; the others are being added one at a time.
 
 ## Viewers
 
@@ -12,7 +12,7 @@ File viewers for React apps. Install only the viewers you need, or let the share
 | `@coldsofttech/fovea-email`                                         | Email messages                   |
 | `@coldsofttech/fovea-excel`                                         | Excel workbooks                  |
 | `@coldsofttech/fovea-feed`                                          | RSS and Atom feeds               |
-| `@coldsofttech/fovea-html`                                          | HTML pages                       |
+| [`@coldsofttech/fovea-html`](packages/fovea-html/README.md)         | HTML pages (available)           |
 | `@coldsofttech/fovea-image`                                         | Images                           |
 | [`@coldsofttech/fovea-markdown`](packages/fovea-markdown/README.md) | Markdown (available)             |
 | `@coldsofttech/fovea-pdf`                                           | PDF files                        |

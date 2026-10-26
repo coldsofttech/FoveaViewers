@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Fovea Viewers sample page</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        line-height: 1.6;
+        color: #1f2933;
+        background: #f5f7fa;
+      }
+      header {
+        padding: 32px 24px;
+        color: #fff;
+        background: linear-gradient(135deg, #0f6cbd, #4cc2ff);
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      h1,
+      h2 {
+        margin: 0 0 8px;
+      }
+      section {
+        margin-bottom: 24px;
+        padding: 16px 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgb(0 0 0 / 15%);
+      }
+      table {
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 4px 12px;
+        border: 1px solid #d1d5db;
+      }
+      .banner {
+        padding: 8px 12px;
+        color: #7a1f1f;
+        background: #fde8e8;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Fovea Viewers sample page</h1>
+      <p>A web page to try the HTML viewer on.</p>
+    </header>
+    <main>
+      <section>
+        <h2>Styles and layout</h2>
+        <p>
+          This page has its own <strong>stylesheet</strong>, a gradient header and cards. By default only the styles in this file apply, as nothing is loaded from the web. A table:
+        </p>
+        <table>
+          <tr>
+            <th>Option</th>
+            <th>Default</th>
+            <th>Turned on</th>
+          </tr>
+          <tr>
+            <td>Pictures, styles, fonts</td>
+            <td>Only what is in the file</td>
+            <td>Loaded from the web</td>
+          </tr>
+          <tr>
+            <td>Links</td>
+            <td>Do nothing</td>
+            <td>Open in the viewer or a new window</td>
+          </tr>
+          <tr>
+            <td>Scripts</td>
+            <td>Never run</td>
+            <td>Run, in a frame of their own</td>
+          </tr>
+        </table>
+      </section>
+
+      <section>
+        <h2>Pictures</h2>
+        <p>An image embedded in the page, which needs no network:</p>
+        <img
+          alt="A blue circle with a white dot"
+          width="96"
+          height="96"
+          src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Ccircle cx='48' cy='48' r='44' fill='%230f6cbd'/%3E%3Ccircle cx='48' cy='48' r='14' fill='white'/%3E%3C/svg%3E"
+        />
+        <p>
+          An image from the web. It only appears when pictures are allowed:
+        </p>
+        <img
+          alt="The coldsofttech avatar on GitHub"
+          width="96"
+          height="96"
+          src="https://github.com/coldsofttech.png?size=96"
+        />
+      </section>
+
+      <section>
+        <h2>Links</h2>
+        <ul>
+          <li>
+            <a href="https://github.com/coldsofttech/FoveaViewers">Fovea Viewers on GitHub</a>
+            does nothing, opens inside the viewer or opens in a new window, depending on the links setting.
+          </li>
+          <li><a href="#scripts">Jump to the next section</a> scrolls inside the page.</li>
+          <li><a href="javascript:alert('never')">A link that runs code</a> does nothing.</li>
+        </ul>
+      </section>
+
+      <section id="scripts">
+        <h2>Scripts and forms</h2>
+        <p>
+          The script below adds a red banner. If you can see the banner, scripts ran. That only
+          happens when scripts are turned on.
+        </p>
+        <div id="out"></div>
+        <script>
+          document.getElementById('out').innerHTML =
+            '<p class="banner">A script ran, because scripts are turned on.</p>';
+        </script>
+        <form action="https://example.com/submit" method="post">
+          <label>Name <input name="name" value="Ada" /></label>
+          <button type="submit">Send</button>
+        </form>
+        <p>The form cannot be submitted.</p>
+      </section>
+    </main>
+  </body>
+</html>

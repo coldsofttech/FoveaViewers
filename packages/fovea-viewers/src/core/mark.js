@@ -17,18 +17,24 @@ export function clearMarks(root) {
 }
 
 /**
- * Marks `matched` in the text a block shows, ignoring spaces, case and the formatting that splits
- * the words across elements. With the words more than once in the block, the one after `before`
- * and before `after` wins.
+ * Marks `matched` in the text an element shows, ignoring spaces, case and the formatting that
+ * splits the words across elements. With the words more than once, the one after `before` and
+ * before `after` wins.
  *
  * @param {HTMLElement} root
  * @param {{ before?: string, matched: string, after?: string }} match
- * @returns {HTMLElement | null} The first mark, or null when the words are not in what is shown
- *   (they can be in the Markdown's link addresses, say).
+ * @param {{ skip?: string, style?: string }} [options] `skip`: a selector for elements whose
+ *   text is not looked in (scripts, styles...). `style`: inline CSS for the marks, for a document
+ *   that has none of the page's own styles, such as the inside of a frame.
+ * @returns {HTMLElement | null} The first mark, or null when the words are not in what is shown.
  */
-export function markIn(root, match) {
+export function markIn(root, match, options = {}) {
   const doc = root.ownerDocument;
-  const walker = doc.createTreeWalker(root, 4 /* NodeFilter.SHOW_TEXT */);
+  const { skip, style } = options;
+  const walker = doc.createTreeWalker(root, 4 /* NodeFilter.SHOW_TEXT */, {
+    acceptNode: (node) =>
+      skip && node.parentElement?.closest(skip) ? 2 /* FILTER_REJECT */ : 1 /* FILTER_ACCEPT */,
+  });
   /** @type {Text[]} */
   const nodes = [];
   let hay = '';
@@ -68,6 +74,7 @@ export function markIn(root, match) {
     range.setEnd(node, to);
     const mark = doc.createElement('mark');
     mark.setAttribute(HIT, '');
+    if (style) mark.style.cssText = style;
     range.surroundContents(mark);
     firstMark = mark;
   }

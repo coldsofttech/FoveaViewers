@@ -1,6 +1,7 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Viewer } from '@coldsofttech/fovea-viewers';
+import '@coldsofttech/fovea-html/style.css';
 import '@coldsofttech/fovea-markdown/style.css';
 import '@coldsofttech/fovea-text/style.css';
 
@@ -14,6 +15,7 @@ const SAMPLES = [
   'sample.cpp',
   'sample.json',
   'sample.yaml',
+  'sample.html',
 ];
 const urlOf = (name) => `${import.meta.env.BASE_URL}samples/${name}`;
 
@@ -22,6 +24,8 @@ function Demo() {
   const [upload, setUpload] = useState(null);
   const [theme, setTheme] = useState('light');
   const [pictures, setPictures] = useState(true);
+  const [scripts, setScripts] = useState(false);
+  const [links, setLinks] = useState('none');
   const source = upload ?? urlOf(sample);
 
   return (
@@ -61,9 +65,33 @@ function Demo() {
             onChange={(event) => setPictures(event.target.checked)}
           />{' '}
           Show pictures
+        </label>{' '}
+        <label>
+          <input
+            type="checkbox"
+            checked={scripts}
+            onChange={(event) => setScripts(event.target.checked)}
+          />{' '}
+          Run scripts (HTML)
+        </label>{' '}
+        <label>
+          Links (HTML){' '}
+          <select value={links} onChange={(event) => setLinks(event.target.value)}>
+            <option value="none">Do nothing</option>
+            <option value="viewer">Open in the viewer</option>
+            <option value="window">Open in a new window</option>
+          </select>
         </label>
       </form>
-      <Viewer source={source} theme={theme} allowImages={pictures} label="File preview" />
+      <Viewer
+        source={source}
+        theme={theme}
+        allowImages={pictures}
+        allowStyles={pictures}
+        allowScripts={scripts}
+        links={links}
+        label="File preview"
+      />
     </main>
   );
 }

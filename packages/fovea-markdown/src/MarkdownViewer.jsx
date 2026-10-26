@@ -1,8 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { themeVars, useLatest, useText } from '@coldsofttech/fovea-viewers/core';
+import {
+  clearMarks,
+  markIn,
+  themeVars,
+  useLatest,
+  useText,
+} from '@coldsofttech/fovea-viewers/core';
 import { anchorsOf, blockAt, blocksOf, createMarkdown } from './blocks.js';
 import { Group } from './Group.jsx';
-import { clearMarks, markIn } from './mark.js';
 import styles from './MarkdownViewer.module.css';
 
 /** Blocks are drawn (and dropped) a group at a time: a file of any length is a list of groups. */

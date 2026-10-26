@@ -1,3 +1,5 @@
+export { HtmlViewer } from './HtmlViewer.jsx';
+
 /** Describes which files this viewer can open. */
 export const meta = {
   id: 'html',
