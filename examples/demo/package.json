@@ -11,6 +11,7 @@
     "@coldsofttech/fovea-code": "*",
     "@coldsofttech/fovea-feed": "*",
     "@coldsofttech/fovea-html": "*",
+    "@coldsofttech/fovea-image": "*",
     "@coldsofttech/fovea-markdown": "*",
     "@coldsofttech/fovea-table": "*",
     "@coldsofttech/fovea-text": "*",

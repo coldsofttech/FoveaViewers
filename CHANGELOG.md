@@ -16,3 +16,4 @@ All notable changes to this project are documented here. The format follows [Kee
 - Feed viewer (`@coldsofttech/fovea-feed`) for RSS and Atom feeds, safe by default, with rich text, pictures and link handling switched on by choice, paging and find-and-mark.
 - Table viewer (`@coldsofttech/fovea-table`) for CSV and TSV files (with a delimiter of your choice), with sortable headers that stay in view, a header-row choice, any delimiter and paging.
 - `Grid` in `@coldsofttech/fovea-viewers/core`, a table with sorting and paging that viewers share.
+- Image viewer (`@coldsofttech/fovea-image`) for PNG, JPEG, GIF, WebP, AVIF, BMP and SVG, with fit modes, zoom, drag and keyboard panning, rotation and an info bar.

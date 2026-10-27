@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240">
+  <rect width="400" height="240" fill="#f5f5f5"/>
+  <circle cx="120" cy="120" r="70" fill="#0f6cbd"/>
+  <rect x="220" y="60" width="130" height="120" rx="12" fill="#ea5c00"/>
+  <text x="200" y="215" font-family="sans-serif" font-size="18" text-anchor="middle" fill="#242424">Fovea image viewer</text>
+</svg>

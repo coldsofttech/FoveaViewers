@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
@@ -23,6 +24,12 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    // Tests use the shared package's source, so they do not need it built first.
+    alias: {
+      '@coldsofttech/fovea-viewers/core': fileURLToPath(
+        new URL('../fovea-viewers/src/core/index.js', import.meta.url),
+      ),
+    },
     setupFiles: ['../../vitest.setup.js'],
   },
 });

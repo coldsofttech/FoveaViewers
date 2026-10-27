@@ -1,3 +1,5 @@
+export { ImageViewer } from './ImageViewer.jsx';
+
 /** Describes which files this viewer can open. */
 export const meta = {
   id: 'image',
