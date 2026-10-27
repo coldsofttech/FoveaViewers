@@ -81,8 +81,8 @@
     "name": "@coldsofttech/fovea-pdf",
     "path": "packages/fovea-pdf/dist/index.js",
     "import": "*",
-    "limit": "1 kB",
-    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+    "limit": "14 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers", "pdfjs-dist"]
   },
   {
     "name": "@coldsofttech/fovea-powerpoint",

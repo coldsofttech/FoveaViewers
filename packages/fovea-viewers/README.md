@@ -2,7 +2,7 @@
 
 Finds the right Fovea viewer for a file and loads it when needed. Part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers).
 
-> Work in progress. The text, Markdown, code, HTML, feed, table and image viewers are available so far.
+> Work in progress. The text, Markdown, code, HTML, feed, table, image and PDF viewers are available so far.
 
 ## Install
 

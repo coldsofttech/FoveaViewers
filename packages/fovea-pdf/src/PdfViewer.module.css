@@ -1,0 +1,156 @@
+/* Colours come from --fovea-* custom properties (see the `theme` prop), else the page's own. */
+.root {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-size: 14px;
+  background: var(--fovea-background, Canvas);
+  color: var(--fovea-foreground, CanvasText);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
+}
+
+.pageForm {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.pageInput {
+  width: 5ch;
+}
+
+.zoom {
+  min-width: 4ch;
+  text-align: center;
+  color: var(--fovea-muted, inherit);
+  font-variant-numeric: tabular-nums;
+}
+
+.message {
+  margin: 0;
+  padding: 8px 12px;
+}
+
+.password {
+  padding: 12px;
+}
+
+.workspace {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.sidebar {
+  flex: none;
+  width: 240px;
+  overflow: auto;
+  padding: 8px;
+  border-right: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
+}
+
+.outline {
+  margin: 0;
+  padding-left: 14px;
+  list-style: none;
+}
+
+.sidebar > .outline {
+  padding-left: 0;
+}
+
+.outlineButton {
+  all: unset;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 3px 4px;
+  cursor: pointer;
+  color: var(--fovea-link, LinkText);
+}
+
+.outlineButton:hover {
+  background: var(--fovea-current-line, color-mix(in srgb, currentColor 8%, transparent));
+}
+
+.outlineButton:focus-visible {
+  outline: 2px solid var(--fovea-link, Highlight);
+  outline-offset: -2px;
+}
+
+.outlineText {
+  display: block;
+  padding: 3px 4px;
+}
+
+.scroller {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  background: var(--fovea-gutter-background, Canvas);
+}
+
+.scroller:focus-visible {
+  outline: 2px solid var(--fovea-link, Highlight);
+  outline-offset: -2px;
+}
+
+.pages {
+  position: relative;
+}
+
+.slot {
+  position: absolute;
+}
+
+/* A page is paper: white, whatever the theme around it. */
+.page {
+  position: relative;
+  background: #fff;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 35%);
+}
+
+.canvas {
+  display: block;
+}
+
+/* The text sits over the picture, invisible, so it can be selected and marked. */
+.text {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  line-height: 1;
+  text-align: initial;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+}
+
+.text :is(span, br) {
+  position: absolute;
+  color: transparent;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+}
+
+.text ::selection {
+  background: var(--fovea-hit-background, rgb(0 100 255 / 30%));
+}
+
+.text mark {
+  border-radius: 2px;
+  background: var(--fovea-hit-background, rgba(255, 196, 0, 0.45));
+  outline: 1px solid var(--fovea-hit-outline, rgba(214, 140, 0, 0.8));
+  color: transparent;
+}

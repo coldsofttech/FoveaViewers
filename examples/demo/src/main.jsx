@@ -5,6 +5,7 @@ import '@coldsofttech/fovea-feed/style.css';
 import '@coldsofttech/fovea-html/style.css';
 import '@coldsofttech/fovea-image/style.css';
 import '@coldsofttech/fovea-markdown/style.css';
+import '@coldsofttech/fovea-pdf/style.css';
 import '@coldsofttech/fovea-table/style.css';
 import '@coldsofttech/fovea-text/style.css';
 
@@ -25,6 +26,7 @@ const SAMPLES = [
   'sample.tsv',
   'sample.png',
   'sample.svg',
+  'sample.pdf',
 ];
 const urlOf = (name) => `${import.meta.env.BASE_URL}samples/${name}`;
 

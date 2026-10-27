@@ -14,6 +14,7 @@
     "@coldsofttech/fovea-image": "*",
     "@coldsofttech/fovea-markdown": "*",
     "@coldsofttech/fovea-table": "*",
+    "@coldsofttech/fovea-pdf": "*",
     "@coldsofttech/fovea-text": "*",
     "@coldsofttech/fovea-viewers": "*",
     "react": "^19.1.0",

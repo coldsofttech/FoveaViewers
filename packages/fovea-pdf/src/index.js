@@ -1,3 +1,5 @@
+export { PdfViewer } from './PdfViewer.jsx';
+
 /** Describes which files this viewer can open. */
 export const meta = {
   id: 'pdf',
