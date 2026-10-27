@@ -12,3 +12,4 @@ export { useLatest } from './useLatest.js';
 export { themeVars, lightTheme, darkTheme } from './theme.js';
 export { clearMarks, markIn } from './mark.js';
 export { bestMatch, isIgnored, scoreMatch, squash } from './match.js';
+export { Grid, compareCells } from './Grid.jsx';

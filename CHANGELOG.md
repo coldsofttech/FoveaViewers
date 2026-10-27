@@ -14,3 +14,5 @@ All notable changes to this project are documented here. The format follows [Kee
 - `LineViewer` in `@coldsofttech/fovea-text`, which shows lines you give it with optional colours.
 - HTML viewer (`@coldsofttech/fovea-html`) that is safe by default, with scripts, links, pictures and styles each switched on by choice, and find-and-mark.
 - Feed viewer (`@coldsofttech/fovea-feed`) for RSS and Atom feeds, safe by default, with rich text, pictures and link handling switched on by choice, paging and find-and-mark.
+- Table viewer (`@coldsofttech/fovea-table`) for CSV and TSV files (with a delimiter of your choice), with sortable headers that stay in view, a header-row choice, any delimiter and paging.
+- `Grid` in `@coldsofttech/fovea-viewers/core`, a table with sorting and paging that viewers share.

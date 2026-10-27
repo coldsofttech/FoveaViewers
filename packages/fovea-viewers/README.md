@@ -2,7 +2,7 @@
 
 Finds the right Fovea viewer for a file and loads it when needed. Part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers).
 
-> Work in progress. The text, Markdown, code, HTML and feed viewers are available so far.
+> Work in progress. The text, Markdown, code, HTML, feed and table viewers are available so far.
 
 ## Install
 
@@ -27,7 +27,7 @@ import '@coldsofttech/fovea-text/style.css';
 
 - `resolve(fileOrMimeOrName)` returns the viewer id for a file, MIME type, file name or URL, or `null`.
 - `load(id)` loads a viewer package on demand.
-- `@coldsofttech/fovea-viewers/core` provides the shared code the viewers use to read files and apply themes.
+- `@coldsofttech/fovea-viewers/core` provides the shared code the viewers use to read files and apply themes. It also exports `Grid`, an unstyled table with sortable headers and paging that the table viewer is built on (you pass `classNames` to style it), and `compareCells`, the ordering it sorts by.
 
 ## License
 

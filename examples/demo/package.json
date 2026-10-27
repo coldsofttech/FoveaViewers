@@ -12,6 +12,7 @@
     "@coldsofttech/fovea-feed": "*",
     "@coldsofttech/fovea-html": "*",
     "@coldsofttech/fovea-markdown": "*",
+    "@coldsofttech/fovea-table": "*",
     "@coldsofttech/fovea-text": "*",
     "@coldsofttech/fovea-viewers": "*",
     "react": "^19.1.0",

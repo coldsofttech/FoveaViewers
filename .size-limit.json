@@ -25,7 +25,7 @@
     "name": "@coldsofttech/fovea-viewers/core",
     "path": "packages/fovea-viewers/dist/core/index.js",
     "import": "*",
-    "limit": "2 kB",
+    "limit": "4 kB",
     "ignore": ["react", "react-dom"]
   },
   {
@@ -95,7 +95,7 @@
     "name": "@coldsofttech/fovea-table",
     "path": "packages/fovea-table/dist/index.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "3 kB",
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
   },
   {

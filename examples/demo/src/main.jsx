@@ -4,6 +4,7 @@ import { Viewer } from '@coldsofttech/fovea-viewers';
 import '@coldsofttech/fovea-feed/style.css';
 import '@coldsofttech/fovea-html/style.css';
 import '@coldsofttech/fovea-markdown/style.css';
+import '@coldsofttech/fovea-table/style.css';
 import '@coldsofttech/fovea-text/style.css';
 
 // The sample files live in public/samples and are loaded by URL.
@@ -19,6 +20,8 @@ const SAMPLES = [
   'sample.html',
   'sample.rss',
   'sample.atom',
+  'sample.csv',
+  'sample.tsv',
 ];
 const urlOf = (name) => `${import.meta.env.BASE_URL}samples/${name}`;
 
