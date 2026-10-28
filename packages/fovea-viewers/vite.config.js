@@ -11,8 +11,9 @@ export default defineConfig({
     sourcemap: true,
     cssCodeSplit: false,
     rollupOptions: {
-      // React and the viewer packages are peer dependencies and must never be bundled.
-      external: [/^react($|\/)/, /^react-dom($|\/)/, /^@coldsofttech\/fovea-/],
+      // React and the viewer packages are peer dependencies and must never be bundled. DOMPurify is
+      // a dependency, left for the app's bundler.
+      external: [/^react($|\/)/, /^react-dom($|\/)/, /^@coldsofttech\/fovea-/, /^dompurify($|\/)/],
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',
