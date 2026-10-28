@@ -109,7 +109,7 @@
     "name": "@coldsofttech/fovea-word",
     "path": "packages/fovea-word/dist/index.js",
     "import": "*",
-    "limit": "1 kB",
-    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+    "limit": "2 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers", "mammoth"]
   }
 ]

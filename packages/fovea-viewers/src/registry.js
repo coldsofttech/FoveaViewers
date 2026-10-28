@@ -160,8 +160,11 @@ export const registry = [
   },
   {
     id: 'word',
-    mimeTypes: [`${OOXML}.wordprocessingml.document`],
-    extensions: ['docx'],
+    mimeTypes: [
+      `${OOXML}.wordprocessingml.document`,
+      'application/vnd.ms-word.document.macroEnabled.12',
+    ],
+    extensions: ['docx', 'docm'],
     load: () => import('@coldsofttech/fovea-word'),
   },
 ];

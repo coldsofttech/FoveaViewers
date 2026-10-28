@@ -20,5 +20,6 @@ All notable changes to this project are documented here. The format follows [Kee
 - PDF viewer (`@coldsofttech/fovea-pdf`) with pages drawn as they come into view, selectable text, zoom and fit, turning, page numbers, an outline, password-protected files and find-and-mark.
 - Email viewer (`@coldsofttech/fovea-email`) for `.eml` messages, with sender, recipients, date, a plain-text option, attachments, embedded pictures and raw headers. Pictures and styles from the web stay off unless you switch them on.
 - Excel viewer (`@coldsofttech/fovea-excel`) for `.xlsx` and `.xlsm` workbooks, with sheet tabs, cell styles, merged cells, formulas on request, paging and find-and-mark.
+- Word viewer (`@coldsofttech/fovea-word`) for `.docx` and `.docm` documents, safe by default, with links on request, a report of what could not be shown, and find-and-mark.
 - `HtmlFrame` in `@coldsofttech/fovea-viewers/core`, the safe page frame that the HTML and email viewers share.
 - `Grid` in `@coldsofttech/fovea-viewers/core` can now style cells, merge them, set column widths and bring a row into view.

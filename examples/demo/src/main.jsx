@@ -10,6 +10,7 @@ import '@coldsofttech/fovea-markdown/style.css';
 import '@coldsofttech/fovea-pdf/style.css';
 import '@coldsofttech/fovea-table/style.css';
 import '@coldsofttech/fovea-text/style.css';
+import '@coldsofttech/fovea-word/style.css';
 
 // The sample files live in public/samples and are loaded by URL.
 const SAMPLES = [
@@ -31,6 +32,7 @@ const SAMPLES = [
   'sample.pdf',
   'sample.eml',
   'sample.xlsx',
+  'sample.docx',
 ];
 const urlOf = (name) => `${import.meta.env.BASE_URL}samples/${name}`;
 

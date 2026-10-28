@@ -19,6 +19,7 @@
     "@coldsofttech/fovea-pdf": "*",
     "@coldsofttech/fovea-text": "*",
     "@coldsofttech/fovea-viewers": "*",
+    "@coldsofttech/fovea-word": "*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
