@@ -8,6 +8,7 @@ import '@coldsofttech/fovea-html/style.css';
 import '@coldsofttech/fovea-image/style.css';
 import '@coldsofttech/fovea-markdown/style.css';
 import '@coldsofttech/fovea-pdf/style.css';
+import '@coldsofttech/fovea-powerpoint/style.css';
 import '@coldsofttech/fovea-table/style.css';
 import '@coldsofttech/fovea-text/style.css';
 import '@coldsofttech/fovea-word/style.css';
@@ -33,6 +34,7 @@ const SAMPLES = [
   'sample.eml',
   'sample.xlsx',
   'sample.docx',
+  'sample.pptx',
 ];
 const urlOf = (name) => `${import.meta.env.BASE_URL}samples/${name}`;
 

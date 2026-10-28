@@ -88,8 +88,8 @@
     "name": "@coldsofttech/fovea-powerpoint",
     "path": "packages/fovea-powerpoint/dist/index.js",
     "import": "*",
-    "limit": "1 kB",
-    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+    "limit": "6 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers", "jszip"]
   },
   {
     "name": "@coldsofttech/fovea-table",

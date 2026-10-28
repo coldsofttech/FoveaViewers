@@ -17,6 +17,7 @@
     "@coldsofttech/fovea-markdown": "*",
     "@coldsofttech/fovea-table": "*",
     "@coldsofttech/fovea-pdf": "*",
+    "@coldsofttech/fovea-powerpoint": "*",
     "@coldsofttech/fovea-text": "*",
     "@coldsofttech/fovea-viewers": "*",
     "@coldsofttech/fovea-word": "*",

@@ -142,8 +142,11 @@ export const registry = [
   },
   {
     id: 'powerpoint',
-    mimeTypes: [`${OOXML}.presentationml.presentation`],
-    extensions: ['pptx'],
+    mimeTypes: [
+      `${OOXML}.presentationml.presentation`,
+      'application/vnd.ms-powerpoint.presentation.macroEnabled.12',
+    ],
+    extensions: ['pptx', 'pptm'],
     load: () => import('@coldsofttech/fovea-powerpoint'),
   },
   {
