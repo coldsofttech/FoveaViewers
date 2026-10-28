@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-28
+
 ### Added
 
 - Package setup for the Fovea viewers and the shared `@coldsofttech/fovea-viewers` package, which picks and loads the right viewer for a file.

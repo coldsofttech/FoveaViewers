@@ -5,8 +5,6 @@
 
 File viewers for React apps. Show a text file, a PDF, an Excel workbook, an email, a Word document, a PowerPoint deck and more, right inside your page, without sending the file to anyone. Install only the viewers you need, or let the shared package pick the right one for any file.
 
-> Work in progress. All twelve viewers below are available.
-
 ## Why Fovea Viewers
 
 - **One way to open anything.** Give a viewer a URL, a `File` or `Blob`, or raw bytes. Every viewer takes the same basic props, theme and error handling.

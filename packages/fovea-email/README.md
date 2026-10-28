@@ -58,6 +58,12 @@ The viewer fills the height of its parent, so give the parent a height.
 
 Nothing that reaches out. The message is cleaned and shown in a locked frame, so it cannot load pictures, styles or fonts from the web, run scripts or tell the sender it was opened. This is how tracking pixels are stopped. Pictures that are part of the message itself still show.
 
+## Good to know
+
+- Only `.eml` files are supported, not Outlook `.msg` files.
+- Attachments are listed and saved as they are. Pictures embedded in the message are shown in the message and are not listed.
+- Remote pictures, styles and fonts stay blocked unless you set `allowImages` or `allowStyles`.
+
 ## License
 
 MIT
