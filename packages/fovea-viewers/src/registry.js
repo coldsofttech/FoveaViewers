@@ -98,8 +98,8 @@ export const registry = [
   },
   {
     id: 'excel',
-    mimeTypes: [`${OOXML}.spreadsheetml.sheet`, 'application/vnd.ms-excel'],
-    extensions: ['xlsx', 'xls'],
+    mimeTypes: [`${OOXML}.spreadsheetml.sheet`, 'application/vnd.ms-excel.sheet.macroEnabled.12'],
+    extensions: ['xlsx', 'xlsm'],
     load: () => import('@coldsofttech/fovea-excel'),
   },
   {

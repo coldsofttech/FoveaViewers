@@ -2,6 +2,7 @@ import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Viewer } from '@coldsofttech/fovea-viewers';
 import '@coldsofttech/fovea-email/style.css';
+import '@coldsofttech/fovea-excel/style.css';
 import '@coldsofttech/fovea-feed/style.css';
 import '@coldsofttech/fovea-html/style.css';
 import '@coldsofttech/fovea-image/style.css';
@@ -29,6 +30,7 @@ const SAMPLES = [
   'sample.svg',
   'sample.pdf',
   'sample.eml',
+  'sample.xlsx',
 ];
 const urlOf = (name) => `${import.meta.env.BASE_URL}samples/${name}`;
 
@@ -40,6 +42,7 @@ function Demo() {
   const [scripts, setScripts] = useState(false);
   const [links, setLinks] = useState('none');
   const [rich, setRich] = useState(false);
+  const [formulas, setFormulas] = useState(false);
   const source = upload ?? urlOf(sample);
 
   return (
@@ -97,6 +100,14 @@ function Demo() {
           Rich text (feeds)
         </label>{' '}
         <label>
+          <input
+            type="checkbox"
+            checked={formulas}
+            onChange={(event) => setFormulas(event.target.checked)}
+          />{' '}
+          Formulas (Excel)
+        </label>{' '}
+        <label>
           Links (HTML){' '}
           <select value={links} onChange={(event) => setLinks(event.target.value)}>
             <option value="none">Do nothing</option>
@@ -113,6 +124,7 @@ function Demo() {
         allowScripts={scripts}
         links={links}
         richText={rich}
+        showFormulas={formulas}
         pageSize={5}
         label="File preview"
       />

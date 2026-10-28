@@ -18,6 +18,16 @@ import { useMemo, useState } from 'react';
  */
 
 /**
+ * @typedef {object} GridCell
+ * @property {import('react').CSSProperties} [style] Styles for the cell.
+ * @property {number} [colSpan] How many columns the cell covers.
+ * @property {number} [rowSpan] How many rows the cell covers. Counted in the order the rows are
+ *   shown, so a grid with spans must not be sortable.
+ * @property {number} [coveredBy] The row of the cell that covers this one. This cell is left out
+ *   while that row is shown, so a merged cell is drawn once.
+ */
+
+/**
  * @typedef {object} GridProps
  * @property {string[]} columns The header of each column.
  * @property {string[][]} rows The body, one array of cells per row.
@@ -25,6 +35,11 @@ import { useMemo, useState } from 'react';
  * @property {boolean} [sortable] Let a header be pressed to sort by its column. Defaults to true.
  * @property {number} [pageSize] How many rows are shown at once. Defaults to 100.
  * @property {string} [label] The accessible name of the table. Defaults to `Table`.
+ * @property {(row: number, column: number) => GridCell | undefined} [cellProps] Styles and spans
+ *   for a body cell. `row` is the row's place in `rows`, whatever order it is shown in.
+ * @property {(string | undefined)[]} [columnWidths] A CSS width for each column.
+ * @property {{ row: number, key: string }} [reveal] A row to bring into view by showing its page.
+ *   It is shown once for each `key`; after that the reader is in charge of the page.
  * @property {(sort: GridSort | null) => void} [onSort] Called when the order changes, with `null`
  *   when it goes back to the original.
  */
@@ -68,17 +83,20 @@ export function Grid({
   sortable = true,
   pageSize = 100,
   label = 'Table',
+  cellProps,
+  columnWidths,
+  reveal,
   onSort,
 }) {
   // The order and page belong to one set of rows, and start again when the rows change.
   const [state, setState] = useState(
-    /** @type {{ rows: string[][] | null, page: number, sort: { column: number, descending: boolean } | null }} */ ({
+    /** @type {{ rows: string[][] | null, page: number, sort: { column: number, descending: boolean } | null, revealed?: string }} */ ({
       rows: null,
       page: 0,
       sort: null,
     }),
   );
-  const current = state.rows === rows ? state : { rows, page: 0, sort: null };
+  const current = state.rows === rows ? state : { rows, page: 0, sort: null, revealed: undefined };
   const size = Math.max(1, Math.floor(pageSize) || 1);
 
   // Empty cells come last whichever way the order runs; equal cells keep their original order.
@@ -96,7 +114,9 @@ export function Grid({
 
   const total = rows.length;
   const pages = Math.max(1, Math.ceil(total / size));
-  const page = Math.min(current.page, pages - 1);
+  // A row to reveal sets the page once, until the reader moves it.
+  const revealing = reveal && current.revealed !== reveal.key ? order.indexOf(reveal.row) : -1;
+  const page = Math.min(revealing >= 0 ? Math.floor(revealing / size) : current.page, pages - 1);
   const first = page * size;
   const shown = order.slice(first, first + size);
 
@@ -109,7 +129,7 @@ export function Grid({
       : was.descending
         ? null
         : { column, descending: true };
-    setState({ rows, page: 0, sort });
+    setState({ rows, page: 0, sort, revealed: reveal?.key });
     onSort?.(sort ? { column, direction: sort.descending ? 'descending' : 'ascending' } : null);
   };
 
@@ -119,6 +139,13 @@ export function Grid({
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
       <div className={classNames.scroll} role="region" aria-label={label} tabIndex={0}>
         <table className={classNames.table}>
+          {columnWidths?.some(Boolean) && (
+            <colgroup>
+              {columns.map((_, column) => (
+                <col key={column} style={{ width: columnWidths.at(column) }} />
+              ))}
+            </colgroup>
+          )}
           <thead>
             <tr>
               {columns.map((name, column) => {
@@ -154,13 +181,29 @@ export function Grid({
             </tr>
           </thead>
           <tbody>
-            {shown.map((index) => (
+            {shown.map((index, position) => (
               <tr key={index}>
-                {columns.map((_, column) => (
-                  <td key={column} className={classNames.cell}>
-                    {rows.at(index)?.at(column) ?? ''}
-                  </td>
-                ))}
+                {columns.map((_, column) => {
+                  const extra = cellProps?.(index, column);
+                  // A cell covered by a merged one is left out, unless the merged one is not on
+                  // this page, where it would leave a gap.
+                  if (extra?.coveredBy !== undefined && shown.includes(extra.coveredBy))
+                    return null;
+                  const rowSpan = extra?.rowSpan
+                    ? Math.min(extra.rowSpan, shown.length - position)
+                    : undefined;
+                  return (
+                    <td
+                      key={column}
+                      className={classNames.cell}
+                      style={extra?.style}
+                      colSpan={extra?.colSpan && extra.colSpan > 1 ? extra.colSpan : undefined}
+                      rowSpan={rowSpan && rowSpan > 1 ? rowSpan : undefined}
+                    >
+                      {rows.at(index)?.at(column) ?? ''}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>
@@ -171,7 +214,7 @@ export function Grid({
           <button
             type="button"
             disabled={page === 0}
-            onClick={() => setState({ ...current, rows, page: page - 1 })}
+            onClick={() => setState({ ...current, rows, page: page - 1, revealed: reveal?.key })}
           >
             Previous page
           </button>
@@ -181,7 +224,7 @@ export function Grid({
           <button
             type="button"
             disabled={page >= pages - 1}
-            onClick={() => setState({ ...current, rows, page: page + 1 })}
+            onClick={() => setState({ ...current, rows, page: page + 1, revealed: reveal?.key })}
           >
             Next page
           </button>

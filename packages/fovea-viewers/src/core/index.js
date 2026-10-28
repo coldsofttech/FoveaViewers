@@ -3,6 +3,7 @@
  * @typedef {import('./types.js').ViewerFetcher} ViewerFetcher
  * @typedef {import('./types.js').ViewerTheme} ViewerTheme
  * @typedef {import('./types.js').ViewerProps} ViewerProps
+ * @typedef {import('./Grid.jsx').GridCell} GridCell
  */
 
 export { readSource } from './source.js';

@@ -10,6 +10,7 @@
   "dependencies": {
     "@coldsofttech/fovea-code": "*",
     "@coldsofttech/fovea-email": "*",
+    "@coldsofttech/fovea-excel": "*",
     "@coldsofttech/fovea-feed": "*",
     "@coldsofttech/fovea-html": "*",
     "@coldsofttech/fovea-image": "*",

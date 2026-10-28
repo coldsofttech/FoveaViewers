@@ -46,8 +46,8 @@
     "name": "@coldsofttech/fovea-excel",
     "path": "packages/fovea-excel/dist/index.js",
     "import": "*",
-    "limit": "1 kB",
-    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+    "limit": "4 kB",
+    "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers", "exceljs"]
   },
   {
     "name": "@coldsofttech/fovea-feed",

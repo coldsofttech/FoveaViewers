@@ -1,0 +1,119 @@
+/* Colours come from --fovea-* custom properties (see the `theme` prop), else the page's own. */
+.root {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-size: 14px;
+  background: var(--fovea-background, Canvas);
+  color: var(--fovea-foreground, CanvasText);
+}
+
+.message {
+  margin: 0;
+  padding: 8px 12px;
+}
+
+.grid {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.scroll {
+  flex: 1;
+  overflow: auto;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 100%;
+}
+
+.headerCell {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0;
+  text-align: left;
+  white-space: nowrap;
+  background: var(--fovea-gutter-background, Canvas);
+  border-bottom: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
+}
+
+.sortButton {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sortButton:hover {
+  background: var(--fovea-current-line, color-mix(in srgb, currentColor 8%, transparent));
+}
+
+.sortButton:focus-visible {
+  outline: 2px solid var(--fovea-link, Highlight);
+  outline-offset: -2px;
+}
+
+.cell {
+  padding: 4px 12px;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 12%, transparent));
+}
+
+.table tbody tr:hover {
+  background: var(--fovea-current-line, color-mix(in srgb, currentColor 6%, transparent));
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 12px;
+  border-top: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
+  color: var(--fovea-muted, inherit);
+}
+
+.tabs {
+  display: flex;
+  flex: none;
+  gap: 2px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
+}
+
+.tab {
+  padding: 6px 14px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tab[aria-selected='true'] {
+  border-bottom-color: var(--fovea-link, Highlight);
+  font-weight: 600;
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--fovea-link, Highlight);
+  outline-offset: -2px;
+}
+
+.panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
