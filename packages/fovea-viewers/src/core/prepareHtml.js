@@ -125,7 +125,7 @@ function withoutLinkAddresses(html) {
  * @param {PrepareOptions} [options]
  * @returns {string}
  */
-export function prepare(html, options = {}) {
+export function prepareHtml(html, options = {}) {
   const { allowStyles = false, allowScripts = false, stripLinks = false, base } = options;
   let page = html.replace(/<meta\b[^>]*http-equiv\s*=\s*["']?refresh["']?[^>]*>/gi, '');
 

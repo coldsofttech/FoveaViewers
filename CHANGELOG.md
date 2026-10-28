@@ -18,3 +18,5 @@ All notable changes to this project are documented here. The format follows [Kee
 - `Grid` in `@coldsofttech/fovea-viewers/core`, a table with sorting and paging that viewers share.
 - Image viewer (`@coldsofttech/fovea-image`) for PNG, JPEG, GIF, WebP, AVIF, BMP and SVG, with fit modes, zoom, drag and keyboard panning, rotation and an info bar.
 - PDF viewer (`@coldsofttech/fovea-pdf`) with pages drawn as they come into view, selectable text, zoom and fit, turning, page numbers, an outline, password-protected files and find-and-mark.
+- Email viewer (`@coldsofttech/fovea-email`) for `.eml` messages, with sender, recipients, date, a plain-text option, attachments, embedded pictures and raw headers. Pictures and styles from the web stay off unless you switch them on.
+- `HtmlFrame` in `@coldsofttech/fovea-viewers/core`, the safe page frame that the HTML and email viewers share.

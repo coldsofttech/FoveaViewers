@@ -92,8 +92,8 @@ export const registry = [
   },
   {
     id: 'email',
-    mimeTypes: ['message/rfc822', 'application/vnd.ms-outlook'],
-    extensions: ['eml', 'msg'],
+    mimeTypes: ['message/rfc822'],
+    extensions: ['eml'],
     load: () => import('@coldsofttech/fovea-email'),
   },
   {

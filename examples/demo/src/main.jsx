@@ -1,6 +1,7 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Viewer } from '@coldsofttech/fovea-viewers';
+import '@coldsofttech/fovea-email/style.css';
 import '@coldsofttech/fovea-feed/style.css';
 import '@coldsofttech/fovea-html/style.css';
 import '@coldsofttech/fovea-image/style.css';
@@ -27,6 +28,7 @@ const SAMPLES = [
   'sample.png',
   'sample.svg',
   'sample.pdf',
+  'sample.eml',
 ];
 const urlOf = (name) => `${import.meta.env.BASE_URL}samples/${name}`;
 

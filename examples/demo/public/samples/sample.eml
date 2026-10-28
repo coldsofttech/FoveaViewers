@@ -1,0 +1,56 @@
+From: Ada Lovelace <ada@example.com>
+To: Charles Babbage <charles@example.com>, grace@example.com
+Cc: Alan Turing <alan@example.com>
+Subject: Notes on the Analytical Engine
+Date: Tue, 01 Oct 2024 10:00:00 +0000
+Message-ID: <sample-1@example.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="outer"
+
+--outer
+Content-Type: multipart/related; boundary="related"
+
+--related
+Content-Type: multipart/alternative; boundary="alt"
+
+--alt
+Content-Type: text/plain; charset=utf-8
+
+Hello Charles,
+
+Here are my notes on the Analytical Engine. The attached file has the
+details.
+
+Ada
+
+--alt
+Content-Type: text/html; charset=utf-8
+
+<html>
+  <body style="font-family: sans-serif">
+    <h2>Hello Charles,</h2>
+    <p>Here are my <b>notes</b> on the Analytical Engine. The attached file has the details.</p>
+    <p><img src="cid:dot@example.com" width="24" height="24" alt="A red dot"> Sent from my study.</p>
+    <p>Ada</p>
+  </body>
+</html>
+--alt--
+
+--related
+Content-Type: image/gif; name="dot.gif"
+Content-ID: <dot@example.com>
+Content-Disposition: inline; filename="dot.gif"
+Content-Transfer-Encoding: base64
+
+R0lGODlhAQABAIAAAP8AAAAAACwAAAAAAQABAAACAkQBADs=
+
+--related--
+
+--outer
+Content-Type: text/plain; charset=utf-8; name="notes.txt"
+Content-Disposition: attachment; filename="notes.txt"
+
+Note A: the engine can weave algebraic patterns.
+Note B: it could compose music, if given the rules.
+
+--outer--

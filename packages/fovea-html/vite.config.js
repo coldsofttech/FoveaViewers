@@ -13,12 +13,7 @@ export default defineConfig({
     cssCodeSplit: false,
     rollupOptions: {
       // React and the shared fovea-viewers package are peer dependencies and must never be bundled.
-      external: [
-        /^react($|\/)/,
-        /^react-dom($|\/)/,
-        /^@coldsofttech\/fovea-viewers($|\/)/,
-        /^dompurify($|\/)/,
-      ],
+      external: [/^react($|\/)/, /^react-dom($|\/)/, /^@coldsofttech\/fovea-viewers($|\/)/],
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',

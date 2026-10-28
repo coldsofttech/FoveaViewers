@@ -13,3 +13,5 @@ export { themeVars, lightTheme, darkTheme } from './theme.js';
 export { clearMarks, markIn } from './mark.js';
 export { bestMatch, isIgnored, scoreMatch, squash } from './match.js';
 export { Grid, compareCells } from './Grid.jsx';
+export { HtmlFrame } from './HtmlFrame.jsx';
+export { prepareHtml } from './prepareHtml.js';

@@ -97,5 +97,8 @@
     "@coldsofttech/fovea-word": {
       "optional": true
     }
+  },
+  "dependencies": {
+    "dompurify": "^3.4.17"
   }
 }

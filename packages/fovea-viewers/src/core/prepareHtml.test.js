@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { inHead, policy, prepare } from './prepare.js';
+import { inHead, policy, prepareHtml } from './prepareHtml.js';
 
 const PAGE =
   '<!doctype html><html><head><title>T</title><meta http-equiv="refresh" content="0; url=https://evil.example"><style>p{color:red}</style></head><body><p>Hi</p><img src="https://example.com/a.png"><a href="https://e.com/x">link</a></body></html>';
 
-describe('prepare (default)', () => {
+describe('prepareHtml (default)', () => {
   it('removes scripts, event handlers, frames, objects, bases and a refresh', () => {
-    const out = prepare(
+    const out = prepareHtml(
       '<head><base href="https://x.example/"><meta http-equiv="refresh" content="0;url=https://x.example"></head><body onload="x()"><script>1</script><iframe src="https://x.example"></iframe><object data="a"></object><embed src="a"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" onerror="x()"><p>ok</p></body>',
     );
     expect(out).not.toMatch(
@@ -17,13 +17,13 @@ describe('prepare (default)', () => {
   });
 
   it('keeps the page’s own styles and its doctype', () => {
-    const out = prepare(PAGE);
+    const out = prepareHtml(PAGE);
     expect(out).toContain('<style>p{color:red}</style>');
     expect(out.toLowerCase().startsWith('<!doctype html>')).toBe(true);
   });
 
   it('puts the policy first in the head, so nothing loads before it', () => {
-    const out = prepare(PAGE);
+    const out = prepareHtml(PAGE);
     expect(out).toMatch(
       /<head><meta http-equiv="Content-Security-Policy" content="default-src 'none'/,
     );
@@ -31,7 +31,7 @@ describe('prepare (default)', () => {
   });
 
   it('does not let a link run code', () => {
-    const out = prepare(
+    const out = prepareHtml(
       '<body><a href="javascript:alert(1)">x</a><a href="https://e.com">y</a></body>',
     );
     expect(out).not.toContain('javascript:');
@@ -41,30 +41,30 @@ describe('prepare (default)', () => {
   it('keeps a stylesheet link only when styles are allowed, and only to the web', () => {
     const page =
       '<head><link rel="stylesheet" href="https://e.com/a.css"><link rel="stylesheet" href="file:///a.css"><link rel="icon" href="https://e.com/i.png"></head><body></body>';
-    expect(prepare(page)).not.toContain('<link');
-    const allowed = prepare(page, { allowStyles: true });
+    expect(prepareHtml(page)).not.toContain('<link');
+    const allowed = prepareHtml(page, { allowStyles: true });
     expect(allowed).toContain('href="https://e.com/a.css"');
     expect(allowed).not.toContain('file:///');
     expect(allowed).not.toContain('rel="icon"');
   });
 
   it('adds the address the page came from as its base, and lets only that origin be one', () => {
-    const out = prepare(PAGE, { base: 'https://example.com/dir/page.html' });
+    const out = prepareHtml(PAGE, { base: 'https://example.com/dir/page.html' });
     expect(out).toContain('<base href="https://example.com/dir/page.html">');
     expect(out).toMatch(/base-uri https:\/\/example\.com"/);
   });
 
   it('ignores a base that is not a web address, and escapes one that is', () => {
-    expect(prepare(PAGE, { base: 'blob:null/123' })).not.toContain('<base');
-    expect(prepare('<body></body>', { base: 'https://e.com/?a="b"&c' })).toContain(
+    expect(prepareHtml(PAGE, { base: 'blob:null/123' })).not.toContain('<base');
+    expect(prepareHtml('<body></body>', { base: 'https://e.com/?a="b"&c' })).toContain(
       'href="https://e.com/?a=&quot;b&quot;&amp;c"',
     );
   });
 });
 
-describe('prepare (scripts allowed)', () => {
+describe('prepareHtml (scripts allowed)', () => {
   it('keeps inline scripts, removes a base and a refresh, and still adds the policy', () => {
-    const out = prepare(
+    const out = prepareHtml(
       '<head><base href="https://x.example/"></head><body><script>run()</script></body>',
       { allowScripts: true },
     );
@@ -75,14 +75,14 @@ describe('prepare (scripts allowed)', () => {
   });
 
   it('takes the address out of links when asked, and keeps their text and the doctype', () => {
-    const out = prepare(PAGE, { allowScripts: true, stripLinks: true });
+    const out = prepareHtml(PAGE, { allowScripts: true, stripLinks: true });
     expect(out).toContain('>link</a>');
     expect(out).not.toContain('https://e.com/x');
     expect(out.toLowerCase().startsWith('<!doctype html>')).toBe(true);
   });
 
   it('leaves links alone otherwise', () => {
-    expect(prepare(PAGE, { allowScripts: true })).toContain('href="https://e.com/x"');
+    expect(prepareHtml(PAGE, { allowScripts: true })).toContain('href="https://e.com/x"');
   });
 });
 

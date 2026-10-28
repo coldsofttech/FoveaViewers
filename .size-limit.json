@@ -25,7 +25,7 @@
     "name": "@coldsofttech/fovea-viewers/core",
     "path": "packages/fovea-viewers/dist/core/index.js",
     "import": "*",
-    "limit": "4 kB",
+    "limit": "15 kB",
     "ignore": ["react", "react-dom"]
   },
   {
@@ -39,7 +39,7 @@
     "name": "@coldsofttech/fovea-email",
     "path": "packages/fovea-email/dist/index.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "27 kB",
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
   },
   {
@@ -60,7 +60,7 @@
     "name": "@coldsofttech/fovea-html",
     "path": "packages/fovea-html/dist/index.js",
     "import": "*",
-    "limit": "15 kB",
+    "limit": "1 kB",
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
   },
   {
