@@ -44,7 +44,8 @@ describe('ImageViewer', () => {
   });
 
   it('gives a URL straight to the browser unless there is a fetcher', async () => {
-    const fetcher = vi.fn(() => Promise.resolve(new Response(file())));
+    // A plain response: Node 22's Response cannot be built from jsdom's File.
+    const fetcher = vi.fn(() => Promise.resolve({ ok: true, blob: () => Promise.resolve(file()) }));
     const { unmount } = render(<ImageViewer source="https://example.com/a.png" />);
     expect((await imageOf()).getAttribute('src')).toBe('https://example.com/a.png');
     expect(fetcher).not.toHaveBeenCalled();
