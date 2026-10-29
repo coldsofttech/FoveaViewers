@@ -1,3 +1,5 @@
+import { sanitizeToFragment } from './sanitize.js';
+
 /** Elements that start a new line of text. */
 const BLOCKS = 'p,div,li,ul,ol,h1,h2,h3,h4,h5,h6,tr,blockquote,pre,section,article,table,hr';
 
@@ -9,11 +11,12 @@ const BLOCKS = 'p,div,li,ul,ol,h1,h2,h3,h4,h5,h6,tr,blockquote,pre,section,artic
  * @returns {string}
  */
 export function htmlToText(html) {
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  for (const element of doc.querySelectorAll('script,style,template,noscript')) element.remove();
+  // The markup is cleaned first (scripts, styles and the like are dropped with their content), and
+  // only then read, so text from the feed is never parsed as it came.
+  const doc = sanitizeToFragment(html, false);
   for (const br of doc.querySelectorAll('br')) br.replaceWith('\n');
   for (const block of doc.querySelectorAll(BLOCKS)) block.append('\n');
-  return tidy(doc.body.textContent ?? '');
+  return tidy(doc.textContent ?? '');
 }
 
 /**

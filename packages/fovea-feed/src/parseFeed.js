@@ -1,4 +1,5 @@
 import { htmlToText, looksLikeHtml, tidy } from './text.js';
+import { webUrl } from './webUrl.js';
 
 const ATOM = 'http://www.w3.org/2005/Atom';
 
@@ -272,7 +273,7 @@ export function parseFeed(xml) {
       updatedIso: toIso(updated),
       generator: textOf(first(root, 'generator')),
       copyright: textOf(first(root, 'rights')),
-      image: textOf(first(root, 'logo')) || textOf(first(root, 'icon')),
+      image: webUrl(textOf(first(root, 'logo')) || textOf(first(root, 'icon'))),
       entries: named(root, 'entry').map(atomEntry),
     };
   }
@@ -300,10 +301,11 @@ export function parseFeed(xml) {
     updatedIso: toIso(updated),
     generator: textOf(first(channel, 'generator')),
     copyright: textOf(first(channel, 'copyright')) || textOf(first(channel, 'rights')),
-    image:
+    image: webUrl(
       (logo &&
         (textOf(first(logo, 'url')) || logo.getAttribute('href') || logo.getAttribute('url'))) ||
-      '',
+        '',
+    ),
     entries: items.map(rssEntry),
   };
 }
