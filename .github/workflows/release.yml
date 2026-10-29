@@ -31,6 +31,8 @@ jobs:
           echo "PACKAGE=$package" >> "$GITHUB_ENV"
       - run: npm run build
       - run: npm run check:packages
+      # dist is not in the repository, and npm pack does not create the folder it writes to.
+      - run: mkdir -p dist
       - run: npm pack --workspace "$PACKAGE" --pack-destination dist
       - uses: actions/upload-artifact@v7
         with:
