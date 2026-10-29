@@ -55,4 +55,5 @@ jobs:
         with:
           name: dist
           path: dist/
-      - run: npm publish dist/*.tgz --provenance --access public
+      # The leading ./ matters: without it npm reads dist/<file> as a GitHub user/repo, not a file.
+      - run: npm publish ./dist/*.tgz --provenance --access public
