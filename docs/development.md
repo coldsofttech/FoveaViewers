@@ -26,15 +26,16 @@ The registry keeps its own copy of each viewer's MIME types and extensions so it
 
 All scripts run from the repository root.
 
-| Script                            | Purpose                                                          |
-| --------------------------------- | ---------------------------------------------------------------- |
-| `npm run dev`                     | Start the demo app (build packages first with `npm run build`)   |
-| `npm run build`                   | Build every package (Vite library mode, then `.d.ts` from JSDoc) |
-| `npm run lint`                    | ESLint across the repository                                     |
-| `npm run format` / `format:check` | Prettier write / check, including Markdown                       |
-| `npm test` / `test:coverage`      | Vitest; coverage thresholds live in `vitest.config.js`           |
-| `npm run check:packages`          | `publint`, `@arethetypeswrong/cli` and the checks in `scripts/`  |
-| `npm run size`                    | Gzipped size of each package against `.size-limit.json`          |
+| Script                            | Purpose                                                                                                                         |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`                     | Start the demo app (build packages first with `npm run build`)                                                                  |
+| `npm run build`                   | Build every package (Vite library mode, then `.d.ts` from JSDoc)                                                                |
+| `npm run lint`                    | ESLint across the repository                                                                                                    |
+| `npm run format` / `format:check` | Prettier write / check, including Markdown                                                                                      |
+| `npm test` / `test:coverage`      | Vitest; coverage thresholds live in `vitest.config.js`                                                                          |
+| `npm run check:packages`          | `publint`, `@arethetypeswrong/cli` and the checks in `scripts/`                                                                 |
+| `npm run size`                    | Gzipped size of each package against `.size-limit.json`                                                                         |
+| `npm run smoke`                   | Install the packed packages in a fresh app, build it and open every sample (run `npm run build` first; see `scripts/README.md`) |
 
 To work on one package, scope the command, for example `npx vitest run packages/fovea-markdown` or `npm run build -w @coldsofttech/fovea-markdown`.
 

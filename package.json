@@ -18,7 +18,8 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "check:packages": "npm run check:packages --workspaces --if-present",
-    "size": "size-limit"
+    "size": "size-limit",
+    "smoke": "node scripts/smoke-test.js"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
