@@ -1,0 +1,65 @@
+/* Colours come from --fovea-* custom properties (see the `theme` prop), else the page's own. */
+.root {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-size: 14px;
+  background: var(--fovea-background, Canvas);
+  color: var(--fovea-foreground, CanvasText);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
+}
+
+.zoom {
+  min-width: 4ch;
+  text-align: center;
+  color: var(--fovea-muted, inherit);
+  font-variant-numeric: tabular-nums;
+}
+
+.message {
+  margin: 0;
+  padding: 8px 12px;
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  flex: 1;
+  place-items: center;
+  min-height: 0;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  background: var(--fovea-gutter-background, Canvas);
+}
+
+.stage:active {
+  cursor: grabbing;
+}
+
+.stage:focus-visible {
+  outline: 2px solid var(--fovea-link, Highlight);
+  outline-offset: -2px;
+}
+
+.image {
+  max-width: none;
+  max-height: none;
+}
+
+.info {
+  margin: 0;
+  padding: 6px 12px;
+  border-top: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
+  color: var(--fovea-muted, inherit);
+}

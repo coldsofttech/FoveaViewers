@@ -8,7 +8,19 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@scope/example-react-package": "*",
+    "@coldsofttech/fovea-code": "*",
+    "@coldsofttech/fovea-email": "*",
+    "@coldsofttech/fovea-excel": "*",
+    "@coldsofttech/fovea-feed": "*",
+    "@coldsofttech/fovea-html": "*",
+    "@coldsofttech/fovea-image": "*",
+    "@coldsofttech/fovea-markdown": "*",
+    "@coldsofttech/fovea-table": "*",
+    "@coldsofttech/fovea-pdf": "*",
+    "@coldsofttech/fovea-powerpoint": "*",
+    "@coldsofttech/fovea-text": "*",
+    "@coldsofttech/fovea-viewers": "*",
+    "@coldsofttech/fovea-word": "*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

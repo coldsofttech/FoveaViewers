@@ -17,3 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: actions/dependency-review-action@v5
+        with:
+          # exceljs (used by fovea-excel) depends on uuid 8. The advisory is about passing a buffer to
+          # v3, v5 or v6, and exceljs only calls v4() with no arguments. Remove this once exceljs
+          # moves to a patched uuid.
+          allow-ghsas: GHSA-w5hq-g745-h8pq

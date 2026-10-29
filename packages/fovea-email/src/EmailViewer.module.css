@@ -1,0 +1,108 @@
+.root {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--fovea-background, Canvas);
+  color: var(--fovea-foreground, CanvasText);
+}
+
+.message {
+  margin: 0;
+  padding: 16px 20px;
+}
+
+.header {
+  flex: none;
+  padding: 12px 20px;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+}
+
+.subject {
+  margin: 0 0 8px;
+  font-size: 1.25em;
+  overflow-wrap: anywhere;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 2px 12px;
+  margin: 0;
+}
+
+.field {
+  display: contents;
+}
+
+.fields dt {
+  opacity: 0.7;
+}
+
+.fields dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.toolbar button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.raw {
+  margin-top: 8px;
+}
+
+.rawList {
+  max-height: 30vh;
+  margin: 4px 0 0;
+  overflow: auto;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85em;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.text {
+  box-sizing: border-box;
+  height: 100%;
+  margin: 0;
+  padding: 16px 20px;
+  overflow: auto;
+  font-family: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.attachment {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: LinkText;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -29,3 +29,8 @@ desktop.ini
 node_modules/
 dist/
 coverage/
+
+.temp/
+
+CLAUDE.md
+.claude/

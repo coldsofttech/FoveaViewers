@@ -1,0 +1,75 @@
+FOVEA VIEWERS - SAMPLE TEXT FILE
+================================
+
+This is a plain text file for trying the text viewer. Each line gets a number
+in the margin, and only the lines in view are drawn, so even a very large
+file opens at once.
+
+1. Things to try
+----------------
+
+  * Scroll up and down, or click the viewer and use Page Up, Page Down,
+    Home and End.
+  * Switch between the light and dark themes.
+  * Scroll sideways along the long line further down.
+  * Select some text and copy it. The line numbers are not copied.
+
+2. Tabs and spacing are kept as they are
+-----------------------------------------
+
+Name		Role		City
+Ada		Engineer	London
+Grace		Admiral		New York
+Linus		Maintainer	Portland
+
+    Four spaces of indentation stay four spaces.
+        Eight stay eight.
+
+3. Other languages and symbols
+------------------------------
+
+English:   The quick brown fox jumps over the lazy dog.
+Francais:  Portez ce vieux whisky au juge blond qui fume.
+Deutsch:   Falsches Ueben von Xylophonmusik quaelt jeden groesseren Zwerg.
+Hindi:     नमस्ते दुनिया
+Telugu:    నమస్కారం ప్రపంచం
+Japanese:  こんにちは世界
+Symbols:   © ® ™ € £ ¥ § ¶ † ‡ • … — –
+
+4. A very long line
+-------------------
+
+Lines never wrap, so a long one scrolls sideways: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+5. Blank lines are lines too
+----------------------------
+
+
+
+The three lines above are empty, and each one has a number.
+
+6. Some more lines to scroll through
+------------------------------------
+
+Line 01: The quick brown fox jumps over the lazy dog.
+Line 02: The quick brown fox jumps over the lazy dog.
+Line 03: The quick brown fox jumps over the lazy dog.
+Line 04: The quick brown fox jumps over the lazy dog.
+Line 05: The quick brown fox jumps over the lazy dog.
+Line 06: The quick brown fox jumps over the lazy dog.
+Line 07: The quick brown fox jumps over the lazy dog.
+Line 08: The quick brown fox jumps over the lazy dog.
+Line 09: The quick brown fox jumps over the lazy dog.
+Line 10: The quick brown fox jumps over the lazy dog.
+Line 11: The quick brown fox jumps over the lazy dog.
+Line 12: The quick brown fox jumps over the lazy dog.
+Line 13: The quick brown fox jumps over the lazy dog.
+Line 14: The quick brown fox jumps over the lazy dog.
+Line 15: The quick brown fox jumps over the lazy dog.
+Line 16: The quick brown fox jumps over the lazy dog.
+Line 17: The quick brown fox jumps over the lazy dog.
+Line 18: The quick brown fox jumps over the lazy dog.
+Line 19: The quick brown fox jumps over the lazy dog.
+Line 20: The quick brown fox jumps over the lazy dog.
+
+End of file.

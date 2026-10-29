@@ -3,3 +3,4 @@ dist/
 coverage/
 .temp/
 package-lock.json
+examples/demo/public/samples/

@@ -1,7 +1,7 @@
 name: Release
 
 # Publishes to npm when a GitHub release is published, using trusted publishing (no stored tokens).
-# Tag the release as <package name>@<version>, for example @scope/example-react-package@1.0.0.
+# Tag the release as <package name>@<version>, for example @coldsofttech/fovea-viewers@1.0.0.
 on:
   release:
     types: [published]

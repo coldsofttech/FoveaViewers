@@ -1,0 +1,13 @@
+.root {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background: var(--fovea-background, Canvas);
+  color: var(--fovea-foreground, CanvasText);
+}
+
+.message {
+  margin: 0;
+  padding: 16px 20px;
+}

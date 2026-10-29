@@ -1,0 +1,157 @@
+/* Colours come from --fovea-* custom properties (see the `theme` prop), else the page's own. */
+.root {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-size: 14px;
+  background: var(--fovea-background, Canvas);
+  color: var(--fovea-foreground, CanvasText);
+}
+
+.message {
+  margin: 0;
+  padding: 8px 12px;
+}
+
+.toolbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
+}
+
+.toolbar button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.thumbnails {
+  flex: none;
+  width: 160px;
+  margin: 0;
+  padding: 8px;
+  overflow-y: auto;
+  list-style: none;
+  border-right: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
+}
+
+.thumbnails li {
+  margin-bottom: 8px;
+}
+
+.thumbnail {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 2px;
+  border: 2px solid transparent;
+  background: none;
+  cursor: pointer;
+}
+
+.thumbnail[aria-current='true'] {
+  border-color: var(--fovea-link, Highlight);
+}
+
+.thumbnail:focus-visible {
+  outline: 2px solid var(--fovea-link, Highlight);
+  outline-offset: 2px;
+}
+
+.thumbnailSlide {
+  display: block;
+  pointer-events: none;
+}
+
+.stageArea {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  overflow: auto;
+}
+
+.stage {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  border: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 25%, transparent));
+}
+
+.stage:focus-visible {
+  outline: 2px solid var(--fovea-link, Highlight);
+  outline-offset: 2px;
+}
+
+.notes {
+  margin-top: 12px;
+  padding: 8px 12px;
+  white-space: pre-wrap;
+  border-left: 3px solid var(--fovea-border, color-mix(in srgb, currentColor 30%, transparent));
+  color: var(--fovea-muted, inherit);
+}
+
+/* A slide is drawn for a white page, whatever the theme around it. Its text is sized in units of
+   the slide's own width, so it scales with the slide. */
+.slide {
+  position: relative;
+  container-type: inline-size;
+  overflow: hidden;
+  width: 100%;
+  background: #fff;
+  color: #000;
+  line-height: 1.2;
+}
+
+.shape {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0.5cqw;
+}
+
+.title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.paragraph {
+  margin: 0 0 0.3em;
+}
+
+.list {
+  margin: 0;
+  padding-left: 1.5em;
+}
+
+.list li {
+  margin-bottom: 0.3em;
+}
+
+.picture {
+  position: absolute;
+  object-fit: contain;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table td {
+  padding: 0.3em 0.5em;
+  border: 1px solid #888;
+  vertical-align: top;
+}

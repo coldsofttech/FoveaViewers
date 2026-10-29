@@ -1,5 +1,5 @@
 {
-  "name": "react-FoveaViewers",
+  "name": "fovea-viewers",
   "private": true,
   "type": "module",
   "engines": {
@@ -11,15 +11,15 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace examples/demo",
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build -w @coldsofttech/fovea-viewers && npm run build -w @coldsofttech/fovea-text && npm run build --workspaces --if-present",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "check:packages": "npm run check:packages --workspaces --if-present",
-    "repo:settings": "node scripts/apply-repo-settings.js",
-    "size": "size-limit"
+    "size": "size-limit",
+    "smoke": "node scripts/smoke-test.js"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Fovea Viewers news</title>
+    <link>https://github.com/coldsofttech/FoveaViewers</link>
+    <atom:link href="https://example.com/feed.rss" rel="self" type="application/rss+xml"/>
+    <description>A sample feed to try the feed viewer on.</description>
+    <language>en</language>
+    <lastBuildDate>Sun, 25 Oct 2026 10:00:00 GMT</lastBuildDate>
+    <generator>Fovea sample</generator>
+    <copyright>2026 coldsofttech</copyright>
+    <image><url>https://github.com/coldsofttech.png?size=96</url><title>Logo</title></image>
+    <item>
+      <title>Rich text and pictures</title>
+      <link>https://example.com/posts/1</link>
+      <guid isPermaLink="false">post-1</guid>
+      <pubDate>Sun, 25 Oct 2026 09:30:00 GMT</pubDate>
+      <dc:creator>Ada Lovelace</dc:creator>
+      <category>Code</category>
+      <description><![CDATA[Entry 1 in short, as plain text.]]></description>
+      <content:encoded><![CDATA[<p>Entry 1 has <b>rich text</b>, a <a href="https://github.com/coldsofttech/FoveaViewers">link</a> and a list:</p><ul><li>First point</li><li>Second point</li></ul><p><img src="https://github.com/coldsofttech.png?size=96" alt="The coldsofttech avatar"></p>]]></content:encoded>
+      <media:thumbnail url="https://github.com/coldsofttech.png?size=96"/>
+    </item>
+    <item>
+      <title>Safe by default</title>
+      <link>https://example.com/posts/2</link>
+      <guid isPermaLink="false">post-2</guid>
+      <pubDate>Sat, 24 Oct 2026 09:30:00 GMT</pubDate>
+      <dc:creator>Grace Hopper</dc:creator>
+      <category>Security</category>
+      <description><![CDATA[Entry 2 in short, as plain text.]]></description>
+      <content:encoded><![CDATA[<p>Entry 2 has <b>rich text</b>, a <a href="https://github.com/coldsofttech/FoveaViewers">link</a> and a list:</p><ul><li>First point</li><li>Second point</li></ul>]]></content:encoded>
+    </item>
+    <item>
+      <title>Paging long feeds</title>
+      <link>https://example.com/posts/3</link>
+      <guid isPermaLink="false">post-3</guid>
+      <pubDate>Fri, 23 Oct 2026 09:30:00 GMT</pubDate>
+      <dc:creator>Ada Lovelace</dc:creator>
+      <category>Performance</category>
+      <description><![CDATA[Entry 3 in short, as plain text.]]></description>
+      <content:encoded><![CDATA[<p>Entry 3 has <b>rich text</b>, a <a href="https://github.com/coldsofttech/FoveaViewers">link</a> and a list:</p><ul><li>First point</li><li>Second point</li></ul>]]></content:encoded>
+    </item>
+    <item>
+      <title>Podcast episode 12</title>
+      <link>https://example.com/posts/4</link>
+      <guid isPermaLink="false">post-4</guid>
+      <pubDate>Thu, 22 Oct 2026 09:30:00 GMT</pubDate>
+      <dc:creator>Grace Hopper</dc:creator>
+      <category>Audio</category>
+      <description><![CDATA[Entry 4 in short, as plain text.]]></description>
+      <content:encoded><![CDATA[<p>Entry 4 has <b>rich text</b>, a <a href="https://github.com/coldsofttech/FoveaViewers">link</a> and a list:</p><ul><li>First point</li><li>Second point</li></ul>]]></content:encoded>
+      <enclosure url="https://example.com/audio/episode-4.mp3" type="audio/mpeg" length="3204000"/>
+    </item>
+    <item>
+      <title>Search targets</title>
+      <link>https://example.com/posts/5</link>
+      <guid isPermaLink="false">post-5</guid>
+      <pubDate>Wed, 21 Oct 2026 09:30:00 GMT</pubDate>
+      <dc:creator>Ada Lovelace</dc:creator>
+      <category>Search</category>
+      <description><![CDATA[Entry 5 in short, as plain text.]]></description>
+      <content:encoded><![CDATA[<p>Entry 5 has <b>rich text</b>, a <a href="https://github.com/coldsofttech/FoveaViewers">link</a> and a list:</p><ul><li>First point</li><li>Second point</li></ul>]]></content:encoded>
+    </item>
+    <item>
+      <title>Themes</title>
+      <link>https://example.com/posts/6</link>
+      <guid isPermaLink="false">post-6</guid>
+      <pubDate>Tue, 20 Oct 2026 09:30:00 GMT</pubDate>
+      <dc:creator>Grace Hopper</dc:creator>
+      <category>Design</category>
+      <description><![CDATA[Entry 6 in short, as plain text.]]></description>
+      <content:encoded><![CDATA[<p>Entry 6 has <b>rich text</b>, a <a href="https://github.com/coldsofttech/FoveaViewers">link</a> and a list:</p><ul><li>First point</li><li>Second point</li></ul>]]></content:encoded>
+    </item>
+    <item>
+      <title>Accessibility notes</title>
+      <link>https://example.com/posts/7</link>
+      <guid isPermaLink="false">post-7</guid>
+      <pubDate>Mon, 19 Oct 2026 09:30:00 GMT</pubDate>
+      <dc:creator>Ada Lovelace</dc:creator>
+      <category>Accessibility</category>
+      <description><![CDATA[Entry 7 in short, as plain text.]]></description>
+      <content:encoded><![CDATA[<p>Entry 7 has <b>rich text</b>, a <a href="https://github.com/coldsofttech/FoveaViewers">link</a> and a list:</p><ul><li>First point</li><li>Second point</li></ul>]]></content:encoded>
+    </item>
+    <item>
+      <title>Release 0.1</title>
+      <link>https://example.com/posts/8</link>
+      <guid isPermaLink="false">post-8</guid>
+      <pubDate>Sun, 18 Oct 2026 09:30:00 GMT</pubDate>
+      <dc:creator>Grace Hopper</dc:creator>
+      <category>News</category>
+      <description><![CDATA[Entry 8 in short, as plain text.]]></description>
+      <content:encoded><![CDATA[<p>Entry 8 has <b>rich text</b>, a <a href="https://github.com/coldsofttech/FoveaViewers">link</a> and a list:</p><ul><li>First point</li><li>Second point</li></ul>]]></content:encoded>
+    </item>
+    <item>
+      <title>Reading Atom feeds</title>
+      <link>https://example.com/posts/9</link>
+      <guid isPermaLink="false">post-9</guid>
+      <pubDate>Sat, 17 Oct 2026 09:30:00 GMT</pubDate>
+      <dc:creator>Ada Lovelace</dc:creator>
+      <category>Standards</category>
+      <description><![CDATA[Entry 9 in short, as plain text.]]></description>
+      <content:encoded><![CDATA[<p>Entry 9 has <b>rich text</b>, a <a href="https://github.com/coldsofttech/FoveaViewers">link</a> and a list:</p><ul><li>First point</li><li>Second point</li></ul>]]></content:encoded>
+    </item>
+    <item>
+      <title>Reading RSS 1.0</title>
+      <link>https://example.com/posts/10</link>
+      <guid isPermaLink="false">post-10</guid>
+      <pubDate>Fri, 16 Oct 2026 09:30:00 GMT</pubDate>
+      <dc:creator>Grace Hopper</dc:creator>
+      <category>Standards</category>
+      <description><![CDATA[Entry 10 in short, as plain text.]]></description>
+      <content:encoded><![CDATA[<p>Entry 10 has <b>rich text</b>, a <a href="https://github.com/coldsofttech/FoveaViewers">link</a> and a list:</p><ul><li>First point</li><li>Second point</li></ul>]]></content:encoded>
+    </item>
+    <item>
+      <title>Attachments</title>
+      <link>https://example.com/posts/11</link>
+      <guid isPermaLink="false">post-11</guid>
+      <pubDate>Thu, 15 Oct 2026 09:30:00 GMT</pubDate>
+      <dc:creator>Ada Lovelace</dc:creator>
+      <category>Audio</category>
+      <description><![CDATA[Entry 11 in short, as plain text.]]></description>
+      <content:encoded><![CDATA[<p>Entry 11 has <b>rich text</b>, a <a href="https://github.com/coldsofttech/FoveaViewers">link</a> and a list:</p><ul><li>First point</li><li>Second point</li></ul>]]></content:encoded>
+      <enclosure url="https://example.com/audio/episode-11.mp3" type="audio/mpeg" length="3211000"/>
+    </item>
+    <item>
+      <title>Wrapping up</title>
+      <link>https://example.com/posts/12</link>
+      <guid isPermaLink="false">post-12</guid>
+      <pubDate>Wed, 14 Oct 2026 09:30:00 GMT</pubDate>
+      <dc:creator>Grace Hopper</dc:creator>
+      <category>News</category>
+      <description><![CDATA[Entry 12 in short, as plain text.]]></description>
+      <content:encoded><![CDATA[<p>Entry 12 has <b>rich text</b>, a <a href="https://github.com/coldsofttech/FoveaViewers">link</a> and a list:</p><ul><li>First point</li><li>Second point</li></ul>]]></content:encoded>
+    </item>
+  </channel>
+</rss>

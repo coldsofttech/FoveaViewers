@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title>Field notes</title>
+  <subtitle>An Atom feed to try the feed viewer on.</subtitle>
+  <link rel="self" href="https://example.com/atom.xml"/>
+  <link rel="alternate" href="https://github.com/coldsofttech/FoveaViewers"/>
+  <updated>2026-10-25T10:00:00Z</updated>
+  <generator>Fovea sample</generator>
+  <rights>2026 coldsofttech</rights>
+  <entry>
+    <title>HTML content</title>
+    <link rel="alternate" href="https://example.com/notes/1"/>
+    <id>urn:uuid:1</id>
+    <published>2026-10-25T09:00:00Z</published>
+    <updated>2026-10-25T09:30:00Z</updated>
+    <author><name>Ada Lovelace</name></author>
+    <category term="code" label="Code"/>
+    <summary>A short summary.</summary>
+    <content type="html">&lt;p&gt;This entry has &lt;b&gt;HTML&lt;/b&gt; content with a &lt;a href="https://example.com"&gt;link&lt;/a&gt;.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>XHTML content</title>
+    <link rel="alternate" href="https://example.com/notes/2"/>
+    <id>urn:uuid:2</id>
+    <updated>2026-10-24T09:00:00Z</updated>
+    <author><name>Grace Hopper</name></author>
+    <author><name>Linus Torvalds</name></author>
+    <content type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><p>First paragraph.</p><p>Second paragraph.</p></div></content>
+  </entry>
+  <entry>
+    <title>With an attachment</title>
+    <link rel="alternate" href="https://example.com/notes/3"/>
+    <link rel="enclosure" href="https://example.com/files/report.pdf" type="application/pdf" length="482304"/>
+    <id>urn:uuid:3</id>
+    <updated>2026-10-23T09:00:00Z</updated>
+    <content type="text">Plain text content, with an attached report.</content>
+  </entry>
+</feed>
