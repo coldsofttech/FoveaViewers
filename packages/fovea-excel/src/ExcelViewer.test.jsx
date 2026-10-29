@@ -105,7 +105,7 @@ describe('ExcelViewer', () => {
     );
     await waitFor(() => expect(container.querySelector('mark')).not.toBeNull());
     expect(screen.getByRole('tab', { name: 'Notes' })).toHaveAttribute('aria-selected', 'true');
-    expect(onMarked).toHaveBeenLastCalledWith(true);
+    await waitFor(() => expect(onMarked).toHaveBeenLastCalledWith(true));
   });
 
   it('says when the target is not in the workbook', async () => {
@@ -125,7 +125,7 @@ describe('ExcelViewer', () => {
     const onReady = vi.fn();
     const { container } = render(<ExcelViewer source={await workbookFile()} onReady={onReady} />);
     await screen.findAllByRole('tab');
-    expect(onReady).toHaveBeenCalledWith({ sheets: ['Sales', 'Notes'] });
+    await waitFor(() => expect(onReady).toHaveBeenCalledWith({ sheets: ['Sales', 'Notes'] }));
     expect(await axe(container)).toHaveNoViolations();
   });
 

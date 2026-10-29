@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { axe } from 'vitest-axe';
 import { LineViewer } from './LineViewer.jsx';
 import { piecesOf } from './pieces.js';
@@ -38,7 +38,7 @@ describe('LineViewer', () => {
     expect(mark.style.color).toContain('keyword');
   });
 
-  it('shows a loading message and an error', () => {
+  it('shows a loading message and an error', async () => {
     const onError = vi.fn();
     const { rerender } = render(<LineViewer lines={null} status="loading" />);
     expect(screen.getByRole('status')).toHaveTextContent('Loading');
@@ -46,7 +46,7 @@ describe('LineViewer', () => {
       <LineViewer lines={null} status="error" error={new Error('gone')} onError={onError} />,
     );
     expect(screen.getByRole('alert')).toHaveTextContent('gone');
-    expect(onError).toHaveBeenCalled();
+    await waitFor(() => expect(onError).toHaveBeenCalled());
   });
 });
 

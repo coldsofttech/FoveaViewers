@@ -77,7 +77,9 @@ describe('TableViewer', () => {
     const onReady = vi.fn();
     render(<TableViewer source={file(CSV)} onReady={onReady} />);
     await screen.findByRole('columnheader', { name: /Name/ });
-    expect(onReady).toHaveBeenCalledWith({ rowCount: 3, columnCount: 2, delimiter: ',' });
+    await waitFor(() =>
+      expect(onReady).toHaveBeenCalledWith({ rowCount: 3, columnCount: 2, delimiter: ',' }),
+    );
   });
 
   it('says so when the file is empty', async () => {

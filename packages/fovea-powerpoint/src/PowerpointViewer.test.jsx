@@ -239,7 +239,7 @@ describe('PowerpointViewer', () => {
     );
     await waitFor(() => expect(container.querySelector('mark')).not.toBeNull());
     expect(screen.getByRole('group', { name: /slide 2 of 2/i })).toBeInTheDocument();
-    expect(onMarked).toHaveBeenLastCalledWith(true);
+    await waitFor(() => expect(onMarked).toHaveBeenLastCalledWith(true));
   });
 
   it('finds a target in the speaker notes only when they are shown', async () => {
@@ -269,7 +269,7 @@ describe('PowerpointViewer', () => {
     const onReady = vi.fn();
     const { container } = render(<PowerpointViewer source={await file()} onReady={onReady} />);
     await screen.findByRole('group', { name: /slide 1/i });
-    expect(onReady).toHaveBeenCalledWith({ slideCount: 2 });
+    await waitFor(() => expect(onReady).toHaveBeenCalledWith({ slideCount: 2 }));
     expect(await axe(container)).toHaveNoViolations();
   });
 

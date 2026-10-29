@@ -75,7 +75,7 @@ describe('MarkdownViewer', () => {
     render(<MarkdownViewer source={file(SAMPLE)} target={target} onMarked={onMarked} />);
     const mark = await screen.findByText('bold', { selector: 'mark' });
     expect(mark).toBeInTheDocument();
-    expect(onMarked).toHaveBeenCalledWith(true);
+    await waitFor(() => expect(onMarked).toHaveBeenCalledWith(true));
   });
 
   it('says the words are not shown when they are not in the rendered block', async () => {

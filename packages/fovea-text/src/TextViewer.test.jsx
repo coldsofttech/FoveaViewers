@@ -57,7 +57,7 @@ describe('TextViewer', () => {
     const onReady = vi.fn();
     render(<TextViewer source={file('a\nb\nc')} onReady={onReady} />);
     await screen.findByText('a');
-    expect(onReady).toHaveBeenCalledWith({ lineCount: 3 });
+    await waitFor(() => expect(onReady).toHaveBeenCalledWith({ lineCount: 3 }));
   });
 
   it('shows an alert and calls onError when the file cannot be loaded', async () => {

@@ -33,12 +33,14 @@ describe('ImageViewer', () => {
     expect(image).toHaveAttribute('src', 'blob:fake');
     loadImage(image);
     expect(await screen.findByText('200 × 100 px · 2.0 KB · image/png')).toBeInTheDocument();
-    expect(onReady).toHaveBeenCalledWith({
-      width: 200,
-      height: 100,
-      size: 2048,
-      type: 'image/png',
-    });
+    await waitFor(() =>
+      expect(onReady).toHaveBeenCalledWith({
+        width: 200,
+        height: 100,
+        size: 2048,
+        type: 'image/png',
+      }),
+    );
     expect(zoomText()).toBe('100%');
     expect(await axe(container)).toHaveNoViolations();
   });

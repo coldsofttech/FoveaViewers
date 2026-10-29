@@ -178,7 +178,7 @@ describe('marking words', () => {
     const { doc } = await pageOf();
     await waitFor(() => expect(doc.querySelectorAll('mark')).toHaveLength(1));
     expect(doc.querySelector('p mark')).toHaveTextContent('needle');
-    expect(onMarked).toHaveBeenCalledWith(true);
+    await waitFor(() => expect(onMarked).toHaveBeenCalledWith(true));
   });
 
   it('says the words are not shown when they are only in the style or the title', async () => {

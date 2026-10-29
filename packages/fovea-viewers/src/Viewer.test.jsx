@@ -31,7 +31,7 @@ describe('Viewer', () => {
     const onError = vi.fn();
     render(<Viewer source={new File(['x'], 'a.unknown')} onError={onError} />);
     expect(screen.getByRole('alert')).toHaveTextContent('Pass a "type"');
-    expect(onError).toHaveBeenCalled();
+    await waitFor(() => expect(onError).toHaveBeenCalled());
   });
 
   it('reports a viewer that is not installed', async () => {

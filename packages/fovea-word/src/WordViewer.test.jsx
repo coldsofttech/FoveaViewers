@@ -132,8 +132,10 @@ describe('WordViewer', () => {
     render(<WordViewer source={await docxFile()} onReady={onReady} onWarnings={onWarnings} />);
     await waitFor(() => expect(onReady).toHaveBeenCalled());
     expect(onReady.mock.calls[0][0].messages.length).toBeGreaterThan(0);
-    expect(onWarnings).toHaveBeenCalledWith(
-      expect.arrayContaining([expect.objectContaining({ type: 'warning' })]),
+    await waitFor(() =>
+      expect(onWarnings).toHaveBeenCalledWith(
+        expect.arrayContaining([expect.objectContaining({ type: 'warning' })]),
+      ),
     );
   });
 

@@ -92,7 +92,7 @@ describe('PdfViewer', () => {
     expect(await screen.findByRole('group', { name: 'Page 1' })).toBeInTheDocument();
     expect(await screen.findByText('Alpha opens the file')).toBeInTheDocument();
     expect(screen.getByText('of 3')).toBeInTheDocument();
-    expect(onReady).toHaveBeenCalledWith({ pageCount: 3 });
+    await waitFor(() => expect(onReady).toHaveBeenCalledWith({ pageCount: 3 }));
     expect(await axe(container)).toHaveNoViolations();
   });
 
