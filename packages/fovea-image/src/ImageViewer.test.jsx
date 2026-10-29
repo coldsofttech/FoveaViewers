@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'vitest-axe';
 import { ImageViewer } from './ImageViewer.jsx';
@@ -112,7 +112,7 @@ describe('ImageViewer', () => {
     render(<ImageViewer source={file()} onError={onError} />);
     fireEvent.error(await imageOf());
     expect(await screen.findByRole('alert')).toHaveTextContent('could not be shown');
-    expect(onError).toHaveBeenCalledWith(expect.any(Error));
+    await waitFor(() => expect(onError).toHaveBeenCalledWith(expect.any(Error)));
   });
 
   it('reports a file that cannot be loaded', async () => {
@@ -120,6 +120,8 @@ describe('ImageViewer', () => {
     const fetcher = () => Promise.reject(new Error('offline'));
     render(<ImageViewer source="https://example.com/a.png" fetcher={fetcher} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('offline');
-    expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: 'offline' }));
+    await waitFor(() =>
+      expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: 'offline' })),
+    );
   });
 });

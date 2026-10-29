@@ -86,7 +86,7 @@ describe('errors', () => {
     const onError = vi.fn();
     render(<FeedViewer source={file('<html><body/></html>')} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('not an RSS or Atom feed');
-    expect(onError).toHaveBeenCalled();
+    await waitFor(() => expect(onError).toHaveBeenCalled());
   });
 
   it('shows an alert for text that is not well-formed', async () => {
@@ -99,7 +99,7 @@ describe('errors', () => {
     const fetcher = () => Promise.resolve(new Response('', { status: 404 }));
     render(<FeedViewer source="/missing.rss" fetcher={fetcher} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('404');
-    expect(onError).toHaveBeenCalled();
+    await waitFor(() => expect(onError).toHaveBeenCalled());
   });
 });
 

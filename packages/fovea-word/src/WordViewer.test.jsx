@@ -141,6 +141,6 @@ describe('WordViewer', () => {
     const onError = vi.fn();
     render(<WordViewer source={new File(['not a document'], 'x.docx')} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('could not be read');
-    expect(onError).toHaveBeenCalled();
+    await waitFor(() => expect(onError).toHaveBeenCalled());
   });
 });

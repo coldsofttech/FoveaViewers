@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { JsHighlighter, formatJs } from './js.js';
 import { JsonHighlighter, formatJson } from './json.js';
-import { XmlHighlighter, formatXml } from './xml.js';
+import { XmlHighlighter, formatXml, tokenize } from './xml.js';
 import {
   CSharpHighlighter,
   GoHighlighter,
@@ -650,6 +650,35 @@ describe('XML', () => {
     );
     expect(() => formatXml('</a><b')).not.toThrow();
     expect(formatXml('')).toBe('');
+  });
+
+  it('splits a document into tokens, leaving out a lone <', () => {
+    expect(tokenize('<?xml v?><!DOCTYPE x><!-- c --><a b="1">t</a><![CDATA[<x>]]> < <b/>')).toEqual(
+      [
+        '<?xml v?>',
+        '<!DOCTYPE x>',
+        '<!-- c -->',
+        '<a b="1">',
+        't',
+        '</a>',
+        '<![CDATA[<x>]]>',
+        ' ',
+        ' ',
+        '<b/>',
+      ],
+    );
+    // Unfinished comments, CDATA and instructions fall back to the shorter readings.
+    expect(tokenize('<!-- no end > x')).toEqual(['<!-- no end >', ' x']);
+    expect(tokenize('<![CDATA[ no end > x')).toEqual(['<![CDATA[ no end >', ' x']);
+    expect(tokenize('<? no end')).toEqual(['? no end']);
+  });
+
+  it('is quick on many unfinished comments, CDATA sections and instructions', () => {
+    const started = performance.now();
+    for (const unit of ['<!--', '<![CDATA[', '<?', '<a ']) {
+      expect(tokenize(unit.repeat(50000)).length).toBeGreaterThan(0);
+    }
+    expect(performance.now() - started).toBeLessThan(1000);
   });
 
   it('is quick on a long document', () => {

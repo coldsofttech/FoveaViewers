@@ -136,6 +136,6 @@ describe('CodeViewer', () => {
     const fetcher = () => Promise.resolve(new Response('', { status: 404 }));
     render(<CodeViewer source="/missing.js" fetcher={fetcher} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('404');
-    expect(onError).toHaveBeenCalled();
+    await waitFor(() => expect(onError).toHaveBeenCalled());
   });
 });

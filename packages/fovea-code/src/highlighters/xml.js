@@ -120,6 +120,65 @@ export function scan(line, from, collect = true) {
 export const XmlHighlighter = highlighterFor(START, scan);
 
 /**
+ * Splits a document into comments, CDATA, instructions, declarations, tags and text. A character
+ * that starts none of these (a lone `<`) is left out.
+ *
+ * This looks for each ending with `indexOf`, and remembers when one is missing, so a long run of
+ * unfinished comments is read once instead of once for each `<`. (A single pattern for it
+ * backtracks to the end of the document at every unfinished comment.)
+ *
+ * @param {string} xml
+ * @returns {string[]}
+ */
+export function tokenize(xml) {
+  /** @type {string[]} */
+  const tokens = [];
+  /** Endings already known not to occur after the current place. */
+  const missing = new Set();
+  /**
+   * Where a token that must end with `ending` ends, or -1.
+   *
+   * @param {string} ending
+   * @param {number} from
+   */
+  const endOf = (ending, from) => {
+    if (missing.has(ending)) return -1;
+    const at = xml.indexOf(ending, from);
+    if (at === -1) {
+      missing.add(ending);
+      return -1;
+    }
+    return at + ending.length;
+  };
+  let pos = 0;
+  while (pos < xml.length) {
+    if (xml.charAt(pos) !== '<') {
+      const next = xml.indexOf('<', pos);
+      const end = next === -1 ? xml.length : next;
+      tokens.push(xml.slice(pos, end));
+      pos = end;
+      continue;
+    }
+    let end = -1;
+    if (xml.startsWith('<!--', pos)) end = endOf('-->', pos + 4);
+    else if (xml.startsWith('<![CDATA[', pos)) end = endOf(']]>', pos + 9);
+    else if (xml.startsWith('<?', pos)) end = endOf('?>', pos + 2);
+    if (end === -1 && xml.startsWith('<!', pos)) end = endOf('>', pos + 2);
+    if (end === -1) {
+      const name = pos + (xml.charAt(pos + 1) === '/' ? 2 : 1);
+      if (/[\w:]/.test(xml.charAt(name))) end = endOf('>', name + 1);
+    }
+    if (end === -1) {
+      pos++;
+    } else {
+      tokens.push(xml.slice(pos, end));
+      pos = end;
+    }
+  }
+  return tokens;
+}
+
+/**
  * A document with every element on its own line, indented by depth; an element that holds only
  * text stays on one line. Comments, CDATA and instructions are kept as written.
  *
@@ -127,9 +186,7 @@ export const XmlHighlighter = highlighterFor(START, scan);
  * @returns {string}
  */
 export function formatXml(xml) {
-  const pattern =
-    /<!--[\s\S]*?-->|<!\[CDATA\[[\s\S]*?\]\]>|<\?[\s\S]*?\?>|<![^>]*>|<\/?[\w:][^>]*>|[^<]+/g;
-  const tokens = xml.match(pattern) ?? [];
+  const tokens = tokenize(xml);
   const out = [];
   let depth = 0;
   const put = (text) => {
@@ -156,7 +213,11 @@ export function formatXml(xml) {
         depth++;
       }
     } else {
-      put(token.startsWith('<!--') ? token.replace(/\s*\n\s*/g, ' ') : token.replace(/\s+/g, ' '));
+      put(
+        token.startsWith('<!--')
+          ? token.replace(/\s+/g, (run) => (run.includes('\n') ? ' ' : run))
+          : token.replace(/\s+/g, ' '),
+      );
     }
   }
   return out.join('\n');

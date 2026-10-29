@@ -133,6 +133,6 @@ describe('ExcelViewer', () => {
     const onError = vi.fn();
     render(<ExcelViewer source={new File(['not a workbook'], 'x.xlsx')} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('could not be read');
-    expect(onError).toHaveBeenCalled();
+    await waitFor(() => expect(onError).toHaveBeenCalled());
   });
 });

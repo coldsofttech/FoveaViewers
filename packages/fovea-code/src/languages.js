@@ -31,7 +31,12 @@ import { YamlHighlighter } from './highlighters/yaml.js';
  * @returns {string | null}
  */
 export function keyBefore(before) {
-  const path = /(\S+):\s*$/.exec(before ?? '')?.[1];
+  // Read back from the end by hand: a pattern for this backtracks badly on a long line with no colon.
+  const text = (before ?? '').trimEnd();
+  if (!text.endsWith(':')) return null;
+  let start = text.length - 1;
+  while (start > 0 && !/\s/.test(text.charAt(start - 1))) start--;
+  const path = text.slice(start, -1);
   if (!path) return null;
   const names = path.split(/[./@[\]]+/).filter((part) => part && !/^\d+$/.test(part));
   return names.at(-1) ?? null;

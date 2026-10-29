@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { axe } from 'vitest-axe';
 import { TextViewer } from './TextViewer.jsx';
 
@@ -65,6 +65,10 @@ describe('TextViewer', () => {
     const fetcher = () => Promise.resolve(new Response('', { status: 404 }));
     render(<TextViewer source="/missing.txt" fetcher={fetcher} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('404');
-    expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: expect.any(String) }));
+    await waitFor(() =>
+      expect(onError).toHaveBeenCalledWith(
+        expect.objectContaining({ message: expect.any(String) }),
+      ),
+    );
   });
 });

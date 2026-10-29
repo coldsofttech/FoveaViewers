@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { axe } from 'vitest-axe';
 import { Viewer } from './Viewer.jsx';
 import * as registry from './registry.js';
@@ -39,6 +39,8 @@ describe('Viewer', () => {
     vi.mocked(registry.load).mockRejectedValue(new Error('Install it'));
     render(<Viewer source={new File(['x'], 'a.txt')} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('Install it');
-    expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: 'Install it' }));
+    await waitFor(() =>
+      expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: 'Install it' })),
+    );
   });
 });

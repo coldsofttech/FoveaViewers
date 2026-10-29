@@ -64,6 +64,21 @@ describe('keyBefore', () => {
     expect(keyBefore('catalog/book@id: ')).toBe('id');
     expect(keyBefore('no key here')).toBeNull();
   });
+
+  it('needs the name right before the colon, and ignores space after it', () => {
+    expect(keyBefore('a:b:')).toBe('a:b');
+    expect(keyBefore('key: \n ')).toBe('key');
+    expect(keyBefore('key :')).toBeNull();
+    expect(keyBefore(':')).toBeNull();
+    expect(keyBefore(undefined)).toBeNull();
+  });
+
+  it('is quick on a very long line with no colon', () => {
+    const started = performance.now();
+    expect(keyBefore('x'.repeat(200000))).toBeNull();
+    expect(keyBefore(`${'x'.repeat(200000)}: `)).toBe('x'.repeat(200000));
+    expect(performance.now() - started).toBeLessThan(500);
+  });
 });
 
 describe('codeTheme', () => {

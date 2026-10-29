@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, within, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'vitest-axe';
 import { TableViewer } from './TableViewer.jsx';
@@ -90,6 +90,8 @@ describe('TableViewer', () => {
     const fetcher = () => Promise.reject(new Error('offline'));
     render(<TableViewer source="https://example.com/a.csv" fetcher={fetcher} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('offline');
-    expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: 'offline' }));
+    await waitFor(() =>
+      expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: 'offline' })),
+    );
   });
 });

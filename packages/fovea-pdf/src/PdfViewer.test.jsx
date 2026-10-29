@@ -232,7 +232,9 @@ describe('PdfViewer', () => {
     const fetcher = () => Promise.reject(new Error('offline'));
     render(<PdfViewer source="https://example.com/a.pdf" fetcher={fetcher} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('offline');
-    expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: 'offline' }));
+    await waitFor(() =>
+      expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: 'offline' })),
+    );
   });
 
   it('reports a file that is not a PDF', async () => {
@@ -247,6 +249,6 @@ describe('PdfViewer', () => {
     vi.mocked(loadPdfjs).mockResolvedValue(pdfjs);
     render(<PdfViewer source={file()} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('Invalid PDF structure.');
-    expect(onError).toHaveBeenCalled();
+    await waitFor(() => expect(onError).toHaveBeenCalled());
   });
 });

@@ -277,6 +277,6 @@ describe('PowerpointViewer', () => {
     const onError = vi.fn();
     render(<PowerpointViewer source={new File(['not a deck'], 'x.pptx')} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('could not be read');
-    expect(onError).toHaveBeenCalled();
+    await waitFor(() => expect(onError).toHaveBeenCalled());
   });
 });

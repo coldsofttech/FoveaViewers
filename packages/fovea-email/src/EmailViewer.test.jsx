@@ -143,6 +143,6 @@ describe('EmailViewer', () => {
     const fetcher = vi.fn().mockResolvedValue({ ok: false, status: 404 });
     render(<EmailViewer source="https://example.com/x.eml" fetcher={fetcher} onError={onError} />);
     expect(await screen.findByRole('alert')).toHaveTextContent('could not be loaded');
-    expect(onError).toHaveBeenCalled();
+    await waitFor(() => expect(onError).toHaveBeenCalled());
   });
 });

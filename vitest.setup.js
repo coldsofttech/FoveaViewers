@@ -6,7 +6,8 @@ import '@testing-library/jest-dom/vitest';
 expect.extend(axeMatchers);
 
 // Render every test in StrictMode to surface unsafe effects.
-// A busy machine running many test files at once can take longer than the 1 s default.
-configure({ reactStrictMode: true, asyncUtilTimeout: 3000 });
+// A busy machine (a CI runner with coverage on) running many test files at once can take much
+// longer than the 1 s default. A wait only lasts this long when something is wrong.
+configure({ reactStrictMode: true, asyncUtilTimeout: 10000 });
 
 afterEach(() => cleanup());

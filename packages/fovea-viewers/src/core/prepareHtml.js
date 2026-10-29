@@ -113,6 +113,31 @@ function withoutLinkAddresses(html) {
 }
 
 /**
+ * The markup without any `<meta http-equiv="refresh">` tag, which would send the page elsewhere.
+ *
+ * Each tag is cut out with `indexOf`, and the search stops at the first tag that never ends. A
+ * single pattern for this rereads the rest of the page at every unfinished `<meta`.
+ *
+ * @param {string} html
+ * @returns {string}
+ */
+function withoutRefresh(html) {
+  const starts = /<meta\b/gi;
+  let kept = '';
+  let from = 0;
+  for (let found = starts.exec(html); found; found = starts.exec(html)) {
+    const end = html.indexOf('>', found.index);
+    if (end === -1) break;
+    if (/http-equiv\s*=\s*["']?refresh/i.test(html.slice(found.index, end))) {
+      kept += html.slice(from, found.index);
+      from = end + 1;
+    }
+    starts.lastIndex = end + 1;
+  }
+  return kept + html.slice(from);
+}
+
+/**
  * A page's markup ready for the frame. Nothing is let in by default: the markup is cleaned (scripts,
  * event handlers, frames, objects and `<base>` are taken out), a refresh to another address is
  * removed, and a policy is added so the page cannot load pictures, styles or fonts from the web.
@@ -127,7 +152,7 @@ function withoutLinkAddresses(html) {
  */
 export function prepareHtml(html, options = {}) {
   const { allowStyles = false, allowScripts = false, stripLinks = false, base } = options;
-  let page = html.replace(/<meta\b[^>]*http-equiv\s*=\s*["']?refresh["']?[^>]*>/gi, '');
+  let page = withoutRefresh(html);
 
   if (allowScripts) {
     page = page.replace(/<base\b[^>]*>/gi, '');

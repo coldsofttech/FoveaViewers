@@ -74,6 +74,18 @@ describe('prepareHtml (scripts allowed)', () => {
     expect(out).toContain("default-src 'none'");
   });
 
+  it('removes a refresh whatever its spelling, keeps other meta tags, and is quick on many open tags', () => {
+    const out = prepareHtml(
+      '<head><META HTTP-EQUIV = \'Refresh\' content=\'0;url=https://x.example\'><meta name="viewport" content="width=device-width"></head><body>ok</body>',
+      { allowScripts: true },
+    );
+    expect(out).not.toMatch(/refresh/i);
+    expect(out).toContain('name="viewport"');
+    const started = performance.now();
+    prepareHtml('<meta '.repeat(50000), { allowScripts: true });
+    expect(performance.now() - started).toBeLessThan(2000);
+  });
+
   it('takes the address out of links when asked, and keeps their text and the doctype', () => {
     const out = prepareHtml(PAGE, { allowScripts: true, stripLinks: true });
     expect(out).toContain('>link</a>');
