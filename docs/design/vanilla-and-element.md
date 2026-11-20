@@ -611,7 +611,8 @@ before a 1.0.
 - `npm run verify:browser` and `npm run verify:spikes` run the same checks locally.
 
 **Housekeeping.** `sample.log`, which the demo and the smoke test refer to, was missing from
-`examples/demo/public/samples`; it is added, so `npm run smoke` passes (48 of 48).
+`examples/demo/public/samples` because the repository's `.gitignore` ignores `*.log`; it is added with an
+exception for that folder, so `npm run smoke` passes (48 of 48).
 
 **What was left out on purpose**
 

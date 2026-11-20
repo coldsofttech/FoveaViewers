@@ -1,0 +1,6 @@
+2026-11-20T09:00:01Z INFO  server started on port 8080
+2026-11-20T09:00:02Z INFO  connected to database
+2026-11-20T09:00:07Z WARN  slow request: GET /reports took 1240 ms
+2026-11-20T09:00:09Z ERROR failed to send email to ada@example.com: connection reset
+2026-11-20T09:00:10Z INFO  retrying in 5 s
+2026-11-20T09:00:15Z INFO  email sent

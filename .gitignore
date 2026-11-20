@@ -19,6 +19,8 @@ desktop.ini
 
 # Logs and temporary files
 *.log
+# The demo's sample log is a file to open, not a log of ours.
+!examples/demo/public/samples/*.log
 *.tmp
 *.bak
 
