@@ -7,8 +7,9 @@
  * @property {boolean} [cancelable] Whether `preventDefault()` on the event is meaningful.
  * @property {(...args: any[]) => unknown} [detail] Builds the event's `detail` from the callback's
  *   arguments. Defaults to the first argument.
- * @property {(...args: any[]) => void} [fallback] Runs after the event when it was cancelable and
- *   nobody called `preventDefault()`. This is the behaviour a viewer has when no callback is given.
+ * @property {(host: HTMLElement, ...args: any[]) => void} [fallback] Runs after the event when it was
+ *   cancelable and nobody called `preventDefault()`; it is given the element and the callback's
+ *   arguments. This is the behaviour a viewer has when no callback is given.
  *
  * @typedef {object} ViewerElementSpec
  * @property {string} tag The default tag name, for example `fovea-markdown`.
@@ -125,7 +126,7 @@ export function defineViewerElement(spec) {
               cancelable,
             });
             const proceed = this.dispatchEvent(event);
-            if (proceed && cancelable) fallback?.(...args);
+            if (proceed && cancelable) fallback?.(this, ...args);
           };
         }
       }

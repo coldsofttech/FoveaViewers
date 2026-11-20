@@ -52,7 +52,15 @@ try {
   const page = await browser.newPage({ viewport: { width: 1000, height: 900 } });
   const problems = [];
   page.on('pageerror', (e) => problems.push(e.message));
-  page.on('console', (m) => m.type() === 'error' && problems.push(m.text()));
+  // The browser reports what a viewer's own Content-Security-Policy blocks (a picture on the web in
+  // the sample page) as an error. That is the safety feature working, not a problem.
+  page.on(
+    'console',
+    (m) =>
+      m.type() === 'error' &&
+      !m.text().includes('Content Security Policy') &&
+      problems.push(m.text()),
+  );
   await page.goto(`http://127.0.0.1:${server.address().port}/`);
 
   const run = (fn, arg) => page.evaluate(fn, arg);
@@ -158,6 +166,68 @@ try {
     big.ordered && big.moved,
     JSON.stringify(big),
   );
+
+  // <fovea-viewer> opens eight kinds of file, each by loading its own viewer -------------------------
+  await page.waitForFunction(() => document.querySelectorAll('#auto fovea-viewer').length === 8);
+  const auto = await page.evaluate(async () => {
+    const innerOf = (el) => el.shadowRoot?.querySelector('[data-fovea-root] [data-fovea-root]');
+    // How each viewer shows that its CSS reached the shadow root, and that it has drawn something.
+    const probes = {
+      txt: (r) => getComputedStyle(r).overflowY === 'auto' && r.querySelector('[data-line]'),
+      md: (r) => getComputedStyle(r).overflowY === 'auto' && r.querySelector('h1, h2'),
+      csv: (r) =>
+        r.querySelector('tbody tr') &&
+        getComputedStyle(r.querySelector('th')).position === 'sticky',
+      // The code viewer holds a text viewer: its CSS is on the nested root.
+      js: (r) => {
+        const lines = r.querySelector('[data-fovea-root]');
+        return (
+          lines &&
+          getComputedStyle(lines).fontFamily.includes('mono') &&
+          lines.querySelector('[data-line] span span')
+        );
+      },
+      rss: (r) => getComputedStyle(r).overflowY === 'auto' && r.querySelector('article'),
+      html: (r) => r.querySelector('iframe')?.getAttribute('srcdoc'),
+      eml: (r) => getComputedStyle(r).display === 'flex' && r.querySelector('h2'),
+      png: (r) =>
+        getComputedStyle(r.querySelector('[role="toolbar"]')).display === 'flex' &&
+        r.querySelector('img')?.naturalWidth > 0,
+    };
+    const out = {};
+    const end = Date.now() + 15000;
+    for (const [extension, probe] of Object.entries(probes)) {
+      const el = document.getElementById(`auto-${extension}`);
+      for (;;) {
+        const root = innerOf(el);
+        const ok = (() => {
+          try {
+            return Boolean(root && probe(root));
+          } catch {
+            return false;
+          }
+        })();
+        if (ok || Date.now() > end) {
+          // eslint-disable-next-line security/detect-object-injection -- the key is one of the probes' own.
+          out[extension] = {
+            ok,
+            alert: root?.querySelector('[role="alert"]')?.textContent ?? null,
+            height: Math.round(el.getBoundingClientRect().height),
+          };
+          break;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+    }
+    return out;
+  });
+  for (const [extension, r] of Object.entries(auto)) {
+    check(
+      `auto: <fovea-viewer> shows sample.${extension}, styled inside its shadow root`,
+      r.ok && !r.alert && r.height > 100,
+      JSON.stringify(r),
+    );
+  }
 
   // Plain JavaScript in the light DOM ------------------------------------------------------------
   await page.waitForFunction(() => document.querySelector('#text-host [data-line="1"]'));

@@ -6,7 +6,11 @@ export default defineConfig({
   plugins: [react()],
   build: {
     lib: {
-      entry: 'src/index.js',
+      entry: {
+        index: 'src/index.js',
+        'vanilla/index': 'src/vanilla/index.js',
+        element: 'src/element.js',
+      },
       formats: ['es'],
     },
     sourcemap: true,
@@ -26,6 +30,7 @@ export default defineConfig({
     environment: 'jsdom',
     // Tests use the other packages' source, so they do not need them built first.
     // The more specific paths come first, or `/core` would also match `/core/vanilla`.
+    // The more specific paths come first, or `/core` would also match `/core/vanilla`.
     alias: {
       '@coldsofttech/fovea-viewers/core/vanilla': fileURLToPath(
         new URL('../fovea-viewers/src/core/vanilla/index.js', import.meta.url),
@@ -35,6 +40,12 @@ export default defineConfig({
       ),
       '@coldsofttech/fovea-viewers/core': fileURLToPath(
         new URL('../fovea-viewers/src/core/index.js', import.meta.url),
+      ),
+      '@coldsofttech/fovea-text/vanilla': fileURLToPath(
+        new URL('../fovea-text/src/vanilla/index.js', import.meta.url),
+      ),
+      '@coldsofttech/fovea-text/css': fileURLToPath(
+        new URL('../fovea-text/src/style.css.js', import.meta.url),
       ),
       '@coldsofttech/fovea-text': fileURLToPath(
         new URL('../fovea-text/src/index.js', import.meta.url),

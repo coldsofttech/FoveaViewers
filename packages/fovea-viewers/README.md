@@ -210,9 +210,37 @@ load('pdf');
 
 `@coldsofttech/fovea-viewers/core` holds what the viewers have in common. You do not need it to use `Viewer`. It is useful if you build a viewer of your own, or want the same behaviour in your app.
 
-### Without React (work in progress)
+### Without React
 
-`@coldsofttech/fovea-viewers/core/vanilla` and `@coldsofttech/fovea-viewers/core/element` are the React-free building blocks for the `/vanilla` controllers and `/element` Web Components that each viewer package will gain. They are for the Fovea packages: their API may change before 1.0, and they are not yet something to build an app on. React is an optional peer dependency of this package, so using only these entry points needs no React.
+`createViewer` and `<fovea-viewer>` open a file in the matching viewer without React, as `Viewer` does. They load the viewer when it is needed. So far the code, email, feed, html, image, markdown, table and text viewers can be used this way. The PDF, Excel, Word and PowerPoint viewers still need their React components.
+
+```js
+import { createViewer } from '@coldsofttech/fovea-viewers/vanilla';
+import '@coldsofttech/fovea-markdown/style.css'; // and the style sheet of any viewer you may open
+
+const viewer = createViewer(document.getElementById('host'), {
+  source: file, // a URL, File or Blob; the viewer is picked from its name or type
+  theme: 'dark',
+  options: { allowImages: true }, // props of the viewer that opens the file
+  onReady: (info) => console.log(info),
+});
+viewer.update({ source: otherFile }); // a file of another kind swaps the viewer
+viewer.destroy();
+```
+
+```html
+<script type="module">
+  import '@coldsofttech/fovea-viewers/element'; // registers <fovea-viewer>
+</script>
+
+<fovea-viewer src="/files/report.md" style="height: 500px"></fovea-viewer>
+```
+
+`createViewer(container, props)` takes `source`, `type` (a viewer id, to skip the guess), `fetcher`, `theme`, `label`, the callbacks, and `options`: an object of the props the chosen viewer takes (`target`, `pageSize`, `allowImages` and so on). It returns `{ element, update, destroy }`. A prop that is no longer given goes back to the viewer's default.
+
+`<fovea-viewer>` takes `src`, `type`, `theme` and `label` as attributes, and `source`, `fetcher` and `options` as properties. It draws into a shadow root and brings each viewer's CSS with it, so no style sheet has to be imported. It dispatches `fovea-ready`, `fovea-error`, `fovea-marked`, `fovea-located` and `fovea-navigate`, as the viewer reports them. A click on a link fires `fovea-navigate`; call `preventDefault()` on it to handle the link yourself, or leave it and an http(s) or mailto link opens in a new window.
+
+The viewers you open must be installed, as with `Viewer`. `@coldsofttech/fovea-viewers/core/vanilla` and `@coldsofttech/fovea-viewers/core/element` are the React-free building blocks of the `/vanilla` and `/element` entry points; they are for the Fovea packages, and their API may change before 1.0. React is an optional peer dependency of this package.
 
 | Export                                           | What it is                                                                                                                        |
 | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |

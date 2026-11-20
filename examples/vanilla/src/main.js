@@ -1,6 +1,8 @@
 // Web Components: importing a viewer's `/element` registers its tag.
 import '@coldsofttech/fovea-text/element';
 import '@coldsofttech/fovea-image/element';
+// <fovea-viewer> opens any file the viewers can, and loads the matching viewer when it is needed.
+import '@coldsofttech/fovea-viewers/element';
 
 // Plain JavaScript: call the viewer's function with an element, and import its stylesheet.
 import { createTextViewer } from '@coldsofttech/fovea-text/vanilla';
@@ -47,3 +49,17 @@ document.getElementById('file').addEventListener('change', (event) => {
   (isImage ? document.getElementById('image') : document.getElementById('text')).source = file;
   (isImage ? image : text).update({ source: file });
 });
+
+// One <fovea-viewer> for each sample: the viewer for each is chosen from the file name.
+const SAMPLES = ['txt', 'md', 'csv', 'js', 'rss', 'html', 'eml', 'png'];
+const auto = document.getElementById('auto');
+for (const extension of SAMPLES) {
+  const frame = document.createElement('div');
+  frame.className = 'frame';
+  const element = document.createElement('fovea-viewer');
+  element.id = `auto-${extension}`;
+  element.setAttribute('src', `/samples/sample.${extension}`);
+  element.setAttribute('label', `Sample ${extension}`);
+  frame.append(element);
+  auto.append(frame);
+}

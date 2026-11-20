@@ -4,7 +4,7 @@
 [![CI](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml/badge.svg)](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/coldsofttech/FoveaViewers/blob/main/LICENSE)
 
-A CSV and TSV table viewer for React. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
+A CSV and TSV table viewer for React, plain JavaScript and as a Web Component. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
 
 ## Features
 
@@ -23,7 +23,7 @@ A CSV and TSV table viewer for React. It is part of [Fovea Viewers](https://gith
 npm install @coldsofttech/fovea-table @coldsofttech/fovea-viewers
 ```
 
-React and `react-dom` 18 or 19 must be installed in your app.
+React and `react-dom` 18 or 19 must be installed in your app if you use the React component. The plain JavaScript and Web Component entry points (below) need no React.
 
 ## Use
 
@@ -37,6 +37,47 @@ import '@coldsofttech/fovea-table/style.css';
 ```
 
 The viewer fills the height of its parent, so give the parent a height.
+
+## Without React
+
+The same viewer is available from plain JavaScript and as a Web Component. Neither needs React.
+
+```js
+import { createTableViewer } from '@coldsofttech/fovea-table/vanilla';
+import '@coldsofttech/fovea-table/style.css';
+
+const viewer = createTableViewer(document.getElementById('host'), {
+  source: file, // a URL, File, Blob or ArrayBuffer
+  header: false,
+  pageSize: 50,
+  onError: (error) => console.error(error),
+});
+
+viewer.update({ theme: 'dark' }); // change props later
+viewer.destroy(); // remove the viewer and stop loading
+```
+
+`createTableViewer(container, props)` takes the props in the table below and returns `{ element, update, destroy }`. The container needs a height.
+
+```html
+<script type="module">
+  import '@coldsofttech/fovea-table/element'; // registers <fovea-table>
+</script>
+
+<fovea-table src="/data/people.csv" page-size="50" style="height: 400px"></fovea-table>
+```
+
+The element draws into a shadow root, so no stylesheet has to be imported and the page's styles do not leak in. It fills the height of its parent, or the height you give it.
+
+| Attribute or property             | Notes                                                                                   |
+| --------------------------------- | --------------------------------------------------------------------------------------- |
+| `src` / `source`                  | A URL as an attribute. A `File`, `Blob` or `ArrayBuffer` goes in the `source` property. |
+| `theme`                           | `light` or `dark`. The property also takes an object of colours.                        |
+| `label`, `delimiter`, `page-size` | As the props of the same name.                                                          |
+| `header`, `sortable`              | On by default: `header="false"` and `sortable="false"` turn them off.                   |
+| `fetcher`                         | Property only.                                                                          |
+
+Events: `fovea-ready` (`event.detail` has `rowCount`, `columnCount` and `delimiter`) and `fovea-error` (`event.detail` is the `Error`). Colours also come from `--fovea-*` custom properties set on the element or on any ancestor.
 
 ## Props
 

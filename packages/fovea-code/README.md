@@ -4,7 +4,7 @@
 [![CI](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml/badge.svg)](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/coldsofttech/FoveaViewers/blob/main/LICENSE)
 
-A source code viewer for React, as Visual Studio Code would show it. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
+A source code viewer for React, plain JavaScript and as a Web Component, as Visual Studio Code would show it. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
 
 ## Features
 
@@ -23,7 +23,7 @@ A source code viewer for React, as Visual Studio Code would show it. It is part 
 npm install @coldsofttech/fovea-code @coldsofttech/fovea-text @coldsofttech/fovea-viewers
 ```
 
-React and `react-dom` 18 or 19 must be installed in your app. The code viewer draws with the text viewer, so it needs its style sheet.
+React and `react-dom` 18 or 19 must be installed in your app if you use the React component. The plain JavaScript and Web Component entry points (below) need no React. The code viewer draws with the text viewer, so it needs its style sheet.
 
 ## Use
 
@@ -37,6 +37,46 @@ import '@coldsofttech/fovea-text/style.css';
 ```
 
 The viewer fills the height of its parent, so give the parent a height.
+
+## Without React
+
+The same viewer is available from plain JavaScript and as a Web Component. Neither needs React.
+
+```js
+import { createCodeViewer } from '@coldsofttech/fovea-code/vanilla';
+import '@coldsofttech/fovea-text/style.css';
+
+const viewer = createCodeViewer(document.getElementById('host'), {
+  source: file, // a URL, File, Blob or ArrayBuffer
+  language: 'json',
+  match: { matched: 'version' },
+  onError: (error) => console.error(error),
+});
+
+viewer.update({ theme: 'dark' }); // change props later
+viewer.destroy(); // remove the viewer and stop loading
+```
+
+`createCodeViewer(container, props)` takes the props in the table below and returns `{ element, update, destroy }`. The container needs a height. The code viewer is drawn by the text viewer, so import `@coldsofttech/fovea-text/style.css` with it.
+
+```html
+<script type="module">
+  import '@coldsofttech/fovea-code/element'; // registers <fovea-code>
+</script>
+
+<fovea-code src="/src/app.js" theme="dark" style="height: 400px"></fovea-code>
+```
+
+The element draws into a shadow root, so no stylesheet has to be imported and the page's styles do not leak in. It fills the height of its parent, or the height you give it.
+
+| Attribute or property                      | Notes                                                                                   |
+| ------------------------------------------ | --------------------------------------------------------------------------------------- |
+| `src` / `source`                           | A URL as an attribute. A `File`, `Blob` or `ArrayBuffer` goes in the `source` property. |
+| `theme`                                    | `light` or `dark`. The property also takes an object of colours.                        |
+| `label`, `language`, `mode`, `line-height` | As the props of the same name.                                                          |
+| `fetcher`, `match`                         | Properties only.                                                                        |
+
+Events: `fovea-ready` (`event.detail` has `lineCount`, `language`, `mode`, `canFormat` and `tooBig`), `fovea-located` (`event.detail` is where `match` was found, or `null`) and `fovea-error` (`event.detail` is the `Error`). Colours also come from `--fovea-*` custom properties set on the element or on any ancestor.
 
 ## Props
 

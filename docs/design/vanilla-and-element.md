@@ -1,12 +1,11 @@
 # Design: vanilla JS and Web Component entry points
 
-Status: **Phase 0 and 1 approved; Phase 2 (the text and image pilot) built**: see
-[Phase 2: the pilot](#phase-2-the-pilot). The root of every package is still the React component
-with the same props; the new entries so far are `core/vanilla` and `core/element` in
-`@coldsofttech/fovea-viewers`, and `/vanilla` and `/element` in `@coldsofttech/fovea-text` and
-`@coldsofttech/fovea-image`. The spikes in
-[spikes/phase0](spikes/phase0/run.mjs) back the decisions below; their results are in
-[Spike results](#spike-results).
+Status: **Phases 0 to 2 approved; Phase 3 built** (see [Phase 3](#phase-3-the-shared-viewer-and-six-more-viewers)).
+The root of every package is still the React component with the same props. The code, email, feed,
+html, image, markdown, table and text viewers have `/vanilla` and `/element` entries, and
+`@coldsofttech/fovea-viewers` has `createViewer` and `<fovea-viewer>`. The PDF, Excel, Word and
+PowerPoint viewers are Phase 4. The spikes in [spikes/phase0](spikes/phase0/run.mjs) back the
+decisions below; their results are in [Spike results](#spike-results).
 
 ## Goal
 
@@ -419,6 +418,91 @@ controllers.
 - A root-level `tsc -p jsconfig.json` reports many type errors, mostly in tests and the demo, before
   and after this work. Each package's own `build:types` is clean.
 
+## Phase 3: the shared viewer and six more viewers
+
+**What was built**
+
+| In                                                              | What                                                                                                              |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `fovea-viewers`                                                 | `createViewer` (`/vanilla`) and `<fovea-viewer>` (`/element`); the catalog split from the React loaders (below)   |
+| `fovea-viewers/core`                                            | vanilla `createGrid` and `createHtmlFrame` (in `core/vanilla`); `Grid` and `HtmlFrame` are now wrappers over them |
+| `fovea-markdown`, `-table`, `-code`, `-feed`, `-html`, `-email` | `/vanilla`, `/element` and `/css`; the React components are wrappers                                              |
+| all eight converted                                             | each package exports its CSS text as `/css` (`dist/style.css.js`); the code viewer uses the text viewer's         |
+
+**`createViewer` and the registry.** The React entry loads viewers through `registry.js`, whose
+`import()` calls name the viewers' React roots. A vanilla app must never see those, or a bundler
+would try to resolve React for it. So the registry is split: `catalog.js` holds what files each
+viewer opens and the functions that pick one (no imports of viewers), `registry.js` adds the React
+loaders (the same exports as before), and `vanilla/registry.js` has the `/vanilla` and `/css`
+loaders for the eight viewers that have them. A viewer without a `/vanilla` entry gets a clear
+error ("cannot be used without React yet") rather than a failed import.
+
+**Styling a viewer inside a shadow root.** A viewer drawn by `createViewer` into a shadow root (the
+`<fovea-viewer>` element's, or any other) needs its CSS there. `createViewer` loads the chosen
+viewer's `/css` with it and adopts it into the shadow root, once for each root. Outside a shadow
+root nothing is added: the page's own `style.css` imports do the work.
+
+**`options`.** `<fovea-viewer>` cannot list every prop of every viewer as attributes, so it takes
+the chosen viewer's own props in an `options` object (`{ target, allowImages, pageSize }`), merged
+under the props `createViewer` has itself. A key that disappears from `options` goes back to the
+viewer's default.
+
+**Grid and HtmlFrame.** Both are controllers (`createGrid`, `createHtmlFrame`) that other
+controllers hold inside their own root, which is how the table, html and email viewers use them.
+Two details matter:
+
+- The grid keeps its header and paging buttons in the page while the reader sorts and pages, so the
+  button they pressed keeps the keyboard focus. The body is drawn again only when something it is
+  made from changes: rows, the cells' styles and spans, or the page. This keeps what a host did to
+  the cells (the Excel viewer marks words in them) across a render that changed nothing.
+- The React `Grid` and `HtmlFrame` render a `div` with `display: contents`, so the grid and the
+  frame sit where their parent's layout expects them.
+
+**`useController` grew two rules**, both found by existing tests failing:
+
+1. A prop that is no longer given is treated as `undefined`. (`rerender(<HtmlViewer ... />)` without
+   `target` must clear the mark.)
+2. A clean-up with the element still in the page is StrictMode's, so the controller is kept for the
+   effect that follows it instead of being destroyed and made again. A real unmount (the element
+   already out of the page) destroys at once. This stopped the Excel viewer losing its marks in
+   StrictMode and also stops a file being loaded twice there.
+
+**The element helper** passes the element to a `fallback` (`fallback(host, ...args)`), so a viewer can
+read its own props when nobody cancelled an event. The html viewer's fallback is what `links` says:
+`window` opens a new window, `viewer` sends the frame to the address, `none` does nothing.
+
+**The conformance suite** gained options for what differs between viewers: `settle` (finish what
+jsdom cannot, such as an image's `load` or a frame's `srcdoc`), `readyOnce` (the html viewer reports
+every load of its frame), `hasTheme` and `themeClears` (the html and email viewers have no theme; the
+code viewer has a theme of its own), `axeOptions` and `textOf`. Eight viewers run it on all three
+entry points.
+
+**Checked in a real browser** (`docs/design/spikes/phase2/verify.mjs`, now 30 checks): the eight
+kinds of file each open through one `<fovea-viewer>` element, with the viewer's own CSS working
+inside the shadow root (scrolling, sticky headers, monospace, flex layouts), plus everything from
+Phase 2.
+
+**What Phase 3 found**
+
+1. **The React-free check caught a real leak.** The markdown package's `locate.js` imported the
+   React `core` barrel for three pure functions, so `/vanilla` reached React. It now imports
+   `core/vanilla`. The same pattern is in the Excel, PDF and PowerPoint packages' pure modules
+   (`parseWorkbook`, `parsePresentation`, `pageTexts`) and will be moved in Phase 4.
+2. **StrictMode and a parent that edits the DOM.** Described above (`useController`).
+3. **Console CSP reports are not errors.** The html viewer blocks pictures on the web, and the
+   browser reports that to the console. The browser check ignores those reports.
+4. **Size.** `core` (the React entry) grew from 14.3 to 15.7 kB because it now carries the vanilla
+   grid and frame behind `Grid` and `HtmlFrame`; its limit is 16.5 kB. The vanilla entries are 0.7 kB
+   (html) to 50 kB (markdown, which is markdown-it), about the same as their React entries.
+
+**Not done, by design**
+
+- `<fovea-viewer>` cannot open PDF, Excel, Word or PowerPoint files yet (Phase 4).
+- The element's `fovea-navigate` always holds a click back so the event can be cancelled; the
+  viewer's own default is then done in the fallback. For the html viewer with `links="viewer"` that
+  is `location.assign` on the frame, which differs from a native navigation only in that the click's
+  default was already prevented.
+
 ## Spike results
 
 Run with `node docs/design/spikes/phase0/run.mjs` after `npm run build` (Chromium via Playwright,
@@ -463,5 +547,6 @@ From a scan of the existing code for document-level assumptions:
 4. Per-viewer packages stay.
 5. Open Shadow DOM for the element (from the spikes).
 
-Next: Phase 3, the shared `createViewer` and `<fovea-viewer>` (registry gets `loadVanilla`), then
-markdown, table, code, feed, html and email, including the vanilla `HtmlFrame` and `Grid`.
+Next: Phase 4, the heavy viewers (PDF, Excel, Word, PowerPoint). They need `createViewer`'s registry
+entries, their pure modules moved onto `core/vanilla`, and, for PDF, the pdf.js worker through the
+element.

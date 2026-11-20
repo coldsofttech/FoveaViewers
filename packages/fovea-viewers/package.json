@@ -5,7 +5,8 @@
   "license": "MIT",
   "type": "module",
   "sideEffects": [
-    "**/*.css"
+    "**/*.css",
+    "./dist/element.js"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -14,6 +15,14 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./vanilla": {
+      "types": "./dist/vanilla/index.d.ts",
+      "import": "./dist/vanilla/index.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
     },
     "./core": {
       "types": "./dist/core/index.d.ts",

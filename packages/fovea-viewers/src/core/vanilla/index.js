@@ -15,6 +15,8 @@ export { readSource as loadSource } from '../source.js';
 export { loadText } from './text.js';
 export { createShell } from './shell.js';
 export { createH } from './h.js';
+export { createGrid, compareCells } from './grid.js';
+export { createHtmlFrame } from './htmlFrame.js';
 export { applyTheme } from './theme.js';
 export { themeVars, lightTheme, darkTheme } from '../theme.js';
 export { clearMarks, markIn } from '../mark.js';

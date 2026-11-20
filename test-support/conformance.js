@@ -25,14 +25,41 @@ function deferred() {
  * @param {(root: HTMLElement, text: string) => void} [options.shows] Asserts the file's content is
  *   on screen.
  * @param {Record<string, unknown>} [options.props] Props the viewer needs besides `source`.
+ * @param {object} [options.axeOptions] Options for the accessibility check (for example
+ *   `{ iframes: false }`, to leave out the page inside a frame).
+ * @param {(root: HTMLElement) => string} [options.textOf] The text the viewer is showing, for a
+ *   viewer that shows it somewhere `textContent` does not reach (the HTML viewer's frame).
+ * @param {boolean} [options.readyOnce] False for a viewer that reports `onReady` again for every
+ *   load of the frame it draws in (the HTML viewer), so "once" is "at least once".
+ * @param {boolean} [options.hasTheme] False for a viewer with no `theme` prop (the HTML viewer draws
+ *   a page on white whatever the theme around it).
+ * @param {boolean} [options.themeClears] False for a viewer that has a theme of its own when none is
+ *   given (the code viewer), so removing the theme does not remove its colours.
  * @param {(root: HTMLElement) => void} [options.settle] Finishes what jsdom cannot do by itself,
  *   for example firing `load` on an image. Called again and again while a test waits, so it must
  *   do nothing the second time.
  */
-export function describeConformance(name, { adapters, text, shows, props = {}, settle }) {
+export function describeConformance(
+  name,
+  {
+    adapters,
+    text,
+    shows,
+    props = {},
+    settle,
+    themeClears = true,
+    hasTheme = true,
+    axeOptions,
+    readyOnce = true,
+    textOf = (root) => root.textContent,
+  },
+) {
   // Copied into a Uint8Array of this realm: the encoder's own buffer is not an ArrayBuffer to jsdom.
   const bytes = () => new Uint8Array(new TextEncoder().encode(text)).buffer;
   const respond = () => new Response(text);
+  /** `onReady` was called (once, unless the viewer reports every load). */
+  const reported = (fn) =>
+    readyOnce ? expect(fn).toHaveBeenCalledTimes(1) : expect(fn).toHaveBeenCalled();
 
   for (const adapter of adapters) {
     describe(`${name} conformance: ${adapter.name}`, () => {
@@ -67,21 +94,21 @@ export function describeConformance(name, { adapters, text, shows, props = {}, s
       it('loads a Blob and calls onReady once', async () => {
         const onReady = vi.fn();
         const handle = mount({ source: new Blob([text]), onReady });
-        await until(handle, () => expect(onReady).toHaveBeenCalledTimes(1));
+        await until(handle, () => reported(onReady));
         shows?.(handle.root, text);
       });
 
       it('loads an ArrayBuffer', async () => {
         const onReady = vi.fn();
         const handle = mount({ source: bytes(), onReady });
-        await until(handle, () => expect(onReady).toHaveBeenCalledTimes(1));
+        await until(handle, () => reported(onReady));
       });
 
       it('loads a URL through the host fetcher', async () => {
         const fetcher = vi.fn(async () => respond());
         const onReady = vi.fn();
         const handle = mount({ source: 'https://example.test/file', fetcher, onReady });
-        await until(handle, () => expect(onReady).toHaveBeenCalledTimes(1));
+        await until(handle, () => reported(onReady));
         expect(fetcher).toHaveBeenCalledWith('https://example.test/file');
       });
 
@@ -110,12 +137,13 @@ export function describeConformance(name, { adapters, text, shows, props = {}, s
         handle.update({ source: '/fast' });
         await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
         fast.resolve(new Response(text));
-        await until(handle, () => expect(onReady).toHaveBeenCalledTimes(1));
+        await until(handle, () => reported(onReady));
+        const calls = onReady.mock.calls.length;
         slow.resolve(new Response('OLD CONTENT'));
         await new Promise((r) => setTimeout(r, 20));
         settle?.(handle.root);
-        expect(onReady).toHaveBeenCalledTimes(1);
-        expect(handle.root.textContent).not.toContain('OLD CONTENT');
+        if (readyOnce) expect(onReady.mock.calls.length).toBe(calls);
+        expect(textOf(handle.root)).not.toContain('OLD CONTENT');
       });
 
       it('does not reload when props are unchanged or only a callback is replaced', async () => {
@@ -128,18 +156,22 @@ export function describeConformance(name, { adapters, text, shows, props = {}, s
         handle.update({ source: '/a', fetcher });
         handle.update({ onReady: second });
         gate.resolve(new Response(text));
-        await until(handle, () => expect(second).toHaveBeenCalledTimes(1));
+        await until(handle, () => expect(second).toHaveBeenCalled());
         expect(fetcher).toHaveBeenCalledTimes(1);
         expect(first).not.toHaveBeenCalled();
       });
 
-      it('applies a theme and clears it again', async () => {
+      (hasTheme ? it : it.skip)('applies a theme and clears it again', async () => {
         const onReady = vi.fn();
         const handle = mount({ source: new Blob([text]), theme: 'dark', onReady });
         await until(handle, () => expect(onReady).toHaveBeenCalled());
         expect(handle.root.style.getPropertyValue('--fovea-background')).not.toBe('');
         handle.update({ theme: undefined });
-        expect(handle.root.style.getPropertyValue('--fovea-background')).toBe('');
+        if (themeClears) {
+          expect(handle.root.style.getPropertyValue('--fovea-background')).toBe('');
+        } else {
+          expect(handle.root.style.getPropertyValue('--fovea-background')).not.toBe('');
+        }
         handle.update({ theme: { background: '#123456' } });
         expect(handle.root.style.getPropertyValue('--fovea-background')).toBe('#123456');
       });
@@ -176,7 +208,7 @@ export function describeConformance(name, { adapters, text, shows, props = {}, s
         const onReady = vi.fn();
         const handle = mount({ source: new Blob([text]), onReady });
         await until(handle, () => expect(onReady).toHaveBeenCalled());
-        expect(await axe(host)).toHaveNoViolations();
+        expect(await axe(host, axeOptions)).toHaveNoViolations();
       });
 
       if (adapter.acceptsShadowRoot) {
@@ -184,7 +216,7 @@ export function describeConformance(name, { adapters, text, shows, props = {}, s
           const shadow = host.attachShadow({ mode: 'open' });
           const onReady = vi.fn();
           const handle = mount({ source: new Blob([text]), onReady }, { container: shadow });
-          await until(handle, () => expect(onReady).toHaveBeenCalledTimes(1));
+          await until(handle, () => reported(onReady));
           expect(handle.root.getRootNode()).toBe(shadow);
           expect(host.childNodes.length).toBe(0);
           handle.destroy();

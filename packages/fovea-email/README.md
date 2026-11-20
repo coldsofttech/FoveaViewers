@@ -4,7 +4,7 @@
 [![CI](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml/badge.svg)](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/coldsofttech/FoveaViewers/blob/main/LICENSE)
 
-An email viewer for React. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
+An email viewer for React, plain JavaScript and as a Web Component. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
 
 ## Features
 
@@ -23,7 +23,7 @@ An email viewer for React. It is part of [Fovea Viewers](https://github.com/cold
 npm install @coldsofttech/fovea-email @coldsofttech/fovea-viewers
 ```
 
-React and `react-dom` 18 or 19 must be installed in your app.
+React and `react-dom` 18 or 19 must be installed in your app if you use the React component. The plain JavaScript and Web Component entry points (below) need no React.
 
 ## Use
 
@@ -37,6 +37,46 @@ import '@coldsofttech/fovea-email/style.css';
 ```
 
 The viewer fills the height of its parent, so give the parent a height.
+
+## Without React
+
+The same viewer is available from plain JavaScript and as a Web Component. Neither needs React.
+
+```js
+import { createEmailViewer } from '@coldsofttech/fovea-email/vanilla';
+import '@coldsofttech/fovea-email/style.css';
+
+const viewer = createEmailViewer(document.getElementById('host'), {
+  source: file, // a URL, File, Blob or ArrayBuffer
+  view: 'text',
+  links: 'window',
+  onError: (error) => console.error(error),
+});
+
+viewer.update({ theme: 'dark' }); // change props later
+viewer.destroy(); // remove the viewer and stop loading
+```
+
+`createEmailViewer(container, props)` takes the props in the table below and returns `{ element, update, destroy }`. The container needs a height.
+
+```html
+<script type="module">
+  import '@coldsofttech/fovea-email/element'; // registers <fovea-email>
+</script>
+
+<fovea-email src="/mail/welcome.eml" style="height: 500px"></fovea-email>
+```
+
+The element draws into a shadow root, so no stylesheet has to be imported and the page's styles do not leak in. It fills the height of its parent, or the height you give it.
+
+| Attribute or property          | Notes                                                                                   |
+| ------------------------------ | --------------------------------------------------------------------------------------- |
+| `src` / `source`               | A URL as an attribute. A `File`, `Blob` or `ArrayBuffer` goes in the `source` property. |
+| `label`, `links`, `view`       | As the props of the same name.                                                          |
+| `allow-images`, `allow-styles` | As the props of the same name. Both are off unless the attribute is there.              |
+| `fetcher`                      | Property only.                                                                          |
+
+Events: `fovea-ready` (`event.detail` is the parsed message), `fovea-navigate` and `fovea-attachment` (see below) and `fovea-error` (`event.detail` is the `Error`). A click on a link fires `fovea-navigate` (`event.detail` has `href` and the click `event`), and a click on an attachment fires `fovea-attachment` (`event.detail` is the attachment). Call `preventDefault()` on either to handle it yourself; otherwise `links` decides for a link and the attachment is downloaded. Colours also come from `--fovea-*` custom properties set on the element or on any ancestor.
 
 ## Props
 

@@ -101,7 +101,7 @@ A viewer fills the height of its parent, so give the parent a height.
 
 ## Without React
 
-Viewers are moving to be usable without React. So far the text and image viewers have two more entry points, and the others will follow:
+Viewers are moving to be usable without React. The code, email, feed, html, image, markdown, table and text viewers have two more entry points, and the PDF, Excel, Word and PowerPoint viewers will follow:
 
 ```js
 // Plain JavaScript
@@ -118,7 +118,7 @@ createTextViewer(document.getElementById('host'), { source: file });
 <fovea-image src="/photo.jpg" style="height: 400px"></fovea-image>
 ```
 
-The React components are unchanged. They now run the same code underneath. See [examples/vanilla](examples/vanilla/README.md) for an app with no React, and each package's README for the details.
+To open any file without knowing its kind, use `createViewer` or `<fovea-viewer>` from `@coldsofttech/fovea-viewers`. The React components are unchanged. They now run the same code underneath. See [examples/vanilla](examples/vanilla/README.md) for an app with no React, and each package's README for the details.
 
 ## What every viewer accepts
 

@@ -48,3 +48,37 @@ describe('the installed packages without React', () => {
     expect(element.shadowRoot.querySelector('img').getAttribute('src')).toBe('/b.png');
   });
 });
+
+describe('every viewer that can be used without React', () => {
+  const IDS = ['code', 'email', 'feed', 'html', 'image', 'markdown', 'table', 'text'];
+
+  it.each(IDS)('the %s viewer exports its function and registers its element', async (id) => {
+    const module = await import(/* @vite-ignore */ `@coldsofttech/fovea-${id}/vanilla`);
+    const name = `create${id[0].toUpperCase()}${id.slice(1)}Viewer`;
+    expect(typeof module[name]).toBe('function');
+    expect(module.meta.id).toBe(id);
+    await import(/* @vite-ignore */ `@coldsofttech/fovea-${id}/element`);
+    expect(customElements.get(`fovea-${id}`)).toBeDefined();
+    const css = (
+      await import(/* @vite-ignore */ `@coldsofttech/fovea-${id === 'code' ? 'text' : id}/css`)
+    ).default;
+    expect(css).toMatch(/\{/);
+  });
+});
+
+describe('createViewer and <fovea-viewer> from the installed package', () => {
+  it('open a file in the viewer for it, loading that viewer when needed', async () => {
+    const { createViewer } = await import('@coldsofttech/fovea-viewers/vanilla');
+    const host = add(document.createElement('div'));
+    const viewer = createViewer(host, { source: new File(['# Hello'], 'a.md') });
+    await vi.waitFor(() => expect(host.querySelector('h1')?.textContent).toBe('Hello'));
+    viewer.destroy();
+
+    await import('@coldsofttech/fovea-viewers/element');
+    const element = add(document.createElement('fovea-viewer'));
+    element.source = new File(['a,b\n1,2'], 'a.csv');
+    await vi.waitFor(() =>
+      expect(element.shadowRoot.querySelector('tbody td')?.textContent).toBe('1'),
+    );
+  });
+});

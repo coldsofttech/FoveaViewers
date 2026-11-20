@@ -24,6 +24,10 @@
       "types": "./dist/element.d.ts",
       "import": "./dist/element.js"
     },
+    "./css": {
+      "types": "./dist/style.css.d.ts",
+      "import": "./dist/style.css.js"
+    },
     "./style.css": "./dist/style.css"
   },
   "files": [

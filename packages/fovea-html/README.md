@@ -4,7 +4,7 @@
 [![CI](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml/badge.svg)](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/coldsofttech/FoveaViewers/blob/main/LICENSE)
 
-An HTML page viewer for React. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
+An HTML page viewer for React, plain JavaScript and as a Web Component. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
 
 ## Features
 
@@ -20,7 +20,7 @@ An HTML page viewer for React. It is part of [Fovea Viewers](https://github.com/
 npm install @coldsofttech/fovea-html @coldsofttech/fovea-viewers
 ```
 
-React and `react-dom` 18 or 19 must be installed in your app.
+React and `react-dom` 18 or 19 must be installed in your app if you use the React component. The plain JavaScript and Web Component entry points (below) need no React.
 
 ## Use
 
@@ -36,6 +36,46 @@ import '@coldsofttech/fovea-html/style.css';
 The viewer fills the height of its parent, so give the parent a height.
 
 With no options, the page shows its text, layout and its own styles, plus any pictures that are embedded in the file. That is often not how it looked on the web, because most pages pull their styles and pictures from other addresses. Switch those on below.
+
+## Without React
+
+The same viewer is available from plain JavaScript and as a Web Component. Neither needs React.
+
+```js
+import { createHtmlViewer } from '@coldsofttech/fovea-html/vanilla';
+import '@coldsofttech/fovea-html/style.css';
+
+const viewer = createHtmlViewer(document.getElementById('host'), {
+  source: file, // a URL, File, Blob or ArrayBuffer
+  links: 'window',
+  target: { matched: 'pricing' },
+  onError: (error) => console.error(error),
+});
+
+viewer.update({ theme: 'dark' }); // change props later
+viewer.destroy(); // remove the viewer and stop loading
+```
+
+`createHtmlViewer(container, props)` takes the props in the table below and returns `{ element, update, destroy }`. The container needs a height.
+
+```html
+<script type="module">
+  import '@coldsofttech/fovea-html/element'; // registers <fovea-html>
+</script>
+
+<fovea-html src="/saved/page.html" links="window" style="height: 500px"></fovea-html>
+```
+
+The element draws into a shadow root, so no stylesheet has to be imported and the page's styles do not leak in. It fills the height of its parent, or the height you give it.
+
+| Attribute or property                           | Notes                                                                                   |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `src` / `source`                                | A URL as an attribute. A `File`, `Blob` or `ArrayBuffer` goes in the `source` property. |
+| `label`, `links`                                | As the props of the same name (`none`, `viewer` or `window`).                           |
+| `allow-images`, `allow-styles`, `allow-scripts` | As the props of the same name. All are off unless the attribute is there.               |
+| `fetcher`, `target`                             | Properties only.                                                                        |
+
+Events: `fovea-ready` (`event.detail.allowScripts`), `fovea-marked` (`event.detail` is whether the target was found, or `null`), `fovea-navigate` (see below) and `fovea-error` (`event.detail` is the `Error`). A click on a link fires `fovea-navigate` (`event.detail` has `href` and the click `event`). Call `preventDefault()` on it to handle the link yourself; otherwise `links` decides what happens. Colours also come from `--fovea-*` custom properties set on the element or on any ancestor.
 
 ## Props
 

@@ -197,7 +197,7 @@ describe('defineViewerElement', () => {
       if (prevent) e.preventDefault();
     });
     calls.created[0].onNavigate('/x', click);
-    expect(fallback).toHaveBeenCalledWith('/x', click);
+    expect(fallback).toHaveBeenCalledWith(el, '/x', click);
     prevent = true;
     calls.created[0].onNavigate('/x', click);
     expect(fallback).toHaveBeenCalledTimes(1);

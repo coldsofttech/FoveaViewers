@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { componentName, load, registry, resolve } from './registry.js';
@@ -39,11 +39,15 @@ describe('load', () => {
 });
 
 describe('registry and the viewer packages', () => {
-  // The packages are not imported (they need the built shared package), so their entry files are read.
+  // The packages are not imported (they need the built shared package), so their entry files are read:
+  // `index.js`, and `meta.js` where a viewer keeps its `meta` apart from its components.
   // The ids come from the registry, not from a user.
   const entryOf = (/** @type {string} */ id) =>
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
-    readFileSync(join(import.meta.dirname, '..', '..', `fovea-${id}`, 'src', 'index.js'), 'utf8');
+    ['index.js', 'meta.js']
+      .map((name) => join(import.meta.dirname, '..', '..', `fovea-${id}`, 'src', name))
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      .map((path) => (existsSync(path) ? readFileSync(path, 'utf8') : ''))
+      .join('\n');
 
   it.each(registry.map((entry) => [entry.id, entry]))(
     'the %s viewer exports the component the registry looks for',
