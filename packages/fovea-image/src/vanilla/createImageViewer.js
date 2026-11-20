@@ -94,7 +94,7 @@ export function createImageViewer(container, props) {
     zoomIn,
     button('Fit to view', 'Fit', () => fitTo('contain')),
     button('Fit to width', 'Width', () => fitTo('width')),
-    button('Actual size', '100%', () => fitTo('actual')),
+    button('100% actual size', '100%', () => fitTo('actual')),
     button('Rotate left', '↺', () => rotate(-1)),
     button('Rotate right', '↻', () => rotate(1)),
   ];

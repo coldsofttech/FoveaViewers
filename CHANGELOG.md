@@ -4,6 +4,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-20
+
 ### Added
 
 - Every viewer can be used without React: each package has a `/vanilla` entry (`createCodeViewer`, `createEmailViewer`, `createExcelViewer`, `createFeedViewer`, `createHtmlViewer`, `createImageViewer`, `createMarkdownViewer`, `createPdfViewer`, `createPowerpointViewer`, `createTableViewer`, `createTextViewer`, `createWordViewer`, and `createLineViewer` in the text package) and an `/element` entry that registers a Web Component (`<fovea-code>`, `<fovea-email>`, `<fovea-excel>`, `<fovea-feed>`, `<fovea-html>`, `<fovea-image>`, `<fovea-markdown>`, `<fovea-pdf>`, `<fovea-powerpoint>`, `<fovea-table>`, `<fovea-text>`, `<fovea-word>`). Each package also exports its CSS as a string from `/css`.
@@ -16,6 +18,14 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - The React components of every viewer, `Grid` and `HtmlFrame` now draw through the `/vanilla` controllers. Their props and behaviour are the same. Each now renders inside one extra `div` (`display: contents` for `Grid` and `HtmlFrame`) and its root element carries a `data-fovea-root` attribute. A prop that is no longer given is treated as `undefined`, as in React before.
 - React and `react-dom` are now optional peer dependencies of `@coldsofttech/fovea-viewers` and of every viewer package, so the React-free entry points need no React. Apps that use the React components already have React.
+
+### Fixed
+
+- The default colour of line numbers and other secondary text (used when no `theme` is given) now meets the WCAG AA contrast ratio on a white page; it was grey `GrayText`, which is 3.9:1. Themes that set `--fovea-muted` are not affected.
+- The image viewer's actual-size button is now named `100% actual size` (it was `Actual size`), so its name contains its visible text.
+- Excel cells that have a fill of their own and no text colour now get black or white text, whichever reads better on the fill. They took the viewer's text colour before, which could be as light as the fill in a dark theme.
+- The demo's `sample.log` was missing from the repository, so the demo's log sample and the smoke test failed. It is added.
+- The attachment buttons of the email viewer follow `--fovea-link`, like the links of the other viewers, instead of the browser's fixed link colour.
 
 ## [0.1.0] - 2026-10-28
 

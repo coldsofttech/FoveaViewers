@@ -35,3 +35,7 @@ CodeQL is required by the `main` ruleset. Semgrep is deliberately not part of th
 - A lint rule that is a false positive can be silenced on one line with a comment that says why. Do not disable a rule for the whole repository.
 - A Semgrep finding can be suppressed with a `// nosemgrep: <rule-id>` comment and a reason.
 - Dismiss a CodeQL alert in the Security tab with a recorded reason.
+
+## Without React
+
+The `/vanilla` and `/element` entry points do not change how a file is treated. They are the same code the React components run. Viewers draw with a small element builder that sets text, never markup, and the markup that must be shown (Markdown, feeds, pages, emails, Word documents) is cleaned by the same sanitizers and frames as before. An element draws inside a shadow root; that isolates styles and is not a security boundary, which is why pages are still shown in a sandboxed frame.

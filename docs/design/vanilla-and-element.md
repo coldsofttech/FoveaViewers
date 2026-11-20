@@ -1,12 +1,12 @@
 # Design: vanilla JS and Web Component entry points
 
-Status: **Phases 0 to 3 approved; Phase 4 built** (see [Phase 4](#phase-4-the-heavy-viewers)). Every
-viewer now has `/vanilla`, `/element` and `/css` entries, and the React component of every viewer
-is a thin wrapper over its controller. The root of every package is still the React component with
-the same props. `@coldsofttech/fovea-viewers` has `createViewer` and `<fovea-viewer>`, which open
-all twelve kinds of file. What remains is Phase 5 (release hardening). The spikes in
-[spikes/phase0](spikes/phase0/run.mjs) back the decisions below; their results are in
-[Spike results](#spike-results).
+Status: **built and verified (Phases 0 to 5).** Every viewer has `/vanilla`, `/element` and `/css`
+entries next to the React component at the root, which keeps its props and behaviour and is now a
+thin wrapper over the controller. `@coldsofttech/fovea-viewers` has `createViewer` and
+`<fovea-viewer>`, which open all twelve kinds of file. The packages are at 0.2.0, ready to release.
+This document records how it was designed and what each phase found; the final state is described
+in the READMEs. The spikes in [spikes/phase0](spikes/phase0/run.mjs) back the early decisions; their
+results are in [Spike results](#spike-results).
 
 ## Goal
 
@@ -568,6 +568,59 @@ it starts on its first page, unsorted.
 - Phase 5: documentation pass, version and release workflow, a CI run on React 18, an accessibility
   review with a screen reader.
 
+## Phase 5: release hardening
+
+**Compatibility.** Every package's root exports were compared with `main`: nothing is missing
+(`meta` is now re-exported from `meta.js`, and `@coldsofttech/fovea-viewers/core` gained
+`useController`). The whole suite also passes against React 18.3.1, the oldest supported line, as
+CI's React 18 job does.
+
+**Accessibility.** The unit tests run axe in jsdom, which cannot check colour contrast or layout.
+`verify.mjs` now runs axe-core in Chromium on all twelve viewers, inside their shadow roots, in the
+default light colours and with the built-in dark theme (58 checks in all). It found real problems
+that no unit test could:
+
+1. **Default secondary text failed WCAG AA.** With no theme, line numbers, image alt text, feed
+   metadata and similar text used `GrayText`: 3.9:1 on white. It is now
+   `color-mix(in srgb, CanvasText 65%, Canvas)`, which is about 7:1 on a light page and stays
+   readable on a dark one. Themes that set `--fovea-muted` are unchanged.
+2. **A button's name did not contain its text** (WCAG 2.5.3): the image viewer's `100%` button was
+   named `Actual size`. It is now `100% actual size`.
+3. **Excel cells with a fill and no text colour** took the viewer's text colour, which in a dark theme
+   is as light as a light fill. They now get black or white, whichever reads better.
+4. **Email attachment buttons** used the browser's fixed `LinkText`; they follow `--fovea-link` now.
+
+One exception is kept in view rather than fixed: a PowerPoint thumbnail is a picture of the slide
+inside a button named by the slide's number and title. axe wants the whole text of the picture in the
+name; a name with every word on a slide would be noise for a screen reader. The check filters that
+one node and says why.
+
+What this does not cover: screen reader testing (NVDA, JAWS, VoiceOver), which needs people and
+machines this work did not have, and the keyboard paths in other browsers. The keyboard behaviour
+is covered by the unit tests; a manual pass with a screen reader is the main thing still worth doing
+before a 1.0.
+
+**Release.**
+
+- All 13 packages are at 0.2.0 and their peer ranges are `^0.2.0`; the changelog has a 0.2.0 entry.
+  The release workflow is unchanged: a GitHub release tagged `<package>@0.2.0` publishes one
+  package, so the shared package goes first, then the viewers (see `docs/development.md`).
+- CI has a `browser` job that runs `verify:browser` and `verify:spikes` in Chromium. It is not in
+  the required `ci` job yet, because it has not run on GitHub's runners; add it to `needs` once it
+  has been stable.
+- `npm run verify:browser` and `npm run verify:spikes` run the same checks locally.
+
+**Housekeeping.** `sample.log`, which the demo and the smoke test refer to, was missing from
+`examples/demo/public/samples`; it is added, so `npm run smoke` passes (48 of 48).
+
+**What was left out on purpose**
+
+- `Viewer` (React) and `createViewer` (vanilla) stay separate: the React one loads React
+  components, the other loads controllers. They are the same file-type logic (`catalog.js`).
+- No server-side rendering. The entries are safe to import on a server (nothing touches the DOM at
+  import), but a viewer draws only in a browser.
+- The email, html and Word viewers still have no `theme` prop; they draw a page on its own colours.
+
 ## Spike results
 
 Run with `node docs/design/spikes/phase0/run.mjs` after `npm run build` (Chromium via Playwright,
@@ -612,5 +665,5 @@ From a scan of the existing code for document-level assumptions:
 4. Per-viewer packages stay.
 5. Open Shadow DOM for the element (from the spikes).
 
-Next: Phase 5, release hardening: the documentation pass, accessibility review, the version bump and
-release workflow, and a release candidate.
+Next: release `0.2.0` (the shared package first), run `verify:browser` once on GitHub's runners, and
+add the `browser` job to the required check when it is stable.

@@ -114,7 +114,7 @@
 }
 
 .content [data-image] {
-  color: var(--fovea-muted, GrayText);
+  color: var(--fovea-muted, color-mix(in srgb, CanvasText 65%, Canvas));
   font-style: italic;
 }
 
@@ -137,7 +137,7 @@
 
 .content :global(.footnotes) {
   font-size: 0.9em;
-  color: var(--fovea-muted, GrayText);
+  color: var(--fovea-muted, color-mix(in srgb, CanvasText 65%, Canvas));
 }
 
 .content :global(.footnotes-sep) {

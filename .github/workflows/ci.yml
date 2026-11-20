@@ -76,6 +76,27 @@ jobs:
       - name: Bundle size
         run: npm run size
 
+  # Opens the built packages in a real browser: every viewer as a Web Component and as a function, with
+  # no React, in shadow roots, with axe-core. Not part of the required check until it has run on
+  # GitHub's runners for a while; see docs/development.md.
+  browser:
+    name: browser checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # Playwright is not a dependency of the repository: it is added here only.
+      - run: npm install --no-save playwright
+      - run: npx playwright install --with-deps chromium
+      - run: npm run verify:browser
+      - run: npm run verify:spikes
+
   # Single required status check for the branch ruleset.
   ci:
     if: always()

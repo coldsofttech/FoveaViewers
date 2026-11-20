@@ -240,6 +240,34 @@ try {
     );
   }
 
+  // Accessibility: axe-core on each viewer, in its shadow root, in the browser -------------------------
+  await page.addScriptTag({ path: join(root, 'node_modules/axe-core/axe.min.js') });
+  const violations = await page.evaluate(async () => {
+    const out = {};
+    for (const el of document.querySelectorAll('#auto fovea-viewer')) {
+      // The frames that show a page (html, email, Word) hold the file's own markup, which is not
+      // the viewer's to fix: leave out what is inside the frame, as the unit tests do.
+      const result = await window.axe.run(el, { iframes: false });
+      // One known exception, kept in view here: a PowerPoint thumbnail is a picture of the slide, its
+      // button is named by the slide's number and title, and axe wants the whole text of the picture
+      // in the name (WCAG 2.5.3). A name with every word of a slide would be noise for a screen reader.
+      for (const v of result.violations) {
+        if (v.id === 'label-content-name-mismatch') {
+          v.nodes = v.nodes.filter((n) => !n.html.includes('_thumbnail_'));
+        }
+      }
+      result.violations = result.violations.filter((v) => v.nodes.length > 0);
+      out[el.id] = result.violations.map(
+        (v) =>
+          `${v.id} (${v.nodes.length}): ${v.help}. First: ${v.nodes[0].html.slice(0, 120)} | ${(v.nodes[0].any[0]?.message ?? '').slice(0, 160)}`,
+      );
+    }
+    return out;
+  });
+  for (const [id, found] of Object.entries(violations)) {
+    check(`a11y: no axe violations in ${id}`, found.length === 0, found.join(' | '));
+  }
+
   // Plain JavaScript in the light DOM ------------------------------------------------------------
   await page.waitForFunction(() => document.querySelector('#text-host [data-line="1"]'));
   const light = await run(() => {
@@ -277,6 +305,31 @@ try {
     dark.controller === 'rgb(30, 30, 30)',
     dark.controller,
   );
+
+  // The same axe run with the built-in dark theme on every viewer.
+  const dark_ = await page.evaluate(async () => {
+    const out = {};
+    for (const el of document.querySelectorAll('#auto fovea-viewer'))
+      el.setAttribute('theme', 'dark');
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    for (const el of document.querySelectorAll('#auto fovea-viewer')) {
+      const result = await window.axe.run(el, { iframes: false });
+      const found = result.violations
+        .map((v) => ({ ...v, nodes: v.nodes.filter((n) => !n.html.includes('_thumbnail_')) }))
+        .filter((v) => v.nodes.length > 0);
+      out[el.id] = found.map(
+        (v) => `${v.id} (${v.nodes.length}): ${v.help}. ${v.nodes[0].html.slice(0, 100)}`,
+      );
+    }
+    return out;
+  });
+  for (const [id, found] of Object.entries(dark_)) {
+    check(
+      `a11y (built-in dark theme): no axe violations in ${id}`,
+      found.length === 0,
+      found.join(' | '),
+    );
+  }
 
   // Cleanup -------------------------------------------------------------------------------------
   const left = await run(() => {

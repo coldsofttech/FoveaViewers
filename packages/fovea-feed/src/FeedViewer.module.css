@@ -97,7 +97,7 @@
   flex-wrap: wrap;
   gap: 4px 12px;
   font-size: 12px;
-  color: var(--fovea-muted, GrayText);
+  color: var(--fovea-muted, color-mix(in srgb, CanvasText 65%, Canvas));
 }
 
 .picture {
@@ -132,7 +132,7 @@
   gap: 12px;
   margin-top: 12px;
   font-size: 12px;
-  color: var(--fovea-muted, GrayText);
+  color: var(--fovea-muted, color-mix(in srgb, CanvasText 65%, Canvas));
 }
 
 .root a[href] {

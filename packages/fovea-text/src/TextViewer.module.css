@@ -34,7 +34,7 @@
   padding: 0 12px 0 8px;
   text-align: right;
   user-select: none;
-  color: var(--fovea-muted, GrayText);
+  color: var(--fovea-muted, color-mix(in srgb, CanvasText 65%, Canvas));
   background: var(--fovea-gutter-background, Canvas);
   border-right: 1px solid var(--fovea-border, color-mix(in srgb, currentColor 20%, transparent));
 }

@@ -101,7 +101,7 @@
   padding: 0;
   border: 0;
   background: none;
-  color: LinkText;
+  color: var(--fovea-link, LinkText);
   font: inherit;
   text-decoration: underline;
   cursor: pointer;

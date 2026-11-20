@@ -152,6 +152,21 @@ function textOf(value, format) {
   return '';
 }
 
+/**
+ * Black or white, whichever reads better on a colour. A cell with a fill of its own and no text
+ * colour would otherwise take the viewer's text colour, which may be as light as the fill.
+ *
+ * @param {string} hex A colour as `#rrggbb`.
+ * @returns {string}
+ */
+function readableOn(hex) {
+  const [r, g, b] = [1, 3, 5].map((at) => Number.parseInt(hex.slice(at, at + 2), 16) / 255);
+  const channel = (/** @type {number} */ c) =>
+    c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  const luminance = 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+  return luminance > 0.179 ? '#000000' : '#ffffff';
+}
+
 /** @param {any} color @returns {string | undefined} */
 const colourOf = (color) => (color?.argb ? `#${String(color.argb).slice(-6)}` : undefined);
 
@@ -195,7 +210,10 @@ function styleOf(cell, value) {
   const fill = cell.fill;
   if (fill?.type === 'pattern' && fill.pattern === 'solid') {
     const background = colourOf(fill.fgColor);
-    if (background) css.backgroundColor = background;
+    if (background) {
+      css.backgroundColor = background;
+      if (!css.color) css.color = readableOn(background);
+    }
   }
   const alignment = cell.alignment;
   const horizontal = alignment?.horizontal;

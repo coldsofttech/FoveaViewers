@@ -169,3 +169,29 @@ describe('<fovea-excel>', () => {
     el.remove();
   });
 });
+
+describe('cells with a fill of their own', () => {
+  it('get black or white text, whichever reads better, unless the file sets a text colour', async () => {
+    const book = new ExcelJS.Workbook();
+    const sheet = book.addWorksheet('Fills');
+    const fill = (argb) => ({ type: 'pattern', pattern: 'solid', fgColor: { argb } });
+    sheet.addRow(['light', 'dark', 'own colour', 'no fill']);
+    sheet.getCell('A1').fill = fill('FFDDEBF7');
+    sheet.getCell('B1').fill = fill('FF1F3864');
+    sheet.getCell('C1').fill = fill('FF1F3864');
+    sheet.getCell('C1').font = { color: { argb: 'FFFF0000' } };
+    const host = document.createElement('div');
+    document.body.append(host);
+    const viewer = createExcelViewer(host, { source: new Blob([await book.xlsx.writeBuffer()]) });
+    await vi.waitFor(() => expect(viewer.element.querySelectorAll('td')).toHaveLength(4));
+    const [light, dark, own, none] = [...viewer.element.querySelectorAll('td')].map(
+      (td) => td.style.color,
+    );
+    expect(light).toBe('rgb(0, 0, 0)');
+    expect(dark).toBe('rgb(255, 255, 255)');
+    expect(own).toBe('rgb(255, 0, 0)');
+    expect(none).toBe('');
+    viewer.destroy();
+    host.remove();
+  });
+});

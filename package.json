@@ -19,7 +19,9 @@
     "test:coverage": "vitest run --coverage",
     "check:packages": "npm run check:packages --workspaces --if-present",
     "size": "size-limit",
-    "smoke": "node scripts/smoke-test.js"
+    "smoke": "node scripts/smoke-test.js",
+    "verify:browser": "node docs/design/spikes/phase2/verify.mjs",
+    "verify:spikes": "node docs/design/spikes/phase0/run.mjs"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",

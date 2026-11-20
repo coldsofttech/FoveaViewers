@@ -13,7 +13,7 @@ File viewers for React apps, and for any other page through plain JavaScript and
 - **Safe by default.** Files are treated as untrusted. Pages and emails are cleaned, nothing loads from the web, no script runs and no macro runs, unless you switch it on.
 - **Find and mark.** Most viewers can scroll to some words and highlight them, for example to show a search result.
 - **Light and dark.** Built-in themes, or your own colours.
-- **Accessible.** Works with the keyboard and screen readers.
+- **Accessible.** Works with the keyboard and screen readers, and every viewer is checked with axe-core in a real browser.
 - **Client-side.** Everything runs in the browser. Files stay on the reader's machine unless you load them from a URL.
 
 ## Viewers
@@ -68,7 +68,7 @@ npm install @coldsofttech/fovea-markdown @coldsofttech/fovea-viewers
 
 (Every viewer needs `@coldsofttech/fovea-viewers` next to it for the code they share.)
 
-React and `react-dom` 18 or 19 must be installed in your app. Use a bundler that understands ES modules and dynamic `import()`, such as Vite, webpack or Rollup.
+React and `react-dom` 18 or 19 must be installed in your app if you use the React components. [Without React](#without-react), you need no React at all. Use a bundler that understands ES modules and dynamic `import()`, such as Vite, webpack or Rollup.
 
 ## Use
 
@@ -101,24 +101,44 @@ A viewer fills the height of its parent, so give the parent a height.
 
 ## Without React
 
-Every viewer can be used without React. Each package has two more entry points, `/vanilla` and `/element`:
+Every viewer can be used without React. Each package has three ways in:
+
+| Entry                                  | For                                    | What it gives you                      |
+| -------------------------------------- | -------------------------------------- | -------------------------------------- |
+| `@coldsofttech/fovea-markdown`         | React                                  | the `MarkdownViewer` component         |
+| `@coldsofttech/fovea-markdown/vanilla` | plain JavaScript, Vue, Svelte, Angular | `createMarkdownViewer(element, props)` |
+| `@coldsofttech/fovea-markdown/element` | HTML and any framework                 | the `<fovea-markdown>` Web Component   |
 
 ```js
-// Plain JavaScript
+// Plain JavaScript: call the function with an element, and import the style sheet.
 import { createTextViewer } from '@coldsofttech/fovea-text/vanilla';
 import '@coldsofttech/fovea-text/style.css';
-createTextViewer(document.getElementById('host'), { source: file });
+
+const viewer = createTextViewer(document.getElementById('host'), { source: file, theme: 'dark' });
+viewer.update({ target: { line: 40 } }); // change props later
+viewer.destroy(); // remove the viewer and stop loading
 ```
 
 ```html
-<!-- Web Component -->
+<!-- Web Component: importing the element registers its tag. No style sheet is needed. -->
 <script type="module">
   import '@coldsofttech/fovea-image/element';
 </script>
 <fovea-image src="/photo.jpg" style="height: 400px"></fovea-image>
 ```
 
-To open any file without knowing its kind, use `createViewer` or `<fovea-viewer>` from `@coldsofttech/fovea-viewers`. The React components are unchanged. They now run the same code underneath. See [examples/vanilla](examples/vanilla/README.md) for an app with no React, and each package's README for the details.
+To open any file without knowing its kind, use `createViewer` (`@coldsofttech/fovea-viewers/vanilla`) or `<fovea-viewer>` (`@coldsofttech/fovea-viewers/element`). They pick the viewer from the file, load it when it is needed and bring its CSS into the shadow root.
+
+How the three ways relate:
+
+- **They are the same viewer.** The React components are thin wrappers over the functions, so a prop means the same thing everywhere. A function's props are the component's props; an element's attributes are the same names in `kebab-case` (`allow-images`); the callbacks are events (`fovea-ready`, `fovea-error`, `fovea-marked`, `fovea-navigate` and so on, with the argument in `event.detail`).
+- **A function returns `{ element, update, destroy }`.** `update` takes only the props that change, and a prop set to `undefined` goes back to its default.
+- **Things a string cannot hold are properties.** A `File`, `Blob` or `ArrayBuffer` goes in the element's `source` property; `fetcher`, `target` and objects of colours are properties too.
+- **An element draws in a shadow root.** The page's styles do not leak in, the viewer's do not leak out, and `--fovea-*` custom properties set on the element or any ancestor reach it. It fills the height of its parent, or the height you give it.
+- **Link clicks can be handled.** `fovea-navigate` is cancelable: call `preventDefault()` to handle a link yourself, or leave it and the viewer does what it did before (opens a new window, or what `links` says).
+- **The React components are unchanged** in props and behaviour. Each now renders inside one extra `div` and its root element has a `data-fovea-root` attribute.
+
+See [examples/vanilla](examples/vanilla/README.md) for an app with no React that opens twelve kinds of file, and each package's README for its attributes and events.
 
 ## What every viewer accepts
 
@@ -177,11 +197,13 @@ npm run dev
 
 You can also open any file of your own with the "open a file" box.
 
+The same viewers without React are in `examples/vanilla`: `npm run dev -w vanilla-demo`.
+
 ## Documentation
 
 - The README of each package, linked in the table above.
 - [CHANGELOG.md](CHANGELOG.md) for what changed.
-- [docs/](docs/README.md) for how the repository works: [development](docs/development.md), [security](docs/security.md), [third-party notices](docs/third-party-notices.md) and [repository setup](docs/repo-setup.md).
+- [docs/](docs/README.md) for how the repository works: [development](docs/development.md), [how the React-free entry points are built](docs/design/vanilla-and-element.md), [security](docs/security.md), [third-party notices](docs/third-party-notices.md) and [repository setup](docs/repo-setup.md).
 - [SUPPORT.md](SUPPORT.md) for where to ask questions and report bugs.
 
 ## Contributing

@@ -1,6 +1,6 @@
 {
   "name": "@coldsofttech/fovea-markdown",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Markdown viewer, safe by default and fast on large files, for React, plain JavaScript and as a Web Component.",
   "license": "MIT",
   "type": "module",
@@ -55,7 +55,7 @@
     "check:packages": "publint && attw --pack . --profile esm-only --exclude-entrypoints ./style.css && node ../../scripts/check-no-react.js && node ../../scripts/check-vanilla-no-react.js && node ../../scripts/check-pack.js"
   },
   "peerDependencies": {
-    "@coldsofttech/fovea-viewers": "^0.1.0",
+    "@coldsofttech/fovea-viewers": "^0.2.0",
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"
   },

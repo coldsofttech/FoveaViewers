@@ -17,3 +17,7 @@ Run them for one package after building it, for example `npm run check:packages 
 ## Smoke test
 
 `npm run build` and then `npm run smoke` installs the packed packages, as a user would, in a new app (`scripts/smoke/` is its template, and the demo's sample files are copied in). It then runs `vite build` on the app and a Vitest run that checks that every viewer loads and exports the component `Viewer` looks for, and that every sample opens without an error. Use `npm run smoke -- --react 18` to try React 18. It takes about a minute, so it is not part of CI. Run it before a release.
+
+## Browser checks
+
+`npm run verify:browser` (`docs/design/spikes/phase2/verify.mjs`) builds `examples/vanilla` and a small React app, opens them in Chromium and drives the built packages. It checks that the React-free app ships no React, that every viewer opens through `<fovea-viewer>` and is styled inside its shadow root (a PDF page is painted by pdf.js's worker), that a large text file draws only the lines near the view, that themes and targets work, and that axe-core finds no violations in any viewer. It needs Playwright with Chromium, which is not a dependency of the repository. `npm run verify:spikes` runs the Phase 0 spikes the same way.

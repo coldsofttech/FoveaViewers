@@ -29,16 +29,20 @@ The registry keeps its own copy of each viewer's MIME types and extensions so it
 
 All scripts run from the repository root.
 
-| Script                            | Purpose                                                                                                                         |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run dev`                     | Start the demo app (build packages first with `npm run build`)                                                                  |
-| `npm run build`                   | Build every package (Vite library mode, then `.d.ts` from JSDoc)                                                                |
-| `npm run lint`                    | ESLint across the repository                                                                                                    |
-| `npm run format` / `format:check` | Prettier write / check, including Markdown                                                                                      |
-| `npm test` / `test:coverage`      | Vitest; coverage thresholds live in `vitest.config.js`                                                                          |
-| `npm run check:packages`          | `publint`, `@arethetypeswrong/cli` and the checks in `scripts/`                                                                 |
-| `npm run size`                    | Gzipped size of each package against `.size-limit.json`                                                                         |
-| `npm run smoke`                   | Install the packed packages in a fresh app, build it and open every sample (run `npm run build` first; see `scripts/README.md`) |
+| Script                            | Purpose                                                                                                                                        |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`                     | Start the demo app (build packages first with `npm run build`)                                                                                 |
+| `npm run build`                   | Build every package (Vite library mode, then `.d.ts` from JSDoc)                                                                               |
+| `npm run lint`                    | ESLint across the repository                                                                                                                   |
+| `npm run format` / `format:check` | Prettier write / check, including Markdown                                                                                                     |
+| `npm test` / `test:coverage`      | Vitest; coverage thresholds live in `vitest.config.js`                                                                                         |
+| `npm run check:packages`          | `publint`, `@arethetypeswrong/cli` and the checks in `scripts/`                                                                                |
+| `npm run size`                    | Gzipped size of each package against `.size-limit.json`                                                                                        |
+| `npm run verify:browser`          | Open the built packages in Chromium: all twelve viewers as Web Components, as functions, in React, with axe-core (needs Playwright, see below) |
+| `npm run verify:spikes`           | The Phase 0 spikes: shadow roots, CSS delivery, the pdf.js worker (needs Playwright)                                                           |
+| `npm run smoke`                   | Install the packed packages in a fresh app, build it and open every sample (run `npm run build` first; see `scripts/README.md`)                |
+
+`verify:browser` and `verify:spikes` need Playwright with Chromium, which is not a dependency of the repository: run `npm install --no-save playwright && npx playwright install chromium` first (the machine may already have it). Run `npm run build` before them.
 
 To work on one package, scope the command, for example `npx vitest run packages/fovea-markdown` or `npm run build -w @coldsofttech/fovea-markdown`.
 
@@ -56,17 +60,17 @@ To work on one package, scope the command, for example `npx vitest run packages/
 
 ## CI
 
-`ci.yml` runs `lint`, `test` (Node 22, 24, 26 on Ubuntu; Node 24 on Windows and macOS, all with React 19; plus Node 24 with React 18) and `build`. `build` also builds the demo, checks tarball contents and reports gzipped bundle size against `.size-limit.json`. The final `ci` job is the single required check for the `main` ruleset. `dependency-review.yml` blocks pull requests that add vulnerable dependencies. `audit.yml` runs `npm audit` weekly and when `package-lock.json` changes. `security.yml` runs Semgrep and is not required.
+`ci.yml` runs `lint`, `test` (Node 22, 24, 26 on Ubuntu; Node 24 on Windows and macOS, all with React 19; plus Node 24 with React 18) and `build`. A `browser` job runs `verify:browser` and `verify:spikes` in Chromium; it is not in the required `ci` job yet (add it to `needs` once it has run reliably on GitHub's runners). `build` also builds the demo, checks tarball contents and reports gzipped bundle size against `.size-limit.json`. The final `ci` job is the single required check for the `main` ruleset. `dependency-review.yml` blocks pull requests that add vulnerable dependencies. `audit.yml` runs `npm audit` weekly and when `package-lock.json` changes. `security.yml` runs Semgrep and is not required.
 
 ## Release
 
-Each package is released on its own.
+Each package is released on its own. The viewers list `@coldsofttech/fovea-viewers` as a peer dependency and it lists them, all as `^<version>`, so when the packages move together (as for 0.2.0) release `@coldsofttech/fovea-viewers` first, then the viewers, and update those ranges in the same change.
 
 1. Set the new `version` in the package's `package.json` and merge it.
 2. Publish a GitHub release tagged `<package name>@<version>`, for example `@coldsofttech/fovea-markdown@0.2.0`.
 3. `release.yml` checks the tag against the package version, builds, and publishes that package to npm with provenance through the `npm` environment. See [repo-setup.md](repo-setup.md) for the one-time npm setup.
 
-When a package's public API changes, add a short `[Unreleased]` entry to `CHANGELOG.md` and update that package's README.
+When a package's public API changes, add a short `[Unreleased]` entry to `CHANGELOG.md` and update that package's README. Every viewer has three entry points (the React component at the root, `/vanilla`, `/element`) and a `/css` export; a change to a viewer's props touches the controller, the element's attribute list, the README tables and the conformance test.
 
 ## Cleanup
 
