@@ -12,7 +12,7 @@
  *
  * @typedef {object} ViewerElementSpec
  * @property {string} tag The default tag name, for example `fovea-markdown`.
- * @property {(container: ShadowRoot, props: Record<string, any>) => import('../vanilla/shell.js').ViewerController} create
+ * @property {(container: ShadowRoot, props: any) => import('../vanilla/shell.js').ViewerController} create
  *   The viewer's `/vanilla` factory.
  * @property {string} [css] The viewer's CSS text, adopted into the shadow root.
  * @property {Record<string, string | [string, AttributeType]>} [attributes] Attributes, by name,
@@ -33,13 +33,14 @@ const SET = Symbol('set');
 
 /**
  * Turns an attribute's text into the prop's value. A missing attribute is `undefined`, so the
- * viewer's own default applies; a boolean attribute is `true` when present.
+ * viewer's own default applies. A boolean attribute is `true` when present, except that the text
+ * `false` makes it `false` (so a prop that is on by default can be turned off in markup).
  *
  * @param {string | null} value
  * @param {AttributeType} type
  */
 function fromAttribute(value, type) {
-  if (type === 'boolean') return value === null ? undefined : true;
+  if (type === 'boolean') return value === null ? undefined : value !== 'false';
   if (value === null) return undefined;
   return type === 'number' ? Number(value) : value;
 }
@@ -84,7 +85,8 @@ export function defineViewerElement(spec) {
     let sheet = null;
     /** Adopts the CSS where the browser can share one parsed sheet, and otherwise adds a <style>. */
     const addStyles = (/** @type {ShadowRoot} */ shadow) => {
-      const text = `:host{display:block}:host([hidden]){display:none}${css ?? ''}`;
+      // Like the React viewers, it fills the height of its parent, which therefore needs a height.
+      const text = `:host{display:block;height:100%}:host([hidden]){display:none}${css ?? ''}`;
       if ('adoptedStyleSheets' in shadow && typeof CSSStyleSheet !== 'undefined') {
         sheet ??= new CSSStyleSheet();
         if (sheet.cssRules.length === 0) sheet.replaceSync(text);

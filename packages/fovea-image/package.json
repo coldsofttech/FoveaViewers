@@ -1,11 +1,12 @@
 {
   "name": "@coldsofttech/fovea-image",
   "version": "0.1.0",
-  "description": "Image viewer for React.",
+  "description": "Image viewer with zoom, pan and rotation for React, plain JavaScript and as a Web Component.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
-    "**/*.css"
+    "**/*.css",
+    "./dist/element.js"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -14,6 +15,14 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./vanilla": {
+      "types": "./dist/vanilla/index.d.ts",
+      "import": "./dist/vanilla/index.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
     },
     "./style.css": "./dist/style.css"
   },
@@ -39,11 +48,19 @@
   "scripts": {
     "build": "vite build && npm run build:types",
     "build:types": "tsc -p tsconfig.build.json",
-    "check:packages": "publint && attw --pack . --profile esm-only --exclude-entrypoints ./style.css && node ../../scripts/check-no-react.js && node ../../scripts/check-pack.js"
+    "check:packages": "publint && attw --pack . --profile esm-only --exclude-entrypoints ./style.css && node ../../scripts/check-no-react.js && node ../../scripts/check-vanilla-no-react.js && node ../../scripts/check-pack.js"
   },
   "peerDependencies": {
     "@coldsofttech/fovea-viewers": "^0.1.0",
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
   }
 }

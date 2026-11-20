@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fovea Viewers without React</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 16px;
+        font-family: system-ui, sans-serif;
+      }
+      h2 {
+        margin: 24px 0 8px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 16px;
+      }
+      .frame {
+        height: 280px;
+        border: 1px solid #ccc;
+      }
+      /* Theme tokens set on the element or any ancestor reach the viewer inside its shadow root. */
+      .dark {
+        --fovea-background: #1e1e1e;
+        --fovea-foreground: #d4d4d4;
+        --fovea-gutter-background: #1e1e1e;
+        --fovea-border: #3c3c3c;
+        --fovea-muted: #858585;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Fovea Viewers without React</h1>
+    <p>
+      <label>Open a file: <input id="file" type="file" /></label>
+      <button id="theme" type="button">Toggle dark</button>
+    </p>
+
+    <h2>Web Components</h2>
+    <div class="row">
+      <div class="frame"><fovea-text id="text" src="/samples/sample.txt"></fovea-text></div>
+      <div class="frame"><fovea-image id="image" src="/samples/sample.png"></fovea-image></div>
+    </div>
+
+    <h2>Plain JavaScript</h2>
+    <div class="row">
+      <div class="frame" id="text-host"></div>
+      <div class="frame" id="image-host"></div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

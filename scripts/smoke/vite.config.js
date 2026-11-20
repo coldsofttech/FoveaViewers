@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: 'jsdom',
-    include: ['smoke.test.jsx'],
+    include: ['smoke.test.jsx', 'smoke-vanilla.test.js'],
     // Vitest picks mammoth's build for Node. An app's bundler picks the browser build (the production
     // build above does), so the tests are pointed at it. Only the tests use this.
     alias: { mammoth: 'mammoth/mammoth.browser.js' },

@@ -6,7 +6,15 @@ export default defineConfig({
     projects: [
       'packages/*',
       // The repository's own build scripts (plain Node, no DOM).
-      { test: { name: 'scripts', include: ['scripts/**/*.test.js'], environment: 'node' } },
+      {
+        test: {
+          name: 'scripts',
+          include: ['scripts/**/*.test.js'],
+          // The smoke tests run in the app that `npm run smoke` builds, not here.
+          exclude: ['scripts/smoke/**'],
+          environment: 'node',
+        },
+      },
     ],
     coverage: {
       provider: 'v8',

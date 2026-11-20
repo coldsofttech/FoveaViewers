@@ -4,7 +4,7 @@
 [![CI](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml/badge.svg)](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/coldsofttech/FoveaViewers/blob/main/LICENSE)
 
-An image viewer for React. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
+An image viewer for React, plain JavaScript and as a Web Component. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
 
 ## Features
 
@@ -24,7 +24,7 @@ An image viewer for React. It is part of [Fovea Viewers](https://github.com/cold
 npm install @coldsofttech/fovea-image @coldsofttech/fovea-viewers
 ```
 
-React and `react-dom` 18 or 19 must be installed in your app.
+React and `react-dom` 18 or 19 must be installed in your app if you use the React component. The plain JavaScript and Web Component entry points (below) need no React.
 
 ## Use
 
@@ -38,6 +38,52 @@ import '@coldsofttech/fovea-image/style.css';
 ```
 
 The viewer fills the height of its parent, so give the parent a height.
+
+## Without React
+
+The same viewer is available from plain JavaScript and as a Web Component. Neither needs React.
+
+```js
+import { createImageViewer } from '@coldsofttech/fovea-image/vanilla';
+import '@coldsofttech/fovea-image/style.css';
+
+const viewer = createImageViewer(document.getElementById('host'), {
+  source: file, // a URL, File, Blob or ArrayBuffer
+  fit: 'width',
+  onReady: ({ width, height }) => console.log(width, height),
+  onError: (error) => console.error(error),
+});
+
+viewer.update({ theme: 'dark' }); // change props later
+viewer.destroy(); // remove the viewer and release the image
+```
+
+`createImageViewer(container, props)` takes the props in the table below and returns `{ element, update, destroy }`. The container needs a height.
+
+```html
+<script type="module">
+  import '@coldsofttech/fovea-image/element'; // registers <fovea-image>
+</script>
+
+<fovea-image
+  src="/photos/cat.jpg"
+  fit="width"
+  show-info="false"
+  style="height: 400px"
+></fovea-image>
+```
+
+The element draws into a shadow root, so no stylesheet has to be imported and the page's styles do not leak in. It fills the height of its parent, or the height you give it.
+
+| Attribute or property | Notes                                                                                   |
+| --------------------- | --------------------------------------------------------------------------------------- |
+| `src` / `source`      | A URL as an attribute. A `File`, `Blob` or `ArrayBuffer` goes in the `source` property. |
+| `theme`               | `light` or `dark`. The property also takes an object of colours.                        |
+| `label`, `alt`, `fit` | As the props of the same name.                                                          |
+| `show-info`           | `show-info="false"` leaves out the details. Leave it out, or use `true`, to show them.  |
+| `fetcher`             | Property only.                                                                          |
+
+Events: `fovea-ready` (`event.detail` has `width`, `height`, `size` and `type`) and `fovea-error` (`event.detail` is the `Error`). Colours also come from `--fovea-*` custom properties set on the element or on any ancestor.
 
 ## Props
 

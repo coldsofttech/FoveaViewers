@@ -4,7 +4,7 @@
 [![CI](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml/badge.svg)](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/coldsofttech/FoveaViewers/blob/main/LICENSE)
 
-A plain text viewer with line numbers for React. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
+A plain text viewer with line numbers for React, plain JavaScript and as a Web Component. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
 
 ## Features
 
@@ -22,7 +22,7 @@ A plain text viewer with line numbers for React. It is part of [Fovea Viewers](h
 npm install @coldsofttech/fovea-text @coldsofttech/fovea-viewers
 ```
 
-React and `react-dom` 18 or 19 must be installed in your app.
+React and `react-dom` 18 or 19 must be installed in your app if you use the React component. The plain JavaScript and Web Component entry points (below) need no React.
 
 ## Use
 
@@ -36,6 +36,47 @@ import '@coldsofttech/fovea-text/style.css';
 ```
 
 The viewer fills the height of its parent, so give the parent a height.
+
+## Without React
+
+The same viewer is available from plain JavaScript and as a Web Component. Neither needs React.
+
+```js
+import { createTextViewer } from '@coldsofttech/fovea-text/vanilla';
+import '@coldsofttech/fovea-text/style.css';
+
+const viewer = createTextViewer(document.getElementById('host'), {
+  source: file, // a URL, File, Blob or ArrayBuffer
+  theme: 'dark',
+  target: { line: 120, column: 5, length: 6 },
+  onReady: ({ lineCount }) => console.log(lineCount),
+  onError: (error) => console.error(error),
+});
+
+viewer.update({ target: { line: 300 } }); // change props later
+viewer.destroy(); // remove the viewer and stop loading
+```
+
+`createTextViewer(container, props)` takes the props in the table below and returns `{ element, update, destroy }`. The container needs a height. `createLineViewer` shows lines you already have, like `LineViewer`.
+
+```html
+<script type="module">
+  import '@coldsofttech/fovea-text/element'; // registers <fovea-text>
+</script>
+
+<fovea-text src="/logs/app.log" theme="dark" style="height: 400px"></fovea-text>
+```
+
+The element draws into a shadow root, so no stylesheet has to be imported and the page's styles do not leak in. It fills the height of its parent, or the height you give it.
+
+| Attribute or property  | Notes                                                                                   |
+| ---------------------- | --------------------------------------------------------------------------------------- |
+| `src` / `source`       | A URL as an attribute. A `File`, `Blob` or `ArrayBuffer` goes in the `source` property. |
+| `theme`                | `light` or `dark`. The property also takes an object of colours.                        |
+| `label`, `line-height` | As the props of the same name.                                                          |
+| `fetcher`, `target`    | Properties only.                                                                        |
+
+Events: `fovea-ready` (`event.detail.lineCount`) and `fovea-error` (`event.detail` is the `Error`). Colours also come from `--fovea-*` custom properties set on the element or on any ancestor.
 
 ## Props
 

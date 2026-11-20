@@ -83,6 +83,20 @@
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
   },
   {
+    "name": "@coldsofttech/fovea-image/vanilla",
+    "path": "packages/fovea-image/dist/vanilla/index.js",
+    "import": "*",
+    "limit": "3 kB",
+    "ignore": ["@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-image/element",
+    "path": "packages/fovea-image/dist/element.js",
+    "import": "*",
+    "limit": "3.5 kB",
+    "ignore": ["@coldsofttech/fovea-viewers"]
+  },
+  {
     "name": "@coldsofttech/fovea-markdown",
     "path": "packages/fovea-markdown/dist/index.js",
     "import": "*",
@@ -116,6 +130,20 @@
     "import": "*",
     "limit": "3 kB",
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-text/vanilla",
+    "path": "packages/fovea-text/dist/vanilla/index.js",
+    "import": "*",
+    "limit": "2.5 kB",
+    "ignore": ["@coldsofttech/fovea-viewers"]
+  },
+  {
+    "name": "@coldsofttech/fovea-text/element",
+    "path": "packages/fovea-text/dist/element.js",
+    "import": "*",
+    "limit": "3 kB",
+    "ignore": ["@coldsofttech/fovea-viewers"]
   },
   {
     "name": "@coldsofttech/fovea-word",

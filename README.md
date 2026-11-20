@@ -3,7 +3,7 @@
 [![CI](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml/badge.svg)](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-File viewers for React apps. Show a text file, a PDF, an Excel workbook, an email, a Word document, a PowerPoint deck and more, right inside your page, without sending the file to anyone. Install only the viewers you need, or let the shared package pick the right one for any file.
+File viewers for React apps, and for any other page through plain JavaScript and Web Components. Show a text file, a PDF, an Excel workbook, an email, a Word document, a PowerPoint deck and more, right inside your page, without sending the file to anyone. Install only the viewers you need, or let the shared package pick the right one for any file.
 
 ## Why Fovea Viewers
 
@@ -98,6 +98,27 @@ import '@coldsofttech/fovea-pdf/style.css';
 ```
 
 A viewer fills the height of its parent, so give the parent a height.
+
+## Without React
+
+Viewers are moving to be usable without React. So far the text and image viewers have two more entry points, and the others will follow:
+
+```js
+// Plain JavaScript
+import { createTextViewer } from '@coldsofttech/fovea-text/vanilla';
+import '@coldsofttech/fovea-text/style.css';
+createTextViewer(document.getElementById('host'), { source: file });
+```
+
+```html
+<!-- Web Component -->
+<script type="module">
+  import '@coldsofttech/fovea-image/element';
+</script>
+<fovea-image src="/photo.jpg" style="height: 400px"></fovea-image>
+```
+
+The React components are unchanged. They now run the same code underneath. See [examples/vanilla](examples/vanilla/README.md) for an app with no React, and each package's README for the details.
 
 ## What every viewer accepts
 

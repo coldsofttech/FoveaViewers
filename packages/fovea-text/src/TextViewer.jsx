@@ -1,20 +1,8 @@
-import { LineViewer } from './LineViewer.jsx';
-import { useLines } from './useLines.js';
+import { useController } from '@coldsofttech/fovea-viewers/core';
+import { createTextViewer } from './vanilla/createTextViewer.js';
 
 /**
- * @typedef {import('@coldsofttech/fovea-viewers/core').ViewerSource} ViewerSource
- * @typedef {import('@coldsofttech/fovea-viewers/core').ViewerFetcher} ViewerFetcher
- */
-
-/**
- * @typedef {object} TextViewerExtras
- * @property {ViewerSource} source The text file: a URL, a Blob or File, or an ArrayBuffer (UTF-8).
- * @property {ViewerFetcher} [fetcher] Loads URL sources, so the host controls authentication
- *   and transport. Defaults to `fetch`.
- */
-
-/**
- * @typedef {Omit<import('./LineViewer.jsx').LineViewerProps, 'lines' | 'status' | 'error' | 'tokens'> & TextViewerExtras} TextViewerProps
+ * @typedef {import('./vanilla/createTextViewer.js').TextViewerProps} TextViewerProps
  */
 
 /**
@@ -22,9 +10,12 @@ import { useLines } from './useLines.js';
  * a file of hundreds of thousands of lines opens at once. Lines do not wrap; a long one scrolls
  * sideways.
  *
+ * The drawing is done by `createTextViewer` (see `@coldsofttech/fovea-text/vanilla`); this
+ * component runs it.
+ *
  * @param {TextViewerProps} props
  */
-export function TextViewer({ source, fetcher, ...rest }) {
-  const { status, lines, error } = useLines(source, fetcher);
-  return <LineViewer {...rest} lines={lines} status={status} error={error} />;
+export function TextViewer(props) {
+  const host = useController(createTextViewer, props);
+  return <div ref={host} style={{ height: '100%' }} />;
 }

@@ -103,6 +103,8 @@ describe('defineViewerElement', () => {
 
     el.setAttribute('label', 'Doc');
     expect(calls.updates.at(-1)).toEqual({ label: 'Doc' });
+    el.setAttribute('allow-images', 'false');
+    expect(calls.updates.at(-1)).toEqual({ allowImages: false });
     el.removeAttribute('allow-images');
     expect(calls.updates.at(-1)).toEqual({ allowImages: undefined });
     el.removeAttribute('page-size');
@@ -208,7 +210,7 @@ describe('defineViewerElement', () => {
     const el = add(document.createElement(tag));
     // jsdom has no adoptedStyleSheets, which is exactly the case this covers.
     const style = el.shadowRoot.querySelector('style');
-    expect(style.textContent).toContain(':host{display:block}');
+    expect(style.textContent).toContain(':host{display:block;height:100%}');
     expect(style.textContent).toContain('.x{color:red}');
   });
 

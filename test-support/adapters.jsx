@@ -105,3 +105,44 @@ export function reactAdapter(create) {
     },
   };
 }
+
+/** A viewer's real React component, as users render it. */
+export function reactComponentAdapter(Component) {
+  return {
+    name: 'react component',
+    acceptsShadowRoot: false,
+    mount(props, { host }) {
+      // React clears the container it renders into, so give it a container of its own.
+      const container = document.createElement('div');
+      host.append(container);
+      const root = createRoot(container);
+      let current = props;
+      let destroyed = false;
+      const render = () =>
+        act(() =>
+          root.render(
+            <StrictMode>
+              <Component {...current} />
+            </StrictMode>,
+          ),
+        );
+      render();
+      return {
+        get root() {
+          return container.querySelector('[data-fovea-root]');
+        },
+        update(next) {
+          if (destroyed) return;
+          current = { ...current, ...next };
+          render();
+        },
+        destroy() {
+          if (destroyed) return;
+          destroyed = true;
+          act(() => root.unmount());
+          container.remove();
+        },
+      };
+    },
+  };
+}

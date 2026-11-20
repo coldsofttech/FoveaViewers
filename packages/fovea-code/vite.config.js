@@ -25,7 +25,14 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     // Tests use the other packages' source, so they do not need them built first.
+    // The more specific paths come first, or `/core` would also match `/core/vanilla`.
     alias: {
+      '@coldsofttech/fovea-viewers/core/vanilla': fileURLToPath(
+        new URL('../fovea-viewers/src/core/vanilla/index.js', import.meta.url),
+      ),
+      '@coldsofttech/fovea-viewers/core/element': fileURLToPath(
+        new URL('../fovea-viewers/src/core/element/index.js', import.meta.url),
+      ),
       '@coldsofttech/fovea-viewers/core': fileURLToPath(
         new URL('../fovea-viewers/src/core/index.js', import.meta.url),
       ),

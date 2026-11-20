@@ -13,6 +13,7 @@ packages/fovea-viewers/   shared package: /core helpers, viewer registry, file-t
 packages/fovea-<type>/    one viewer per file type (code, email, excel, feed, html, image,
                           markdown, pdf, powerpoint, table, text, word)
 examples/demo/            Vite app that consumes the built packages
+examples/vanilla/         the same with no React: plain functions and Web Components
 scripts/                  package checks run by `check:packages`, and their tests
 test-support/             shared test helpers (not published): conformance suite, adapters, stub viewer
 docs/design/              design notes and the spikes behind them

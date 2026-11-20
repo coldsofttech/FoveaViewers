@@ -10,7 +10,7 @@ Helper scripts run by every package's `check:packages` command, and so by CI and
 
 | `smoke-test.js` | Not part of `check:packages`. Packs every package, installs the tarballs in a fresh app in `.temp/smoke`, builds it with Vite and opens every demo sample in it. See below. |
 
-`vite-plugin-css-module.js` is a Vite plugin, not a check: a package's library build uses it to emit `style.css.js`, the CSS as a module, for its Web Component. The scripts have their own tests (`npm test`, the `scripts` project).
+`vite-plugin-css-module.js` is a Vite plugin, not a check: a package's library build uses it so its Web Component can import the package's CSS as a string (`src/style.css.js` is a stub that the build fills in with the text of `style.css`). The scripts have their own tests (`npm test`, the `scripts` project).
 
 Run them for one package after building it, for example `npm run check:packages -w @coldsofttech/fovea-markdown`.
 

@@ -98,7 +98,8 @@ export default [
   {
     // Throwaway spike runners: they build into `.temp/` and import a config by path.
     files: ['docs/design/spikes/**/*.mjs'],
-    languageOptions: { globals: { ...globals.node } },
+    // Some of the code runs in the browser, inside page.evaluate.
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
     rules: { 'security/detect-non-literal-fs-filename': 'off', 'no-unsanitized/method': 'off' },
   },
 ];

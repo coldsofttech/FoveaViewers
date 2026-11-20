@@ -1,9 +1,10 @@
 # Design: vanilla JS and Web Component entry points
 
-Status: **Phase 0 approved; Phase 1 built** (see [Shared runtime](#shared-runtime-corevanilla-and-coreelement)
-and [Build and CI changes](#build-and-ci-changes)). The root of every package is still React and
-unchanged; the only additions so far are the `core/vanilla` and `core/element` subpaths of
-`@coldsofttech/fovea-viewers`. The spikes in
+Status: **Phase 0 and 1 approved; Phase 2 (the text and image pilot) built**: see
+[Phase 2: the pilot](#phase-2-the-pilot). The root of every package is still the React component
+with the same props; the new entries so far are `core/vanilla` and `core/element` in
+`@coldsofttech/fovea-viewers`, and `/vanilla` and `/element` in `@coldsofttech/fovea-text` and
+`@coldsofttech/fovea-image`. The spikes in
 [spikes/phase0](spikes/phase0/run.mjs) back the decisions below; their results are in
 [Spike results](#spike-results).
 
@@ -134,14 +135,14 @@ Rules, so React, the element and plain callers all get the same behaviour:
 Tag names: `fovea-viewer` for the shared package; `fovea-<id>` for each viewer
 (`fovea-markdown`, `fovea-pdf`, …).
 
-| Prop kind                                             | Attribute            | Property                  | Notes                                         |
-| ----------------------------------------------------- | -------------------- | ------------------------- | --------------------------------------------- |
-| string / number (`label`, `fit`, `password`)          | yes                  | yes                       | attribute reflects to property                |
-| boolean (`allow-images`)                              | yes (presence)       | yes                       | absent leaves the viewer's default            |
-| `source`                                              | string URL via `src` | yes (any `ViewerSource`)  | `File`/`Blob`/`ArrayBuffer` need the property |
-| `theme`                                               | `light`/`dark`       | yes (also a token object) |                                               |
-| objects and functions (`fetcher`, `target`, `colors`) | no                   | yes                       | not representable as attributes               |
-| callbacks                                             | no                   | no                        | become events (below)                         |
+| Prop kind                                             | Attribute            | Property                  | Notes                                                              |
+| ----------------------------------------------------- | -------------------- | ------------------------- | ------------------------------------------------------------------ |
+| string / number (`label`, `fit`, `password`)          | yes                  | yes                       | attribute reflects to property                                     |
+| boolean (`allow-images`)                              | yes (presence)       | yes                       | absent leaves the viewer's default; the text `false` means `false` |
+| `source`                                              | string URL via `src` | yes (any `ViewerSource`)  | `File`/`Blob`/`ArrayBuffer` need the property                      |
+| `theme`                                               | `light`/`dark`       | yes (also a token object) |                                                                    |
+| objects and functions (`fetcher`, `target`, `colors`) | no                   | yes                       | not representable as attributes                                    |
+| callbacks                                             | no                   | no                        | become events (below)                                              |
 
 Attributes are kebab-case of the prop (`allowImages` → `allow-images`, `source` → `src`).
 
@@ -180,7 +181,7 @@ Each element file is a declaration, not code:
 // fovea-markdown/src/element.js
 import { defineViewerElement } from '@coldsofttech/fovea-viewers/core/element';
 import css from './style.css.js';
-import { createMarkdownViewer } from './vanilla.js';
+import { createMarkdownViewer } from './vanilla/createMarkdownViewer.js';
 
 export const defineMarkdownElement = defineViewerElement({
   tag: 'fovea-markdown',
@@ -212,15 +213,20 @@ and no class names are invented.
 
 - **Light DOM (vanilla):** the user imports `…/style.css`, exactly as React users do now.
 - **Shadow DOM (element):** a document-level stylesheet does not reach a shadow root (the spike
-  confirms it), so the build also emits `dist/style.css.js`, whose default export is the CSS text.
-  The element adopts it with `CSSStyleSheet.replaceSync` into `shadowRoot.adoptedStyleSheets`; one
-  parsed sheet is shared by every instance. Where `adoptedStyleSheets` does not exist (jsdom, old
-  browsers), the helper appends a `<style>` element instead.
-- The `emit-css-as-module` plugin is built: `scripts/vite-plugin-css-module.js` (tested in
+  confirms it), so the element carries its own CSS: its entry imports `./style.css.js`, whose
+  default export is the CSS text. The element adopts it with `CSSStyleSheet.replaceSync` into
+  `shadowRoot.adoptedStyleSheets`; one parsed sheet is shared by every instance. Where
+  `adoptedStyleSheets` does not exist (jsdom, old browsers), the helper appends a `<style>` element
+  instead. The host is `display: block; height: 100%`, so like the React viewers it fills its
+  parent; a page can override that with its own rule for the tag.
+- **How `style.css.js` gets its text.** The package has a stub `src/style.css.js`
+  (`export default '';`) so the source, its tests and its types work. In a build, the
+  `scripts/vite-plugin-css-module.js` plugin swaps the stub's export for a placeholder and, once
+  Vite has written `style.css`, replaces the placeholder with the real text (tested in
   `scripts/vite-plugin-css-module.test.js`). It must run after Vite writes `style.css`
   (`enforce: 'post'`, `generateBundle` with `order: 'post'`), and it fails the build if there is no
-  stylesheet to turn into a module. A package adds it to its `vite.config.js` when it gets its
-  `/element` entry (Phase 2 for the first two), so no package publishes an unused `style.css.js`.
+  stylesheet or nothing imports the stub. This replaced the Phase 1 design, which emitted a separate
+  `style.css.js` file that the source could not import.
 
 ## Shared runtime: `core/vanilla` and `core/element`
 
@@ -333,7 +339,8 @@ Status after Phase 1 in brackets.
 
 - Multi-entry Vite lib builds per package (`index`, `vanilla`, `element`), with the existing
   `preserveModules`. Spike: entries share one `pdfjs.js` and one emitted worker. [`fovea-viewers`
-  now builds `core/vanilla` and `core/element`; viewer packages follow in Phase 2 onwards.]
+  builds `core/vanilla` and `core/element`; text and image build `vanilla/index` and `element`; the
+  other packages follow in Phase 3 and 4.]
 - `scripts/check-vanilla-no-react.js` follows every import from the `./vanilla`, `./element`,
   `./core/vanilla` and `./core/element` entries through the built files and fails if one reaches
   `react`, `react-dom`, `@coldsofttech/fovea-viewers` or `@coldsofttech/fovea-viewers/core`
@@ -352,7 +359,65 @@ Status after Phase 1 in brackets.
 - React is an optional peer of `@coldsofttech/fovea-viewers`. [done] Each viewer package follows
   when it gets its `/vanilla` entry.
 - Vitest has a `scripts` project for the build scripts' own tests. [done]
-- The smoke test gains a React-free app that uses `/vanilla` and `/element`. [Phase 2]
+- The smoke test gains `smoke-vanilla.test.js`, which uses the packed text and image packages
+  through `/vanilla` and `/element` with no React rendering. [done]
+
+## Phase 2: the pilot
+
+Text and image, on all three entry points, with the React components converged onto the
+controllers.
+
+**What was built**
+
+| In                   | What                                                                                                                             |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `fovea-text`         | `createTextViewer`, `createLineViewer` (`/vanilla`); `<fovea-text>` (`/element`); `TextViewer` and `LineViewer` are now wrappers |
+| `fovea-image`        | `createImageViewer` (`/vanilla`); `<fovea-image>` (`/element`); `ImageViewer` is now a wrapper                                   |
+| `fovea-viewers/core` | `useController(create, props)`: the React side of a wrapper (create once, `update` each render, `destroy` on unmount)            |
+| `examples/vanilla`   | an app with no React that uses both viewers, as functions and as elements                                                        |
+
+- **How a wrapper looks.** `const host = useController(createTextViewer, props); return <div ref={host} style={{ height: '100%' }} />;`
+  That is the whole component. Props go to `update` after every render; the controller ignores the
+  ones that did not change (compared with `Object.is`, so an inline object or function reads as
+  changed on each render, as it did before when it was a dependency of a memo).
+- **`LineViewer` and `TextViewer` share `createLineView`**, which draws into a root the caller
+  owns. Rows are kept by line index; scrolling adds and drops only the lines at the edges and keeps
+  the DOM in line order, so text selection and screen-reader order survive scrolling.
+- **The existing React tests were the spec.** All 19 text tests and 9 image tests, written against
+  the old React components, pass unchanged against the wrappers, as do the code viewer's, which
+  builds on `LineViewer`.
+- **The conformance suite** runs for each viewer through three adapters (controller, element, React
+  component) with a `settle` hook for what jsdom cannot do, such as firing `load` on an image.
+- **Real-browser check.** `docs/design/spikes/phase2/verify.mjs` builds `examples/vanilla` and a
+  small React app, opens them in Chromium and drives the built packages: 22 checks, all pass. They
+  include a 50 000 line file (about 100 rows in the page), scroll-to-target and marking, CSS inside
+  the shadow root, themes from page-level custom properties, destroy on removal, no errors in the
+  console, and a scan showing the React-free app ships no React.
+
+**What the pilot changed in the design**
+
+1. **The element host needs a height.** The first real-browser run drew all 50 000 lines of a file
+   in `<fovea-text>`: the host had no height, so the viewer's `height: 100%` resolved to its
+   content. jsdom cannot show this (it has no layout). The host is now `height: 100%`, like the
+   React viewers, and the README says to give the parent a height. The same trap exists for the React
+   components, as before.
+2. **`style.css.js` is a stub the build fills in** (see Styles), not a file the build emits.
+3. **A boolean attribute with the text `false` is `false`**, so a prop that is on by default
+   (`show-info`) can be turned off in markup.
+4. **`fit` on the image** applies until the image has loaded or the reader has zoomed, as it did in
+   React (where it was only read when a new image started). Changing it later is ignored.
+5. **Failed pictures are removed** from the page, as React unmounted them, so the browser's
+   broken-image mark does not show. Found by the existing React test.
+6. **The lockfile.** Phase 1 changed `peerDependenciesMeta` without updating `package-lock.json`;
+   this phase's `npm install` corrected that along with adding the new workspace.
+
+**Noticed, not changed**
+
+- `sample.log` is referenced by `scripts/smoke/smoke.test.jsx` and the demo but is not in
+  `examples/demo/public/samples`, so `npm run smoke` fails on `opens sample.log` on `main` too. It
+  is not in CI.
+- A root-level `tsc -p jsconfig.json` reports many type errors, mostly in tests and the demo, before
+  and after this work. Each package's own `build:types` is clean.
 
 ## Spike results
 
@@ -398,5 +463,5 @@ From a scan of the existing code for document-level assumptions:
 4. Per-viewer packages stay.
 5. Open Shadow DOM for the element (from the spikes).
 
-Next: Phase 2, the text and image pilot: their `/vanilla` controllers, `/element` and React
-wrappers on top of the Phase 1 runtime, run through the conformance suite.
+Next: Phase 3, the shared `createViewer` and `<fovea-viewer>` (registry gets `loadVanilla`), then
+markdown, table, code, feed, html and email, including the vanilla `HtmlFrame` and `Grid`.
