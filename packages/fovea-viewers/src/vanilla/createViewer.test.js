@@ -82,14 +82,34 @@ describe('createViewer', () => {
     expect(viewer.element.querySelector('[role="alert"]')).toBeNull();
   });
 
-  it('reports a viewer that cannot be used without React yet, or does not exist', async () => {
+  it('reports a viewer that does not exist, once', async () => {
     const onError = vi.fn();
-    const viewer = open({ source: file('x', 'a.pdf'), onError });
+    const viewer = open({ source: file('x', 'a.txt'), type: 'nonsense', onError });
     await vi.waitFor(() => expect(onError).toHaveBeenCalledTimes(1));
-    expect(onError.mock.calls[0][0].message).toMatch(/pdf.*without React/);
-    viewer.update({ type: 'nonsense' });
-    await vi.waitFor(() => expect(onError).toHaveBeenCalledTimes(2));
-    expect(onError.mock.calls[1][0].message).toMatch(/Unknown viewer/);
+    expect(onError.mock.calls[0][0].message).toMatch(/Unknown viewer/);
+    expect(viewer.element.querySelector('[role="alert"]')).toHaveTextContent('Unknown viewer');
+  });
+
+  it('knows which viewers can be used without React', async () => {
+    const { hasVanilla, loadVanilla } = await import('./registry.js');
+    for (const id of [
+      'code',
+      'email',
+      'excel',
+      'feed',
+      'html',
+      'image',
+      'markdown',
+      'pdf',
+      'powerpoint',
+      'table',
+      'text',
+      'word',
+    ]) {
+      expect(hasVanilla(id)).toBe(true);
+    }
+    expect(hasVanilla('nonsense')).toBe(false);
+    await expect(loadVanilla('nonsense')).rejects.toThrow('Unknown viewer');
   });
 
   it("puts the viewer's CSS in a shadow root it is drawn in, once", async () => {

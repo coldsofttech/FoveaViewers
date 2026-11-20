@@ -45,6 +45,30 @@ export default defineConfig({
       '@coldsofttech/fovea-viewers/core': fileURLToPath(
         new URL('./src/core/index.js', import.meta.url),
       ),
+      '@coldsofttech/fovea-excel/vanilla': fileURLToPath(
+        new URL('../fovea-excel/src/vanilla/index.js', import.meta.url),
+      ),
+      '@coldsofttech/fovea-excel/css': fileURLToPath(
+        new URL('../fovea-excel/src/style.css.js', import.meta.url),
+      ),
+      '@coldsofttech/fovea-pdf/vanilla': fileURLToPath(
+        new URL('../fovea-pdf/src/vanilla/index.js', import.meta.url),
+      ),
+      '@coldsofttech/fovea-pdf/css': fileURLToPath(
+        new URL('../fovea-pdf/src/style.css.js', import.meta.url),
+      ),
+      '@coldsofttech/fovea-powerpoint/vanilla': fileURLToPath(
+        new URL('../fovea-powerpoint/src/vanilla/index.js', import.meta.url),
+      ),
+      '@coldsofttech/fovea-powerpoint/css': fileURLToPath(
+        new URL('../fovea-powerpoint/src/style.css.js', import.meta.url),
+      ),
+      '@coldsofttech/fovea-word/vanilla': fileURLToPath(
+        new URL('../fovea-word/src/vanilla/index.js', import.meta.url),
+      ),
+      '@coldsofttech/fovea-word/css': fileURLToPath(
+        new URL('../fovea-word/src/style.css.js', import.meta.url),
+      ),
       '@coldsofttech/fovea-code/vanilla': fileURLToPath(
         new URL('../fovea-code/src/vanilla/index.js', import.meta.url),
       ),

@@ -212,7 +212,7 @@ load('pdf');
 
 ### Without React
 
-`createViewer` and `<fovea-viewer>` open a file in the matching viewer without React, as `Viewer` does. They load the viewer when it is needed. So far the code, email, feed, html, image, markdown, table and text viewers can be used this way. The PDF, Excel, Word and PowerPoint viewers still need their React components.
+`createViewer` and `<fovea-viewer>` open a file in the matching viewer without React, as `Viewer` does. They load the viewer when it is needed. Every viewer can be used this way: code, email, Excel, feed, html, image, markdown, PDF, PowerPoint, table, text and Word.
 
 ```js
 import { createViewer } from '@coldsofttech/fovea-viewers/vanilla';

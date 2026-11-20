@@ -1,6 +1,6 @@
 # Fovea Viewers without React
 
-The same viewers as the React demo, used from plain JavaScript and as Web Components. There is no React in this app. It shows the text and image viewers directly, and eight kinds of file through one `<fovea-viewer>` element each.
+The same viewers as the React demo, used from plain JavaScript and as Web Components. There is no React in this app. It shows the text and image viewers directly, and twelve kinds of file (including PDF, Excel, Word and PowerPoint) through one `<fovea-viewer>` element each.
 
 ```bash
 npm run build          # from the repository root: builds the packages first

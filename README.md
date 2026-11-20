@@ -101,7 +101,7 @@ A viewer fills the height of its parent, so give the parent a height.
 
 ## Without React
 
-Viewers are moving to be usable without React. The code, email, feed, html, image, markdown, table and text viewers have two more entry points, and the PDF, Excel, Word and PowerPoint viewers will follow:
+Every viewer can be used without React. Each package has two more entry points, `/vanilla` and `/element`:
 
 ```js
 // Plain JavaScript

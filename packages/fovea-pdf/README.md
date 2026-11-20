@@ -4,7 +4,7 @@
 [![CI](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml/badge.svg)](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/coldsofttech/FoveaViewers/blob/main/LICENSE)
 
-A PDF viewer for React. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time. PDFs are read with [PDF.js](https://mozilla.github.io/pdf.js/) from Mozilla.
+A PDF viewer for React, plain JavaScript and as a Web Component. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time. PDFs are read with [PDF.js](https://mozilla.github.io/pdf.js/) from Mozilla.
 
 ## Features
 
@@ -26,7 +26,7 @@ A PDF viewer for React. It is part of [Fovea Viewers](https://github.com/coldsof
 npm install @coldsofttech/fovea-pdf @coldsofttech/fovea-viewers
 ```
 
-React and `react-dom` 18 or 19 must be installed in your app. PDF.js comes with this package and is loaded only when a PDF is first opened.
+React and `react-dom` 18 or 19 must be installed in your app if you use the React component. The plain JavaScript and Web Component entry points (below) need no React. PDF.js comes with this package and is loaded only when a PDF is first opened.
 
 ## Use
 
@@ -40,6 +40,47 @@ import '@coldsofttech/fovea-pdf/style.css';
 ```
 
 The viewer fills the height of its parent, so give the parent a height.
+
+## Without React
+
+The same viewer is available from plain JavaScript and as a Web Component. Neither needs React.
+
+```js
+import { createPdfViewer } from '@coldsofttech/fovea-pdf/vanilla';
+import '@coldsofttech/fovea-pdf/style.css';
+
+const viewer = createPdfViewer(document.getElementById('host'), {
+  source: file, // a URL, File, Blob or ArrayBuffer
+  password: 'secret',
+  target: { matched: 'invoice' },
+  onError: (error) => console.error(error),
+});
+
+viewer.update({ theme: 'dark' }); // change props later
+viewer.destroy(); // remove the viewer and stop loading
+```
+
+`createPdfViewer(container, props)` takes the props in the table below and returns `{ element, update, destroy }`. The container needs a height. The pdf.js worker comes with this package (`dist/pdf.worker.min.mjs`) and is found from the code that starts it, as for the React component, so a bundler such as Vite serves it with your app. Set `workerSrc` (or the `worker-src` attribute) if your bundler cannot find it.
+
+```html
+<script type="module">
+  import '@coldsofttech/fovea-pdf/element'; // registers <fovea-pdf>
+</script>
+
+<fovea-pdf src="/files/report.pdf" style="height: 600px"></fovea-pdf>
+```
+
+The element draws into a shadow root, so no stylesheet has to be imported and the page's styles do not leak in. It fills the height of its parent, or the height you give it.
+
+| Attribute or property                      | Notes                                                                                   |
+| ------------------------------------------ | --------------------------------------------------------------------------------------- |
+| `src` / `source`                           | A URL as an attribute. A `File`, `Blob` or `ArrayBuffer` goes in the `source` property. |
+| `theme`                                    | `light` or `dark`. The property also takes an object of colours.                        |
+| `label`, `password`, `fit`, `initial-page` | As the props of the same name.                                                          |
+| `worker-src`                               | The `workerSrc` prop: the address of pdf.js's worker.                                   |
+| `fetcher`, `target`                        | Properties only.                                                                        |
+
+Events: `fovea-ready` (`event.detail.pageCount`), `fovea-located` (`event.detail` is the page the target is on, from 1, or `null`), `fovea-page-change` (`event.detail` is the page the reader is on) and `fovea-error` (`event.detail` is the `Error`). Colours also come from `--fovea-*` custom properties set on the element or on any ancestor.
 
 ## Props
 

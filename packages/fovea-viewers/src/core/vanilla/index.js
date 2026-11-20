@@ -9,6 +9,9 @@
  * @typedef {import('../types.js').ViewerProps} ViewerProps
  * @typedef {import('./shell.js').ViewerController} ViewerController
  * @typedef {import('./shell.js').Shell} Shell
+ * @typedef {import('./grid.js').GridCell} GridCell
+ * @typedef {import('./grid.js').GridProps} GridProps
+ * @typedef {import('./grid.js').GridSort} GridSort
  */
 
 export { readSource as loadSource } from '../source.js';

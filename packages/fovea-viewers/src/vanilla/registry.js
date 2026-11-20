@@ -2,8 +2,8 @@ import { catalog, createName, resolve } from '../catalog.js';
 
 export { catalog as registry, createName, resolve };
 
-// Each import is written out literally so bundlers can split every viewer into its own chunk. Only
-// the viewers that have a `/vanilla` entry are here; the others come in later. `css` is the CSS
+// Each import is written out literally so bundlers can split every viewer into its own chunk. Every
+// viewer has a `/vanilla` entry now; `hasVanilla` stays so a viewer that does not can say so. `css` is the CSS
 // text a viewer's Web Component carries, which `createViewer` needs to style a viewer it draws
 // inside a shadow root.
 /** @type {Record<string, { vanilla: () => Promise<any>, css: () => Promise<any> }>} */
@@ -40,6 +40,22 @@ const loaders = {
   text: {
     vanilla: () => import('@coldsofttech/fovea-text/vanilla'),
     css: () => import('@coldsofttech/fovea-text/css'),
+  },
+  excel: {
+    vanilla: () => import('@coldsofttech/fovea-excel/vanilla'),
+    css: () => import('@coldsofttech/fovea-excel/css'),
+  },
+  pdf: {
+    vanilla: () => import('@coldsofttech/fovea-pdf/vanilla'),
+    css: () => import('@coldsofttech/fovea-pdf/css'),
+  },
+  powerpoint: {
+    vanilla: () => import('@coldsofttech/fovea-powerpoint/vanilla'),
+    css: () => import('@coldsofttech/fovea-powerpoint/css'),
+  },
+  word: {
+    vanilla: () => import('@coldsofttech/fovea-word/vanilla'),
+    css: () => import('@coldsofttech/fovea-word/css'),
   },
 };
 

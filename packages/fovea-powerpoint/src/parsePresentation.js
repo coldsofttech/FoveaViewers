@@ -1,4 +1,4 @@
-import { scoreMatch, squash } from '@coldsofttech/fovea-viewers/core';
+import { scoreMatch, squash } from '@coldsofttech/fovea-viewers/core/vanilla';
 
 /**
  * @typedef {object} Box

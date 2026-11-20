@@ -4,7 +4,7 @@
 [![CI](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml/badge.svg)](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/coldsofttech/FoveaViewers/blob/main/LICENSE)
 
-A Word document viewer for React. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
+A Word document viewer for React, plain JavaScript and as a Web Component. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
 
 ## Features
 
@@ -21,7 +21,7 @@ A Word document viewer for React. It is part of [Fovea Viewers](https://github.c
 npm install @coldsofttech/fovea-word @coldsofttech/fovea-viewers
 ```
 
-React and `react-dom` 18 or 19 must be installed in your app.
+React and `react-dom` 18 or 19 must be installed in your app if you use the React component. The plain JavaScript and Web Component entry points (below) need no React.
 
 ## Use
 
@@ -35,6 +35,45 @@ import '@coldsofttech/fovea-word/style.css';
 ```
 
 The viewer fills the height of its parent, so give the parent a height. The reading code is loaded the first time a document is opened, so a page that never shows one never pays for it.
+
+## Without React
+
+The same viewer is available from plain JavaScript and as a Web Component. Neither needs React.
+
+```js
+import { createWordViewer } from '@coldsofttech/fovea-word/vanilla';
+import '@coldsofttech/fovea-word/style.css';
+
+const viewer = createWordViewer(document.getElementById('host'), {
+  source: file, // a URL, File, Blob or ArrayBuffer
+  links: 'window',
+  target: { matched: 'revenue' },
+  onError: (error) => console.error(error),
+});
+
+viewer.update({ theme: 'dark' }); // change props later
+viewer.destroy(); // remove the viewer and stop loading
+```
+
+`createWordViewer(container, props)` takes the props in the table below and returns `{ element, update, destroy }`. The container needs a height.
+
+```html
+<script type="module">
+  import '@coldsofttech/fovea-word/element'; // registers <fovea-word>
+</script>
+
+<fovea-word src="/files/report.docx" links="window" style="height: 500px"></fovea-word>
+```
+
+The element draws into a shadow root, so no stylesheet has to be imported and the page's styles do not leak in. It fills the height of its parent, or the height you give it.
+
+| Attribute or property | Notes                                                                                   |
+| --------------------- | --------------------------------------------------------------------------------------- |
+| `src` / `source`      | A URL as an attribute. A `File`, `Blob` or `ArrayBuffer` goes in the `source` property. |
+| `label`, `links`      | As the props of the same name (`none` or `window`).                                     |
+| `fetcher`, `target`   | Properties only.                                                                        |
+
+Events: `fovea-ready` (`event.detail.messages`, what could not be shown as it is), `fovea-warnings` (`event.detail` is that list, when it is not empty), `fovea-marked` (`event.detail` is whether the target was found, or `null`), `fovea-navigate` (see below) and `fovea-error` (`event.detail` is the `Error`). A click on a link fires `fovea-navigate` (`event.detail` has `href` and the click `event`). Call `preventDefault()` on it to handle the link yourself; otherwise `links` decides what happens. Colours also come from `--fovea-*` custom properties set on the element or on any ancestor.
 
 ## Props
 

@@ -49,8 +49,21 @@ describe('the installed packages without React', () => {
   });
 });
 
-describe('every viewer that can be used without React', () => {
-  const IDS = ['code', 'email', 'feed', 'html', 'image', 'markdown', 'table', 'text'];
+describe('every viewer, used without React', () => {
+  const IDS = [
+    'code',
+    'email',
+    'excel',
+    'feed',
+    'html',
+    'image',
+    'markdown',
+    'pdf',
+    'powerpoint',
+    'table',
+    'text',
+    'word',
+  ];
 
   it.each(IDS)('the %s viewer exports its function and registers its element', async (id) => {
     const module = await import(/* @vite-ignore */ `@coldsofttech/fovea-${id}/vanilla`);

@@ -130,6 +130,20 @@
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers", "exceljs"]
   },
   {
+    "name": "@coldsofttech/fovea-excel/vanilla",
+    "path": "packages/fovea-excel/dist/vanilla/index.js",
+    "import": "*",
+    "limit": "4 kB",
+    "ignore": ["@coldsofttech/fovea-viewers", "exceljs"]
+  },
+  {
+    "name": "@coldsofttech/fovea-excel/element",
+    "path": "packages/fovea-excel/dist/element.js",
+    "import": "*",
+    "limit": "4.5 kB",
+    "ignore": ["@coldsofttech/fovea-viewers", "exceljs"]
+  },
+  {
     "name": "@coldsofttech/fovea-feed",
     "path": "packages/fovea-feed/dist/index.js",
     "import": "*",
@@ -221,11 +235,39 @@
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers", "pdfjs-dist"]
   },
   {
+    "name": "@coldsofttech/fovea-pdf/vanilla",
+    "path": "packages/fovea-pdf/dist/vanilla/index.js",
+    "import": "*",
+    "limit": "5 kB",
+    "ignore": ["@coldsofttech/fovea-viewers", "pdfjs-dist"]
+  },
+  {
+    "name": "@coldsofttech/fovea-pdf/element",
+    "path": "packages/fovea-pdf/dist/element.js",
+    "import": "*",
+    "limit": "5.5 kB",
+    "ignore": ["@coldsofttech/fovea-viewers", "pdfjs-dist"]
+  },
+  {
     "name": "@coldsofttech/fovea-powerpoint",
     "path": "packages/fovea-powerpoint/dist/index.js",
     "import": "*",
     "limit": "6 kB",
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers", "jszip"]
+  },
+  {
+    "name": "@coldsofttech/fovea-powerpoint/vanilla",
+    "path": "packages/fovea-powerpoint/dist/vanilla/index.js",
+    "import": "*",
+    "limit": "5.5 kB",
+    "ignore": ["@coldsofttech/fovea-viewers", "jszip"]
+  },
+  {
+    "name": "@coldsofttech/fovea-powerpoint/element",
+    "path": "packages/fovea-powerpoint/dist/element.js",
+    "import": "*",
+    "limit": "6 kB",
+    "ignore": ["@coldsofttech/fovea-viewers", "jszip"]
   },
   {
     "name": "@coldsofttech/fovea-table",
@@ -275,5 +317,19 @@
     "import": "*",
     "limit": "2 kB",
     "ignore": ["react", "react-dom", "@coldsofttech/fovea-viewers", "mammoth"]
+  },
+  {
+    "name": "@coldsofttech/fovea-word/vanilla",
+    "path": "packages/fovea-word/dist/vanilla/index.js",
+    "import": "*",
+    "limit": "1.5 kB",
+    "ignore": ["@coldsofttech/fovea-viewers", "mammoth"]
+  },
+  {
+    "name": "@coldsofttech/fovea-word/element",
+    "path": "packages/fovea-word/dist/element.js",
+    "import": "*",
+    "limit": "1.5 kB",
+    "ignore": ["@coldsofttech/fovea-viewers", "mammoth"]
   }
 ]

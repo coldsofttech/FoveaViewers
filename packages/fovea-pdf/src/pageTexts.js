@@ -1,4 +1,4 @@
-import { squash } from '@coldsofttech/fovea-viewers/core';
+import { squash } from '@coldsofttech/fovea-viewers/core/vanilla';
 
 /** @type {WeakMap<object, Promise<string[]>>} */
 const cache = new WeakMap();

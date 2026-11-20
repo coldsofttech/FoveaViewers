@@ -1,11 +1,12 @@
 {
   "name": "@coldsofttech/fovea-pdf",
   "version": "0.1.0",
-  "description": "PDF viewer for React.",
+  "description": "PDF viewer for React, plain JavaScript and as a Web Component.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
-    "**/*.css"
+    "**/*.css",
+    "./dist/element.js"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -15,7 +16,19 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./style.css": "./dist/style.css"
+    "./vanilla": {
+      "types": "./dist/vanilla/index.d.ts",
+      "import": "./dist/vanilla/index.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./css": {
+      "types": "./dist/style.css.d.ts",
+      "import": "./dist/style.css.js"
+    }
   },
   "files": [
     "dist"
@@ -39,7 +52,7 @@
   "scripts": {
     "build": "vite build && npm run build:types",
     "build:types": "tsc -p tsconfig.build.json",
-    "check:packages": "publint && attw --pack . --profile esm-only --exclude-entrypoints ./style.css && node ../../scripts/check-no-react.js && node ../../scripts/check-pack.js"
+    "check:packages": "publint && attw --pack . --profile esm-only --exclude-entrypoints ./style.css && node ../../scripts/check-no-react.js && node ../../scripts/check-vanilla-no-react.js && node ../../scripts/check-pack.js"
   },
   "peerDependencies": {
     "@coldsofttech/fovea-viewers": "^0.1.0",
@@ -48,5 +61,13 @@
   },
   "dependencies": {
     "pdfjs-dist": "^6.4.299"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
   }
 }

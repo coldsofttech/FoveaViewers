@@ -68,7 +68,12 @@ const pdfOut = join(scratch, 'pdf-dist');
 try {
   writeFileSync(stand, "export { loadPdfjs } from './pdfjs.js';\n");
   const config = (await import(join(pdfDir, 'vite.config.js'))).default;
-  config.build.lib.entry = { index: 'src/index.js', vanilla: 'src/__spike_vanilla.js' };
+  // The package's own build (with its CSS plugin) needs its element entry too.
+  config.build.lib.entry = {
+    index: 'src/index.js',
+    element: 'src/element.js',
+    vanilla: 'src/__spike_vanilla.js',
+  };
   await build({
     ...config,
     root: pdfDir,

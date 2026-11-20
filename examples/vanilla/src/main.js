@@ -50,8 +50,22 @@ document.getElementById('file').addEventListener('change', (event) => {
   (isImage ? image : text).update({ source: file });
 });
 
-// One <fovea-viewer> for each sample: the viewer for each is chosen from the file name.
-const SAMPLES = ['txt', 'md', 'csv', 'js', 'rss', 'html', 'eml', 'png'];
+// One <fovea-viewer> for each sample: the viewer for each is chosen from the file name. PDF, Excel,
+// Word and PowerPoint files load their (large) libraries only when one of them is opened.
+const SAMPLES = [
+  'txt',
+  'md',
+  'csv',
+  'js',
+  'rss',
+  'html',
+  'eml',
+  'png',
+  'pdf',
+  'xlsx',
+  'docx',
+  'pptx',
+];
 const auto = document.getElementById('auto');
 for (const extension of SAMPLES) {
   const frame = document.createElement('div');

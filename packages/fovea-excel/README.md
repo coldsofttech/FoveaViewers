@@ -4,7 +4,7 @@
 [![CI](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml/badge.svg)](https://github.com/coldsofttech/FoveaViewers/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/coldsofttech/FoveaViewers/blob/main/LICENSE)
 
-An Excel workbook viewer for React. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
+An Excel workbook viewer for React, plain JavaScript and as a Web Component. It is part of [Fovea Viewers](https://github.com/coldsofttech/FoveaViewers), a set of file viewers you can install one at a time.
 
 ## Features
 
@@ -23,7 +23,7 @@ An Excel workbook viewer for React. It is part of [Fovea Viewers](https://github
 npm install @coldsofttech/fovea-excel @coldsofttech/fovea-viewers
 ```
 
-React and `react-dom` 18 or 19 must be installed in your app.
+React and `react-dom` 18 or 19 must be installed in your app if you use the React component. The plain JavaScript and Web Component entry points (below) need no React.
 
 ## Use
 
@@ -37,6 +37,47 @@ import '@coldsofttech/fovea-excel/style.css';
 ```
 
 The viewer fills the height of its parent, so give the parent a height. The reading code is loaded the first time a workbook is opened, so a page that never shows one never pays for it.
+
+## Without React
+
+The same viewer is available from plain JavaScript and as a Web Component. Neither needs React.
+
+```js
+import { createExcelViewer } from '@coldsofttech/fovea-excel/vanilla';
+import '@coldsofttech/fovea-excel/style.css';
+
+const viewer = createExcelViewer(document.getElementById('host'), {
+  source: file, // a URL, File, Blob or ArrayBuffer
+  sheet: 'Totals',
+  showFormulas: true,
+  onError: (error) => console.error(error),
+});
+
+viewer.update({ theme: 'dark' }); // change props later
+viewer.destroy(); // remove the viewer and stop loading
+```
+
+`createExcelViewer(container, props)` takes the props in the table below and returns `{ element, update, destroy }`. The container needs a height.
+
+```html
+<script type="module">
+  import '@coldsofttech/fovea-excel/element'; // registers <fovea-excel>
+</script>
+
+<fovea-excel src="/files/budget.xlsx" style="height: 500px"></fovea-excel>
+```
+
+The element draws into a shadow root, so no stylesheet has to be imported and the page's styles do not leak in. It fills the height of its parent, or the height you give it.
+
+| Attribute or property         | Notes                                                                                                               |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `src` / `source`              | A URL as an attribute. A `File`, `Blob` or `ArrayBuffer` goes in the `source` property.                             |
+| `theme`                       | `light` or `dark`. The property also takes an object of colours.                                                    |
+| `label`, `sheet`, `page-size` | As the props of the same name. `sheet` is a name as an attribute; the property also takes a place from 0.           |
+| `show-formulas`, `sortable`   | `show-formulas` is off unless the attribute is there. `sortable` is on by default: `sortable="false"` turns it off. |
+| `fetcher`, `target`           | Properties only.                                                                                                    |
+
+Events: `fovea-ready` (`event.detail.sheets`, the sheet names), `fovea-sheet-change` (`event.detail` has `name` and `index`), `fovea-marked` (`event.detail` is whether the target's words were marked, or `null`) and `fovea-error` (`event.detail` is the `Error`). Colours also come from `--fovea-*` custom properties set on the element or on any ancestor.
 
 ## Props
 

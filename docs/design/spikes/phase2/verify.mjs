@@ -34,6 +34,7 @@ check('bundle: the app ships no React', bundled.length === 0, `${assets.length} 
 const types = {
   '.html': 'text/html',
   '.js': 'text/javascript',
+  '.mjs': 'text/javascript',
   '.css': 'text/css',
   '.png': 'image/png',
   '.txt': 'text/plain',
@@ -167,8 +168,8 @@ try {
     JSON.stringify(big),
   );
 
-  // <fovea-viewer> opens eight kinds of file, each by loading its own viewer -------------------------
-  await page.waitForFunction(() => document.querySelectorAll('#auto fovea-viewer').length === 8);
+  // <fovea-viewer> opens twelve kinds of file, each by loading its own viewer -------------------------
+  await page.waitForFunction(() => document.querySelectorAll('#auto fovea-viewer').length === 12);
   const auto = await page.evaluate(async () => {
     const innerOf = (el) => el.shadowRoot?.querySelector('[data-fovea-root] [data-fovea-root]');
     // How each viewer shows that its CSS reached the shadow root, and that it has drawn something.
@@ -190,6 +191,16 @@ try {
       rss: (r) => getComputedStyle(r).overflowY === 'auto' && r.querySelector('article'),
       html: (r) => r.querySelector('iframe')?.getAttribute('srcdoc'),
       eml: (r) => getComputedStyle(r).display === 'flex' && r.querySelector('h2'),
+      // pdf.js and its worker run: a page is on a canvas that has been resized and painted.
+      pdf: (r) => {
+        const canvas = r.querySelector('[data-page="1"] canvas');
+        if (!canvas || (canvas.width === 300 && canvas.height === 150)) return false;
+        const { data } = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+        return data.some((value) => value !== 0) && r.querySelector('[data-page="1"]');
+      },
+      xlsx: (r) => r.querySelectorAll('[role="tab"]').length > 0 && r.querySelector('td'),
+      docx: (r) => r.querySelector('iframe')?.getAttribute('srcdoc')?.includes('Project update'),
+      pptx: (r) => r.querySelector('[role="group"]')?.textContent.includes('Launch plan'),
       png: (r) =>
         getComputedStyle(r.querySelector('[role="toolbar"]')).display === 'flex' &&
         r.querySelector('img')?.naturalWidth > 0,

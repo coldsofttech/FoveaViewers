@@ -6,7 +6,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Added
 
-- The code, email, feed, html, image, markdown, table and text viewers can be used without React: each package has a `/vanilla` entry (`createCodeViewer`, `createEmailViewer`, `createFeedViewer`, `createHtmlViewer`, `createImageViewer`, `createMarkdownViewer`, `createTableViewer`, `createTextViewer`, and `createLineViewer` in the text package) and an `/element` entry that registers a Web Component (`<fovea-code>`, `<fovea-email>`, `<fovea-feed>`, `<fovea-html>`, `<fovea-image>`, `<fovea-markdown>`, `<fovea-table>`, `<fovea-text>`). Each package also exports its CSS as a string from `/css`.
+- Every viewer can be used without React: each package has a `/vanilla` entry (`createCodeViewer`, `createEmailViewer`, `createExcelViewer`, `createFeedViewer`, `createHtmlViewer`, `createImageViewer`, `createMarkdownViewer`, `createPdfViewer`, `createPowerpointViewer`, `createTableViewer`, `createTextViewer`, `createWordViewer`, and `createLineViewer` in the text package) and an `/element` entry that registers a Web Component (`<fovea-code>`, `<fovea-email>`, `<fovea-excel>`, `<fovea-feed>`, `<fovea-html>`, `<fovea-image>`, `<fovea-markdown>`, `<fovea-pdf>`, `<fovea-powerpoint>`, `<fovea-table>`, `<fovea-text>`, `<fovea-word>`). Each package also exports its CSS as a string from `/css`.
 - `createViewer` (`@coldsofttech/fovea-viewers/vanilla`) and `<fovea-viewer>` (`@coldsofttech/fovea-viewers/element`): open a file in the matching viewer without React, loading the viewer when it is needed.
 - `@coldsofttech/fovea-viewers/core/vanilla` and `@coldsofttech/fovea-viewers/core/element`: a React-free runtime (`createShell`, `loadText`, `applyTheme`, `createH`, `createGrid`, `createHtmlFrame`) and a helper that defines a viewer's Web Component. They are the base of the `/vanilla` and `/element` entry points of each viewer; their API may change before 1.0.
 - `useController` in `@coldsofttech/fovea-viewers/core`, which runs a viewer's `/vanilla` controller from a React component.
@@ -14,8 +14,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Changed
 
-- The React components of the code, email, feed, html, image, markdown, table and text viewers, `Grid` and `HtmlFrame` now draw through the `/vanilla` controllers. Their props and behaviour are the same. Each now renders inside one extra `div` (`display: contents` for `Grid` and `HtmlFrame`) and its root element carries a `data-fovea-root` attribute. A prop that is no longer given is treated as `undefined`, as in React before.
-- React and `react-dom` are now optional peer dependencies of `@coldsofttech/fovea-viewers` and of every viewer that can be used without React, so the React-free entry points need no React. Apps that use the React components already have React.
+- The React components of every viewer, `Grid` and `HtmlFrame` now draw through the `/vanilla` controllers. Their props and behaviour are the same. Each now renders inside one extra `div` (`display: contents` for `Grid` and `HtmlFrame`) and its root element carries a `data-fovea-root` attribute. A prop that is no longer given is treated as `undefined`, as in React before.
+- React and `react-dom` are now optional peer dependencies of `@coldsofttech/fovea-viewers` and of every viewer package, so the React-free entry points need no React. Apps that use the React components already have React.
 
 ## [0.1.0] - 2026-10-28
 

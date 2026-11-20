@@ -21,7 +21,8 @@ function deferred() {
  * @param {string} name The viewer's name, for the test titles.
  * @param {object} options
  * @param {Array<{ name: string, acceptsShadowRoot?: boolean, mount: Function }>} options.adapters
- * @param {string} options.text A small valid file for this viewer, as text.
+ * @param {string | Uint8Array} options.text A small valid file for this viewer: text, or bytes for a
+ *   binary format.
  * @param {(root: HTMLElement, text: string) => void} [options.shows] Asserts the file's content is
  *   on screen.
  * @param {Record<string, unknown>} [options.props] Props the viewer needs besides `source`.
@@ -55,8 +56,12 @@ export function describeConformance(
   },
 ) {
   // Copied into a Uint8Array of this realm: the encoder's own buffer is not an ArrayBuffer to jsdom.
-  const bytes = () => new Uint8Array(new TextEncoder().encode(text)).buffer;
-  const respond = () => new Response(text);
+  // A viewer for a binary format gives its sample as bytes (a Uint8Array) instead of a string.
+  const bytes = () =>
+    new Uint8Array(typeof text === 'string' ? new TextEncoder().encode(text) : text).buffer;
+  // A plain response: the blob of a Node `Response` is not a Blob to jsdom's FileReader, which the
+  // viewers for binary formats use.
+  const respond = () => ({ ok: true, status: 200, blob: async () => new Blob([text]) });
   /** `onReady` was called (once, unless the viewer reports every load). */
   const reported = (fn) =>
     readyOnce ? expect(fn).toHaveBeenCalledTimes(1) : expect(fn).toHaveBeenCalled();
@@ -136,7 +141,7 @@ export function describeConformance(
         await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(1));
         handle.update({ source: '/fast' });
         await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
-        fast.resolve(new Response(text));
+        fast.resolve(respond());
         await until(handle, () => reported(onReady));
         const calls = onReady.mock.calls.length;
         slow.resolve(new Response('OLD CONTENT'));
@@ -155,7 +160,7 @@ export function describeConformance(
         await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(1));
         handle.update({ source: '/a', fetcher });
         handle.update({ onReady: second });
-        gate.resolve(new Response(text));
+        gate.resolve(respond());
         await until(handle, () => expect(second).toHaveBeenCalled());
         expect(fetcher).toHaveBeenCalledTimes(1);
         expect(first).not.toHaveBeenCalled();
@@ -181,7 +186,7 @@ export function describeConformance(
         const onReady = vi.fn();
         const handle = mount({ source: '/late', fetcher: () => gate.promise, onReady });
         handle.destroy();
-        gate.resolve(new Response(text));
+        gate.resolve(respond());
         await new Promise((r) => setTimeout(r, 20));
         expect(onReady).not.toHaveBeenCalled();
         expect(host.childNodes.length).toBe(0);

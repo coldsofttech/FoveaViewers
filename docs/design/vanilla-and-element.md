@@ -1,11 +1,12 @@
 # Design: vanilla JS and Web Component entry points
 
-Status: **Phases 0 to 2 approved; Phase 3 built** (see [Phase 3](#phase-3-the-shared-viewer-and-six-more-viewers)).
-The root of every package is still the React component with the same props. The code, email, feed,
-html, image, markdown, table and text viewers have `/vanilla` and `/element` entries, and
-`@coldsofttech/fovea-viewers` has `createViewer` and `<fovea-viewer>`. The PDF, Excel, Word and
-PowerPoint viewers are Phase 4. The spikes in [spikes/phase0](spikes/phase0/run.mjs) back the
-decisions below; their results are in [Spike results](#spike-results).
+Status: **Phases 0 to 3 approved; Phase 4 built** (see [Phase 4](#phase-4-the-heavy-viewers)). Every
+viewer now has `/vanilla`, `/element` and `/css` entries, and the React component of every viewer
+is a thin wrapper over its controller. The root of every package is still the React component with
+the same props. `@coldsofttech/fovea-viewers` has `createViewer` and `<fovea-viewer>`, which open
+all twelve kinds of file. What remains is Phase 5 (release hardening). The spikes in
+[spikes/phase0](spikes/phase0/run.mjs) back the decisions below; their results are in
+[Spike results](#spike-results).
 
 ## Goal
 
@@ -503,6 +504,70 @@ Phase 2.
   is `location.assign` on the frame, which differs from a native navigation only in that the click's
   default was already prevented.
 
+## Phase 4: the heavy viewers
+
+**What was built**
+
+| In                 | What                                                                                                                |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `fovea-word`       | `createWordViewer`, `<fovea-word>`: the page in a `createHtmlFrame`, like email                                     |
+| `fovea-excel`      | `createExcelViewer`, `<fovea-excel>`: tabs and a `createGrid` for the sheet                                         |
+| `fovea-powerpoint` | `createPowerpointViewer`, `<fovea-powerpoint>`, and a vanilla `slideView` (the shapes of a slide)                   |
+| `fovea-pdf`        | `createPdfViewer` (document, password), `createPages` (toolbar, outline, the pages near the view), `createPageView` |
+| `fovea-viewers`    | the vanilla registry has all twelve viewers; `createViewer` and `<fovea-viewer>` open any of them                   |
+
+The React components, and `Pages`, `PageView`, `Outline`, `usePdfDocument` and `SlideView`, are gone
+or are wrappers: the 21 PDF, 11 Excel, 11 PowerPoint and 7 Word tests written against the old React
+components pass against the wrappers as written (the PDF and PowerPoint ones only take their fixtures from
+`test-support` now).
+
+**PDF.** The risk was the pdf.js worker. It is loaded by `pdfjs.js` with
+`new URL('./pdf.worker.min.mjs', import.meta.url)`, and the controllers import that same module, so
+`/vanilla`, `/element` and the React entry share one loader and one emitted worker (the Phase 0 spike
+showed the layout). It is now checked end to end: `<fovea-viewer src="sample.pdf">` in a Vite app with
+no React loads pdf.js and its worker as a chunk, draws a page on a canvas inside the shadow root, and
+the canvas has painted pixels. A server has to send `.mjs` as JavaScript, as every real one does.
+
+The controller is in three parts, so each can be reasoned about alone: `createPdfViewer` opens the
+file and the document (cancelling a half-opened one, asking for a password, opening again when
+`password` or `workerSrc` change without reading the file again), `createPages` owns the scroll
+view (layout, zoom that keeps your place, the outline, the page box, finding the target) and
+`createPageView` draws one page and its text layer and marks words in it.
+
+**Excel.** The `document.getElementById(...).focus()` that Phase 0 flagged is gone: the tab bar keeps
+its buttons (and so their focus) between renders and focuses the one it moved to. Each viewer has
+its own ids, from a counter. The grid is re-used from Phase 3; the words are marked after the grid
+has drawn the page that holds them, and again only when what they depend on changes.
+
+**Word and PowerPoint.** Word is email's pattern. PowerPoint draws a slide with `slideView`, a
+function that builds the slide from the parsed shapes with the safe element builder; the thumbnails
+use it too. The stage and the toolbar stay in the page while slides change, so the stage keeps the
+keyboard focus.
+
+**Pure modules.** `parseWorkbook`, `parsePresentation` and `pageTexts` imported the React `core`
+barrel for `squash` and `scoreMatch`. They now import `core/vanilla`. `check-vanilla-no-react` passes
+for all 13 packages.
+
+**The test harness** gained binary samples (the conformance `text` can be bytes), and uses a plain
+response object for `fetcher` instead of a Node `Response`, because a Node `Blob` is not a `Blob` to
+jsdom's `FileReader`, which the binary formats use. Shared fixtures moved to `test-support/pptx.js` and
+`test-support/fake-pdfjs.js`.
+
+**Checked in a real browser** (`verify.mjs`, 34 checks): all twelve kinds of file through
+`<fovea-viewer>`, each styled inside its shadow root, with a PDF page painted by pdf.js's worker.
+
+**Behaviour kept as it was**, including some that look odd: the PDF `fit` prop is only read when the
+viewer starts; the PDF `target` is looked for in every page's text before it scrolls; `Excel`'s
+`sheet` attribute is a name (the property also takes a place); a sheet change makes a new grid, so
+it starts on its first page, unsorted.
+
+**Not done**
+
+- `<fovea-viewer>` passes `options` to the viewer but not attributes other than `src`, `type`,
+  `theme` and `label`; use the viewer's own element for attributes.
+- Phase 5: documentation pass, version and release workflow, a CI run on React 18, an accessibility
+  review with a screen reader.
+
 ## Spike results
 
 Run with `node docs/design/spikes/phase0/run.mjs` after `npm run build` (Chromium via Playwright,
@@ -547,6 +612,5 @@ From a scan of the existing code for document-level assumptions:
 4. Per-viewer packages stay.
 5. Open Shadow DOM for the element (from the spikes).
 
-Next: Phase 4, the heavy viewers (PDF, Excel, Word, PowerPoint). They need `createViewer`'s registry
-entries, their pure modules moved onto `core/vanilla`, and, for PDF, the pdf.js worker through the
-element.
+Next: Phase 5, release hardening: the documentation pass, accessibility review, the version bump and
+release workflow, and a release candidate.

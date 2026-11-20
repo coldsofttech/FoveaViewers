@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection -- every index here is a number counted from the length of the array it reads. */
-import { scoreMatch, squash } from '@coldsofttech/fovea-viewers/core';
+import { scoreMatch, squash } from '@coldsofttech/fovea-viewers/core/vanilla';
 
 /**
- * @typedef {import('@coldsofttech/fovea-viewers/core').GridCell} GridCell
+ * @typedef {import('@coldsofttech/fovea-viewers/core/vanilla').GridCell} GridCell
  */
 
 /**

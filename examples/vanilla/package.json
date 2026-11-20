@@ -10,12 +10,16 @@
   "dependencies": {
     "@coldsofttech/fovea-code": "*",
     "@coldsofttech/fovea-email": "*",
+    "@coldsofttech/fovea-excel": "*",
     "@coldsofttech/fovea-feed": "*",
     "@coldsofttech/fovea-html": "*",
     "@coldsofttech/fovea-image": "*",
     "@coldsofttech/fovea-markdown": "*",
+    "@coldsofttech/fovea-pdf": "*",
+    "@coldsofttech/fovea-powerpoint": "*",
     "@coldsofttech/fovea-table": "*",
     "@coldsofttech/fovea-text": "*",
-    "@coldsofttech/fovea-viewers": "*"
+    "@coldsofttech/fovea-viewers": "*",
+    "@coldsofttech/fovea-word": "*"
   }
 }
