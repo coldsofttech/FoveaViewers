@@ -40,4 +40,10 @@ export default [
     files: ['*.config.js', '**/vite.config.js', 'scripts/**/*.js', 'vitest.setup.js'],
     languageOptions: { globals: { ...globals.node } },
   },
+  {
+    // Throwaway spike runners: they build into `.temp/` and import a config by path.
+    files: ['docs/design/spikes/**/*.mjs'],
+    languageOptions: { globals: { ...globals.node } },
+    rules: { 'security/detect-non-literal-fs-filename': 'off', 'no-unsanitized/method': 'off' },
+  },
 ];
