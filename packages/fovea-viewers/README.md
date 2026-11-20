@@ -210,6 +210,10 @@ load('pdf');
 
 `@coldsofttech/fovea-viewers/core` holds what the viewers have in common. You do not need it to use `Viewer`. It is useful if you build a viewer of your own, or want the same behaviour in your app.
 
+### Without React (work in progress)
+
+`@coldsofttech/fovea-viewers/core/vanilla` and `@coldsofttech/fovea-viewers/core/element` are the React-free building blocks for the `/vanilla` controllers and `/element` Web Components that each viewer package will gain. They are for the Fovea packages: their API may change before 1.0, and they are not yet something to build an app on. React is an optional peer dependency of this package, so using only these entry points needs no React.
+
 | Export                                           | What it is                                                                                                                        |
 | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
 | `readSource`, `useSource`, `useText`             | Read a source (URL, `File`, `Blob` or bytes) as a `Blob`, or as text, with loading and error state.                               |

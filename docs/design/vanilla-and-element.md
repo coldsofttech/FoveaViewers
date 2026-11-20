@@ -1,6 +1,9 @@
 # Design: vanilla JS and Web Component entry points
 
-Status: **Phase 0, for approval.** Nothing here changes a published API yet. The spikes in
+Status: **Phase 0 approved; Phase 1 built** (see [Shared runtime](#shared-runtime-corevanilla-and-coreelement)
+and [Build and CI changes](#build-and-ci-changes)). The root of every package is still React and
+unchanged; the only additions so far are the `core/vanilla` and `core/element` subpaths of
+`@coldsofttech/fovea-viewers`. The spikes in
 [spikes/phase0](spikes/phase0/run.mjs) back the decisions below; their results are in
 [Spike results](#spike-results).
 
@@ -134,7 +137,7 @@ Tag names: `fovea-viewer` for the shared package; `fovea-<id>` for each viewer
 | Prop kind                                             | Attribute            | Property                  | Notes                                         |
 | ----------------------------------------------------- | -------------------- | ------------------------- | --------------------------------------------- |
 | string / number (`label`, `fit`, `password`)          | yes                  | yes                       | attribute reflects to property                |
-| boolean (`allow-images`)                              | yes (presence)       | yes                       | absent means `false` (the React default)      |
+| boolean (`allow-images`)                              | yes (presence)       | yes                       | absent leaves the viewer's default            |
 | `source`                                              | string URL via `src` | yes (any `ViewerSource`)  | `File`/`Blob`/`ArrayBuffer` need the property |
 | `theme`                                               | `light`/`dark`       | yes (also a token object) |                                               |
 | objects and functions (`fetcher`, `target`, `colors`) | no                   | yes                       | not representable as attributes               |
@@ -213,28 +216,79 @@ and no class names are invented.
   The element adopts it with `CSSStyleSheet.replaceSync` into `shadowRoot.adoptedStyleSheets`; one
   parsed sheet is shared by every instance. Where `adoptedStyleSheets` does not exist (jsdom, old
   browsers), the helper appends a `<style>` element instead.
-- The `emit-css-as-module` plugin is about 15 lines (see `run.mjs`). It goes into `scripts/` and
-  every package's `vite.config.js` uses it in Phase 1. It must run after Vite writes `style.css`
-  (`enforce: 'post'`, `generateBundle` with `order: 'post'`).
+- The `emit-css-as-module` plugin is built: `scripts/vite-plugin-css-module.js` (tested in
+  `scripts/vite-plugin-css-module.test.js`). It must run after Vite writes `style.css`
+  (`enforce: 'post'`, `generateBundle` with `order: 'post'`), and it fails the build if there is no
+  stylesheet to turn into a module. A package adds it to its `vite.config.js` when it gets its
+  `/element` entry (Phase 2 for the first two), so no package publishes an unused `style.css.js`.
 
-## Shared runtime: `core/vanilla`
+## Shared runtime: `core/vanilla` and `core/element`
 
-The React-free counterpart of `core`. Most of it already exists as plain functions inside the
-React files.
+The React-free counterpart of `core`, built in Phase 1 (`packages/fovea-viewers/src/core/vanilla`
+and `…/element`). Most of it already existed as plain functions inside the React files.
 
-| Export                                 | Replaces / reuses                                         |
-| -------------------------------------- | --------------------------------------------------------- |
-| `loadSource(source, opts)`             | `readSource` (already React-free)                         |
-| `loadText(source, opts)`               | `useText`: `readSource` then `blob.text()`                |
-| `applyTheme(el, theme)`                | `themeVars`, `lightTheme`, `darkTheme` (React-free)       |
-| `markIn`, `clearMarks`, `bestMatch`, … | the existing modules, re-exported                         |
-| `h(tag, attrs, …children)`             | small DOM builder; no `innerHTML` (the repo lints for it) |
-| `prepareHtml`                          | existing, re-exported                                     |
-| `createHtmlFrame`                      | vanilla version of `HtmlFrame.jsx`                        |
-| `createGrid`                           | vanilla version of `Grid.jsx`                             |
+| Export (`core/vanilla`)                | What it is                                                         |
+| -------------------------------------- | ------------------------------------------------------------------ |
+| `createShell(container, props, opts)`  | the contract's rules in one place (below)                          |
+| `loadSource(source, opts)`             | `readSource`, which was already React-free                         |
+| `loadText(source, opts)`               | `readSource` then `blob.text()`: what `useText` does               |
+| `applyTheme(el, theme)`                | sets `--fovea-*` on the root and clears tokens a later theme drops |
+| `createH(doc)`                         | `h(tag, attrs, …children)`: builds elements, never parses markup   |
+| `markIn`, `clearMarks`, `bestMatch`, … | the existing modules, re-exported                                  |
+| `themeVars`, `lightTheme`, `darkTheme` | re-exported                                                        |
+| `prepareHtml`                          | re-exported                                                        |
 
-`core` (React) keeps its exports. Its hooks are rewritten over the vanilla functions during
-convergence, with no change for callers.
+| Export (`core/element`)     | What it is                                                       |
+| --------------------------- | ---------------------------------------------------------------- |
+| `defineViewerElement(spec)` | returns `define(tag?)`, which registers a viewer's Web Component |
+
+**Deferred from the plan:** `createHtmlFrame` and `createGrid` (vanilla versions of `HtmlFrame.jsx`
+and `Grid.jsx`) are not built yet. They are large, and the first viewers that need them are html,
+email and table (Phase 3) and excel (Phase 4); building them against a real viewer is safer than
+building them in isolation.
+
+`core` (React) keeps its exports and is untouched. Its hooks are rewritten over the vanilla
+functions during convergence, with no change for callers.
+
+### `createShell`
+
+Every controller starts with one. It implements the contract once, so a viewer's own code is only
+what is specific to it:
+
+```js
+const shell = createShell(container, props, { className: styles.root });
+shell.root; // the one element added to the container (has data-fovea-root)
+shell.h; // createH(container.ownerDocument)
+shell.props; // current props
+shell.onUpdate((changed, props) => {
+  /* react to the names in `changed` */
+});
+shell.load(task, { onResult, onError }); // cancellable; stale results never reach the handlers
+shell.emit('onReady', info); // calls the latest callback; nothing after destroy
+shell.cleanup(fn); // runs on destroy, newest first
+return shell.api; // { element, update, destroy }
+```
+
+- `update` ignores values equal to the current ones and calls the handler with only the names that
+  changed. After `destroy` it does nothing.
+- `load` starts a new load by aborting the previous one. A result from an aborted or destroyed load
+  is dropped. The task receives an `AbortSignal`.
+- A callback that throws is reported with `reportError` (or rethrown from a timer) and does not
+  break the viewer.
+- The root carries a `data-fovea-root` attribute. The conformance adapters use it to find the
+  viewer's root, and it is a stable hook for tests and page styles.
+
+### `defineViewerElement`
+
+Builds the class lazily (so importing it in a server render is safe and returns `null` where there
+are no custom elements). It implements the mapping rules above, plus:
+
+- the viewer is created only when the element is connected **and** has its required props
+  (default `['source']`), so `createElement` then `el.source = file` works;
+- `events` values are a name or `{ name, cancelable, detail, fallback }`; `fallback` runs when the
+  event was cancelable and nobody called `preventDefault()`. It is how `fovea-navigate` keeps the
+  React behaviour: with no listener the viewer's default applies;
+- a tag that is already defined is left alone, so registering twice is safe.
 
 ## Converging React on the controllers
 
@@ -259,22 +313,46 @@ it can stop at any point without hurting anyone. The public React API does not c
 **Conformance suite.** One list of behaviours per viewer (loads a Blob, URL and ArrayBuffer; shows
 an error and calls `onError`; ignores a stale source; marks and scrolls to `target`; applies a
 `theme`; `destroy` leaves no node and no pending callback; `update` after `destroy` is a no-op; …)
-runs through three adapters, `mount(props) → { update, destroy, root }`: the controller directly,
-the React wrapper, and the element. The existing React tests are the starting point. `vitest-axe`
-runs on the output of all three.
+runs through three adapters, `mount(props, { host }) → { update, destroy, root }`: the controller
+directly, the React wrapper, and the element. The existing React tests are the starting point.
+`vitest-axe` runs on the output of all three.
+
+Built in Phase 1 in `test-support/` (not published): `conformance.js` (`describeConformance`),
+`adapters.jsx` (`vanillaAdapter`, `elementAdapter`, `reactAdapter`) and `stub-viewer.js`, a viewer
+made only of the shared runtime. The suite currently has 11 behaviours per adapter (a Blob, an
+ArrayBuffer and a URL load; a failed load reports through `onError`; a newer source wins over a
+slower older one; unchanged props or a replaced callback do not reload; a theme applies and
+clears; a result after `destroy` is dropped; `destroy` twice and `update` after it are safe;
+siblings are left alone; no accessibility violations), plus one that vanilla controllers run:
+drawing into a shadow root. A viewer adds its own checks (marking, scrolling, paging) beside it.
+I broke the stale-load guard on purpose to confirm the suite fails when it should.
 
 ## Build and CI changes
 
+Status after Phase 1 in brackets.
+
 - Multi-entry Vite lib builds per package (`index`, `vanilla`, `element`), with the existing
-  `preserveModules`. Spike: entries share one `pdfjs.js` and one emitted worker.
-- `check-no-react.js` keeps its job (React is never bundled) and gains a second check: the
-  `vanilla`, `element` and `core/vanilla` entries must not import `react`, `react-dom` or
-  `@coldsofttech/fovea-viewers/core` (the React one), directly or through a shared chunk.
-- `check-pack.js`, `publint` and `attw` cover the new entries and their `.d.ts`.
-- `.size-limit.json` gets an entry per new entry point.
-- `eslint`: `no-unsanitized` stays on for the controllers; `document.getElementById`,
-  `document.querySelector` and bare `document.activeElement` are banned in controller code (rule 3).
-- The smoke test gains a React-free app that uses `/vanilla` and `/element`.
+  `preserveModules`. Spike: entries share one `pdfjs.js` and one emitted worker. [`fovea-viewers`
+  now builds `core/vanilla` and `core/element`; viewer packages follow in Phase 2 onwards.]
+- `scripts/check-vanilla-no-react.js` follows every import from the `./vanilla`, `./element`,
+  `./core/vanilla` and `./core/element` entries through the built files and fails if one reaches
+  `react`, `react-dom`, `@coldsofttech/fovea-viewers` or `@coldsofttech/fovea-viewers/core`
+  (the React ones), directly or through a shared chunk. It is in `check:packages` for
+  `fovea-viewers`, and each viewer package adds it when it gets those entries. A package with none
+  of the entries passes. `check-no-react.js` keeps its job (React is never bundled). [done]
+- `check-pack.js`, `publint` and `attw` cover the new entries and their `.d.ts`. [done for
+  `fovea-viewers`]
+- `.size-limit.json` has an entry per new entry point. [done: `core/vanilla` 14 kB (13.0 kB, mostly
+  DOMPurify through `prepareHtml`), `core/element` 1.5 kB (0.9 kB)]
+- ESLint, for `core/vanilla`, `core/element` and later each package's `vanilla.js`, `vanilla/` and
+  `element.js`: `document` is a restricted global (use `container.ownerDocument`, rule 3), and
+  `react`, `react-dom`, the React entry points of the shared package and its React-only modules
+  (`*.jsx`, `useSource`, `useText`, `useLatest`) cannot be imported. `no-unsanitized` stays on.
+  [done, and checked against a probe file]
+- React is an optional peer of `@coldsofttech/fovea-viewers`. [done] Each viewer package follows
+  when it gets its `/vanilla` entry.
+- Vitest has a `scripts` project for the build scripts' own tests. [done]
+- The smoke test gains a React-free app that uses `/vanilla` and `/element`. [Phase 2]
 
 ## Spike results
 
@@ -320,5 +398,5 @@ From a scan of the existing code for document-level assumptions:
 4. Per-viewer packages stay.
 5. Open Shadow DOM for the element (from the spikes).
 
-Next: Phase 1 (the `core/vanilla` runtime, the build plugin, the conformance harness and the CI
-checks), then the text and image pilot.
+Next: Phase 2, the text and image pilot: their `/vanilla` controllers, `/element` and React
+wrappers on top of the Phase 1 runtime, run through the conformance suite.

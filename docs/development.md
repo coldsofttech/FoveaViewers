@@ -13,7 +13,9 @@ packages/fovea-viewers/   shared package: /core helpers, viewer registry, file-t
 packages/fovea-<type>/    one viewer per file type (code, email, excel, feed, html, image,
                           markdown, pdf, powerpoint, table, text, word)
 examples/demo/            Vite app that consumes the built packages
-scripts/                  package checks run by `check:packages`
+scripts/                  package checks run by `check:packages`, and their tests
+test-support/             shared test helpers (not published): conformance suite, adapters, stub viewer
+docs/design/              design notes and the spikes behind them
 ```
 
 Each package owns its version, builds on its own with Vite library mode, and ships ES modules plus `.d.ts` files generated from JSDoc.
@@ -47,6 +49,7 @@ To work on one package, scope the command, for example `npx vitest run packages/
 - Components and hooks are named exports and document props with JSDoc typedefs. Styles are CSS modules, shipped as one `style.css` that consumers import.
 - Viewers are client-only. If an entry needs `"use client"`, make sure the build keeps the directive.
 - Tests use Vitest, jsdom, Testing Library and `vitest-axe`; `vitest.setup.js` renders everything in StrictMode. Query by role and label, and run an `axe` check for every component.
+- React-free code (`core/vanilla`, `core/element`, and each package's `vanilla.js`, `vanilla/` and `element.js`) draws into the container it is given, which may be a shadow root: use `container.ownerDocument`, never the global `document`, and import no React. ESLint and `check:packages` enforce both. See [design/vanilla-and-element.md](design/vanilla-and-element.md).
 - Viewers never import from an application. Host data comes in through props and callbacks.
 - Prettier owns formatting for all files. markdownlint is not used.
 

@@ -4,6 +4,14 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Added
+
+- `@coldsofttech/fovea-viewers/core/vanilla` and `@coldsofttech/fovea-viewers/core/element`: a React-free runtime (`createShell`, `loadText`, `applyTheme`, `createH`) and a helper that defines a viewer's Web Component. They are the base for the upcoming `/vanilla` and `/element` entry points of each viewer; their API may change before 1.0.
+
+### Changed
+
+- React and `react-dom` are now optional peer dependencies of `@coldsofttech/fovea-viewers`, so the React-free entry points need no React. Apps that use `Viewer` are not affected.
+
 ## [0.1.0] - 2026-10-28
 
 ### Added

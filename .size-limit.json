@@ -29,6 +29,18 @@
     "ignore": ["react", "react-dom"]
   },
   {
+    "name": "@coldsofttech/fovea-viewers/core/vanilla",
+    "path": "packages/fovea-viewers/dist/core/vanilla/index.js",
+    "import": "*",
+    "limit": "14 kB"
+  },
+  {
+    "name": "@coldsofttech/fovea-viewers/core/element",
+    "path": "packages/fovea-viewers/dist/core/element/index.js",
+    "import": "*",
+    "limit": "1.5 kB"
+  },
+  {
     "name": "@coldsofttech/fovea-code",
     "path": "packages/fovea-code/dist/index.js",
     "import": "*",
